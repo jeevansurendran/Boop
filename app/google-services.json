@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "248284550008",
+    "project_id": "instantaneous-e673e",
+    "storage_bucket": "instantaneous-e673e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248284550008:android:03010d97ae4e9a14192e8d",
+        "android_client_info": {
+          "package_name": "com.silverpants.instantaneous"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "248284550008-5egiiap78p30476nv9fia9uo12q77qnl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.silverpants.instantaneous",
+            "certificate_hash": "965e800cab527892a2c0e6518bdbbadb43c6bc84"
+          }
+        },
+        {
+          "client_id": "248284550008-g0m1bospplenmdm4fudvs94nbf2sipb5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCm3E_DjwVXFR1kvhX3uC2zawi03lAM4sY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "248284550008-g0m1bospplenmdm4fudvs94nbf2sipb5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
