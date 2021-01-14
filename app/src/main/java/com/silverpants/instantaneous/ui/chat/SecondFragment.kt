@@ -1,16 +1,10 @@
 package com.silverpants.instantaneous.ui.chat
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.silverpants.instantaneous.R
-import com.silverpants.instantaneous.data.room.models.Room
 import com.silverpants.instantaneous.databinding.FragmentSecondBinding
 import dagger.hilt.android.AndroidEntryPoint
 

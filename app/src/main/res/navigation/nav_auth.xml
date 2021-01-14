@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_auth.xml"
+    app:startDestination="@id/authMobileFragment">
+
+    <fragment
+        android:id="@+id/authMobileFragment"
+        android:name="com.silverpants.instantaneous.ui.auth.AuthMobileFragment"
+        android:label="AuthMobileFragment"
+        tools:layout="@layout/fragment_auth_mobile">
+        <action
+            android:id="@+id/verify_number"
+            app:destination="@id/authOtpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/authOnboardingFragment"
+        android:name="com.silverpants.instantaneous.ui.auth.AuthOnboardingFragment"
+        android:label="AuthOnboardingFragment"
+        tools:layout="@layout/fragment_auth_onboarding" />
+    <fragment
+        android:id="@+id/authOtpFragment"
+        android:name="com.silverpants.instantaneous.ui.auth.AuthOtpFragment"
+        android:label="AuthOtpFragment"
+        tools:layout="@layout/fragment_auth_otp">
+        <argument android:name="phoneNumber"
+            app:argType="string" />
+        <action
+            android:id="@+id/signin"
+            app:destination="@id/authLoadingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/authLoadingFragment"
+        tools:layout="@layout/fragment_auth_loading"
+        android:name="com.silverpants.instantaneous.ui.auth.AuthLoadingFragment"
+        android:label="AuthLoadingFragment" >
+        <action
+            android:id="@+id/action_authLoadingFragment_to_authOnboardingFragment"
+            app:destination="@id/authOnboardingFragment" />
+        <argument android:name="credential"
+            app:argType="com.google.firebase.auth.PhoneAuthCredential" />
+    </fragment>
+</navigation>

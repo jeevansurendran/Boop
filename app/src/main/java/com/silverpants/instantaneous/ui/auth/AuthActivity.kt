@@ -16,19 +16,6 @@ class AuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setupBinding()
     }
 
-    private fun setupBinding() {
-        binding.btnUser1.setOnClickListener {
-            val intent = MainActivity.withUserID(this, USER.USER1)
-            startActivity(intent)
-            finish()
-        }
-        binding.btnUser2.setOnClickListener {
-            val intent = MainActivity.withUserID(this, USER.USER2)
-            startActivity(intent)
-            finish()
-        }
-    }
 }

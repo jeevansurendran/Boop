@@ -3,16 +3,20 @@
     package="com.silverpants.instantaneous">
 
     <application
+        android:name=".InstantaneousApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:name=".InstantaneousApplication"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Instantaneous">
-        <activity android:name=".ui.auth.AuthActivity">
+        <activity android:name=".ui.launch.LaunchActivity">
+
+        </activity>
+        <activity android:name=".ui.auth.AuthActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
