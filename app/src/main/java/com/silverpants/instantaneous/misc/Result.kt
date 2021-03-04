@@ -17,7 +17,7 @@ sealed class Result<out R>  {
 }
 
 /**
- * `true` if [Result] is of type [Success] & holds non-null [Success.data].
+ * `true` if [Result] is of type [Result.Success] & holds non-null [Result.Success.data].
  */
 val Result<*>.succeeded
     get() = this is Result.Success && data != null
@@ -30,7 +30,7 @@ val <T> Result<T>.data: T?
     get() = (this as? Result.Success)?.data
 
 /**
- * Updates value of [liveData] if [Result] is of type [Success]
+ * Updates value of [liveData] if [Result] is of type [Result.Success]
  */
 inline fun <reified T> Result<T>.updateOnSuccess(liveData: MutableLiveData<T>) {
     if (this is Result.Success) {

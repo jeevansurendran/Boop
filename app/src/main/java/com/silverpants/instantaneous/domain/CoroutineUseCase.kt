@@ -18,9 +18,6 @@ abstract class UseCase<in P, R>(private val coroutineDispatcher: CoroutineDispat
      */
     suspend operator fun invoke(parameters: P): Result<R> {
         return try {
-            // Moving all use case's executions to the injected dispatcher
-            // In production code, this is usually the Default dispatcher (background thread)
-            // In tests, this becomes a TestCoroutineDispatcher
             withContext(coroutineDispatcher) {
                 execute(parameters).let {
                     Result.Success(it)

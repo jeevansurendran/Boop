@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import com.silverpants.instantaneous.R
-import com.silverpants.instantaneous.misc.USER
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val userID = intent.getStringExtra(KEY_USER_ID)
+        val userID = "pT6DThl8FgXXLpbOiIzcSIvNgV13"
         findNavController(R.id.nav_host_fragment).setGraph(
             R.navigation.nav_graph, bundleOf(
             "userID" to userID))
@@ -30,9 +29,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val KEY_USER_ID = "user.id"
 
-        fun withUserID(context: Context, userID: USER) =
-            Intent(context, MainActivity::class.java).apply {
-                putExtra(KEY_USER_ID, userID.uid)
-            }
+        fun launchHome(context: Context) =
+            Intent(context, MainActivity::class.java)
     }
 }

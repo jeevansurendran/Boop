@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.silverpants.instantaneous">
-
     <application
         android:name=".InstantaneousApplication"
         android:allowBackup="true"
@@ -11,15 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Instantaneous">
         <activity android:name=".ui.launch.LaunchActivity">
-
-        </activity>
-        <activity android:name=".ui.auth.AuthActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.auth.AuthActivity" />
         <activity
             android:name=".ui.chat.MainActivity"
             android:label="@string/app_name"
