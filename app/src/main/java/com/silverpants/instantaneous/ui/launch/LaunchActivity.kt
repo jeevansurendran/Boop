@@ -41,8 +41,8 @@ class LaunchActivity : AppCompatActivity() {
                             }
                         }
                         job.invokeOnCompletion {
-                            startActivity(intent)
-                            finish()
+                            // startActivity(intent)
+                            // finish()
                         }
                     }
                     else -> {
