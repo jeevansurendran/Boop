@@ -1,5 +1,6 @@
 package com.silverpants.instantaneous.ui.auth
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
@@ -47,6 +48,7 @@ class AuthOtpFragment : Fragment(R.layout.fragment_auth_otp) {
         val etAuthOtpOtp = binding.etAuthOtpOtp
 
         countDownTimer = object : CountDownTimer(30 * 1000, 1000) {
+            @SuppressLint("SetTextI18n")
             override fun onTick(millisUntilFinished: Long) {
                 tvAuthOtpCounter.text = "Time: ${millisUntilFinished / 1000}"
             }
@@ -79,7 +81,8 @@ class AuthOtpFragment : Fragment(R.layout.fragment_auth_otp) {
             }
             val credential =
                 PhoneAuthProvider.getCredential(authViewModel.verificationId, code.toString())
-            signInWithPhoneAuthCredential(credential)
+            authViewModel.credential = credential
+            signInWithPhoneAuthCredential()
         }
         /* */
         btnAuthOtpResend.setOnClickListener {
@@ -107,12 +110,13 @@ class AuthOtpFragment : Fragment(R.layout.fragment_auth_otp) {
 
                         //disable the buttons
                         btnAuthOtpResend.isEnabled = false
+                        btnAuthOtpNext.isEnabled = false
 
                         // call verify
                         authViewModel.verifyPhoneNumber(builder.build())
                     }
                     AuthViewModel.OtpStates.AUTO_VERIFICATION_COMPLETE -> {
-                        signInWithPhoneAuthCredential(authViewModel.credential!!)
+                        signInWithPhoneAuthCredential()
                     }
                     /* This state is for when the code is sent */
                     AuthViewModel.OtpStates.CODE_SENT -> {
@@ -122,25 +126,29 @@ class AuthOtpFragment : Fragment(R.layout.fragment_auth_otp) {
                             countDownTimer.start()
                         }
 
+                        // button control
                         btnAuthOtpResend.isEnabled = false
+                        btnAuthOtpNext.isEnabled = true
                     }
                     /* This state is when refresh is allowed */
                     AuthViewModel.OtpStates.REFRESH_ALLOWED -> {
                         backPressedCallback.remove()
                         btnAuthOtpResend.isEnabled = true
+                        btnAuthOtpNext.isEnabled = true
                     }
                     else -> {
                         backPressedCallback.remove()
                         //disable the buttons
                         btnAuthOtpResend.isEnabled = true
+                        btnAuthOtpNext.isEnabled = true
                     }
                 }
             }
         }
     }
 
-    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
-        val action = AuthOtpFragmentDirections.signin(credential)
+    private fun signInWithPhoneAuthCredential() {
+        val action = AuthOtpFragmentDirections.signin()
         findNavController().navigate(action)
         authViewModel.setOtpState(AuthViewModel.OtpStates.VERIFY_START)
     }

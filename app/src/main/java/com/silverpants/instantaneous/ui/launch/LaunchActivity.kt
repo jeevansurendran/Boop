@@ -1,5 +1,6 @@
 package com.silverpants.instantaneous.ui.launch
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -11,7 +12,6 @@ import com.silverpants.instantaneous.ui.auth.AuthActivity
 import com.silverpants.instantaneous.ui.chat.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
-import timber.log.Timber
 
 @AndroidEntryPoint
 class LaunchActivity : AppCompatActivity() {
@@ -31,18 +31,18 @@ class LaunchActivity : AppCompatActivity() {
             it?.let {
                 when (it) {
                     is Result.Success -> {
-                        Timber.d("Hmmmmmmm ${it.data.getDisplayName()}")
-                        lifecycleScope.launchWhenStarted {
+                        var intent: Intent? = null
+                        val job = lifecycleScope.launchWhenStarted {
                             delay(1000)
-                            if (!it.data.isSignedIn()) {
-                                val intent = AuthActivity.launchAuthenitcation(applicationContext)
-                                startActivity(intent)
-                                finish()
+                            intent = if (!it.data.isSignedIn()) {
+                                AuthActivity.launchAuthentication(applicationContext)
                             } else {
-                                val intent = MainActivity.launchHome(applicationContext)
-                                startActivity(intent)
-                                finish()
+                                MainActivity.launchHome(applicationContext)
                             }
+                        }
+                        job.invokeOnCompletion {
+                            startActivity(intent)
+                            finish()
                         }
                     }
                     else -> {

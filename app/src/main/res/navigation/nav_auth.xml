@@ -28,9 +28,7 @@
             app:argType="string" />
         <action
             android:id="@+id/signin"
-            app:destination="@id/authLoadingFragment"
-            app:launchSingleTop="true"
-            app:popUpToInclusive="false" />
+            app:destination="@id/authLoadingFragment" />
     </fragment>
     <fragment
         android:id="@+id/authLoadingFragment"
@@ -42,7 +40,5 @@
             app:destination="@id/authOnboardingFragment"
             app:popUpTo="@id/authMobileFragment"
             app:popUpToInclusive="false" />
-        <argument android:name="credential"
-            app:argType="com.google.firebase.auth.PhoneAuthCredential" />
     </fragment>
 </navigation>

@@ -8,13 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.silverpants.instantaneous.R
 import com.silverpants.instantaneous.misc.suspendAndWait
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,7 +22,6 @@ import javax.inject.Inject
 class AuthLoadingFragment : Fragment(R.layout.fragment_auth_loading) {
 
     private val authViewModel: AuthViewModel by activityViewModels()
-    private val args: AuthLoadingFragmentArgs by navArgs()
 
     @Inject
     lateinit var auth: FirebaseAuth
@@ -38,8 +37,9 @@ class AuthLoadingFragment : Fragment(R.layout.fragment_auth_loading) {
 
     }
 
+    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val credential = args.credential
+        val credential = authViewModel.credential!!
 
         authViewModel.otpState.observe(viewLifecycleOwner) {
             it?.let {

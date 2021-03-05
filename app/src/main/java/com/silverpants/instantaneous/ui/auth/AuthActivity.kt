@@ -45,7 +45,7 @@ class AuthActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun launchAuthenitcation(context: Context) = Intent(context, AuthActivity::class.java)
+        fun launchAuthentication(context: Context) = Intent(context, AuthActivity::class.java)
     }
 
 }

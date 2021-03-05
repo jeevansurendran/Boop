@@ -1,5 +1,6 @@
 package com.silverpants.instantaneous.ui.auth
 
+import android.annotation.SuppressLint
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.google.firebase.auth.PhoneAuthCredential
@@ -33,6 +34,7 @@ class AuthViewModel @ViewModelInject constructor(
         _otpState.value = state
     }
 
+    @SuppressLint("NullSafeMutableLiveData")
     fun setName(name: String) {
         viewModelScope.launch {
             _updateRequest.value = updateNameUseCase(name)

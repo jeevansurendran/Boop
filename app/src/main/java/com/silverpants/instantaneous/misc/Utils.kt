@@ -11,7 +11,7 @@ suspend fun <T> Task<T>.suspendAndWait(): T =
     suspendCancellableCoroutine { continuation ->
         addOnSuccessListener { result ->
             continuation.resume(result) {
-
+                continuation.resumeWithException(it)
             }
         }
         addOnFailureListener { exception ->

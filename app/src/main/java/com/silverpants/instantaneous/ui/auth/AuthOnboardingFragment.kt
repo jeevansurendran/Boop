@@ -11,7 +11,6 @@ import com.silverpants.instantaneous.databinding.FragmentAuthOnboardingBinding
 import com.silverpants.instantaneous.misc.Result
 import com.silverpants.instantaneous.ui.chat.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -46,7 +45,6 @@ class AuthOnboardingFragment : Fragment(R.layout.fragment_auth_onboarding) {
                     is Result.Success -> {
                         val intent = MainActivity.launchHome(requireContext())
                         startActivity(intent)
-                        Timber.d("helllo sir my name is cool kid")
                         requireActivity().finish()
                     }
                     is Result.Error -> {
@@ -63,7 +61,6 @@ class AuthOnboardingFragment : Fragment(R.layout.fragment_auth_onboarding) {
             }
         }
         btnAuthOnboardingNext.setOnClickListener {
-            Timber.d("heelksjdflkjsflk")
             authViewModel.setName(etAuthOnboardingName.text.toString())
         }
     }
