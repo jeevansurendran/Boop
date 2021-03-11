@@ -13,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.*
 import com.silverpants.instantaneous.R
 import com.silverpants.instantaneous.databinding.FragmentAuthOtpBinding
+import com.silverpants.instantaneous.misc.AUTH_OTP_TIMEOUT
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -47,7 +48,7 @@ class AuthOtpFragment : Fragment(R.layout.fragment_auth_otp) {
         val tvAuthOtpCounter = binding.tvAuthOtpCounter
         val etAuthOtpOtp = binding.etAuthOtpOtp
 
-        countDownTimer = object : CountDownTimer(30 * 1000, 1000) {
+        countDownTimer = object : CountDownTimer(AUTH_OTP_TIMEOUT * 1000, 1000) {
             @SuppressLint("SetTextI18n")
             override fun onTick(millisUntilFinished: Long) {
                 tvAuthOtpCounter.text = "Time: ${millisUntilFinished / 1000}"
@@ -98,7 +99,7 @@ class AuthOtpFragment : Fragment(R.layout.fragment_auth_otp) {
                         // trigger this whenever in ready state
                         val builder = PhoneAuthOptions.newBuilder(auth)
                             .setPhoneNumber(phoneNumber)
-                            .setTimeout(60L, TimeUnit.SECONDS)
+                            .setTimeout(AUTH_OTP_TIMEOUT, TimeUnit.SECONDS)
                             .setActivity(requireActivity())
                             .setCallbacks((requireActivity() as AuthActivity).callbacks)
 

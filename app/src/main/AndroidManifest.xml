@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Instantaneous">
-        <activity android:name=".ui.launch.LaunchActivity">
+        <activity
+            android:name=".ui.launch.LaunchActivity"
+            android:theme="@style/Theme.Instantaneous.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
