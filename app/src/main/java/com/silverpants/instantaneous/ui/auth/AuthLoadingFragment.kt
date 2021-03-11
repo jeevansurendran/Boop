@@ -48,7 +48,11 @@ class AuthLoadingFragment : Fragment(R.layout.fragment_auth_loading) {
                         requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
                         lifecycleScope.launch {
                             try {
-                                auth.signInWithCredential(credential).suspendAndWait()
+                                val result = auth.signInWithCredential(credential).suspendAndWait()
+                                if (result.additionalUserInfo?.isNewUser == true) {
+                                    authViewModel.setOtpState(AuthViewModel.OtpStates.VERIFY_COMPLETE_NEW_USER)
+                                    return@launch
+                                }
                                 authViewModel.setOtpState(AuthViewModel.OtpStates.VERIFY_COMPLETE)
                             } catch (e: FirebaseException) {
                                 authViewModel.setOtpState(AuthViewModel.OtpStates.VERIFY_FAILED)
@@ -62,9 +66,8 @@ class AuthLoadingFragment : Fragment(R.layout.fragment_auth_loading) {
                                 }
                             }
                         }
-
                     }
-                    AuthViewModel.OtpStates.VERIFY_COMPLETE -> {
+                    AuthViewModel.OtpStates.VERIFY_COMPLETE_NEW_USER, AuthViewModel.OtpStates.VERIFY_COMPLETE -> {
                         val action = AuthLoadingFragmentDirections.startOnboarding()
                         findNavController().navigate(action)
                         backPressedCallback.remove()
