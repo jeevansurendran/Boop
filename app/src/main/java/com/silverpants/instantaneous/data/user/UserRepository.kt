@@ -35,4 +35,9 @@ class UserRepository @Inject constructor(
     suspend fun postUserId(userId: String, uid: String): FirestoreUserInfo {
         return firestoreUserDataSource.postUserId(userId, uid)
     }
+
+    @ExperimentalCoroutinesApi
+    suspend fun isFirestoreUserDataExists(uid: String?): Boolean {
+        return firestoreUserDataSource.isFirestoreUserDataExists(uid)
+    }
 }

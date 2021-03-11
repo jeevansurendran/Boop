@@ -12,6 +12,7 @@ import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.silverpants.instantaneous.R
+import com.silverpants.instantaneous.misc.data
 import com.silverpants.instantaneous.misc.suspendAndWait
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -49,7 +50,7 @@ class AuthLoadingFragment : Fragment(R.layout.fragment_auth_loading) {
                         lifecycleScope.launch {
                             try {
                                 val result = auth.signInWithCredential(credential).suspendAndWait()
-                                if (result.additionalUserInfo?.isNewUser == true) {
+                                if (result.additionalUserInfo?.isNewUser == true || authViewModel.isFirestoreUserDataExists.value?.data == false) {
                                     authViewModel.setOtpState(AuthViewModel.OtpStates.VERIFY_COMPLETE_NEW_USER)
                                     return@launch
                                 }
@@ -80,6 +81,9 @@ class AuthLoadingFragment : Fragment(R.layout.fragment_auth_loading) {
                     }
                 }
             }
+        }
+        authViewModel.isFirestoreUserDataExists.observe(viewLifecycleOwner) {
+            // empty observer so that data is fetched atleast once
         }
     }
 
