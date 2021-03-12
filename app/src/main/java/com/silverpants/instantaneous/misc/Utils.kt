@@ -1,8 +1,5 @@
 package com.silverpants.instantaneous.misc
 
-import android.app.Activity
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -25,11 +22,3 @@ suspend fun <T> Task<T>.suspendAndWait(): T =
         }
     }
 
-// toast
-fun Fragment.toast(message: String, length: Int = Toast.LENGTH_LONG) {
-    Toast.makeText(requireContext(), message, length).show()
-}
-
-fun Activity.toast(message: String, length: Int = Toast.LENGTH_LONG) {
-    Toast.makeText(this, message, length).show()
-}

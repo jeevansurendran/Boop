@@ -12,7 +12,6 @@ import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.silverpants.instantaneous.R
-import com.silverpants.instantaneous.misc.data
 import com.silverpants.instantaneous.misc.suspendAndWait
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -49,11 +48,7 @@ class AuthLoadingFragment : Fragment(R.layout.fragment_auth_loading) {
                         requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
                         lifecycleScope.launch {
                             try {
-                                val result = auth.signInWithCredential(credential).suspendAndWait()
-                                if (result.additionalUserInfo?.isNewUser == true || authViewModel.isFirestoreUserDataExists.value?.data == false) {
-                                    authViewModel.setOtpState(AuthViewModel.OtpStates.VERIFY_COMPLETE_NEW_USER)
-                                    return@launch
-                                }
+                                auth.signInWithCredential(credential).suspendAndWait()
                                 authViewModel.setOtpState(AuthViewModel.OtpStates.VERIFY_COMPLETE)
                             } catch (e: FirebaseException) {
                                 authViewModel.setOtpState(AuthViewModel.OtpStates.VERIFY_FAILED)
@@ -67,8 +62,9 @@ class AuthLoadingFragment : Fragment(R.layout.fragment_auth_loading) {
                                 }
                             }
                         }
+
                     }
-                    AuthViewModel.OtpStates.VERIFY_COMPLETE_NEW_USER, AuthViewModel.OtpStates.VERIFY_COMPLETE -> {
+                    AuthViewModel.OtpStates.VERIFY_COMPLETE -> {
                         val action = AuthLoadingFragmentDirections.startOnboarding()
                         findNavController().navigate(action)
                         backPressedCallback.remove()
@@ -81,9 +77,6 @@ class AuthLoadingFragment : Fragment(R.layout.fragment_auth_loading) {
                     }
                 }
             }
-        }
-        authViewModel.isFirestoreUserDataExists.observe(viewLifecycleOwner) {
-            // empty observer so that data is fetched atleast once
         }
     }
 
