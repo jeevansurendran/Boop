@@ -6,42 +6,25 @@ import androidx.lifecycle.*
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
-import com.silverpants.instantaneous.data.user.models.FirestoreUserInfo
-import com.silverpants.instantaneous.domain.user.IsFirestoreUserDataExistsUseCase
 import com.silverpants.instantaneous.domain.user.ObservableUserUseCase
-import com.silverpants.instantaneous.domain.user.PostUserIdUseCase
 import com.silverpants.instantaneous.domain.user.UpdateNameUseCase
 import com.silverpants.instantaneous.misc.Result
-import com.silverpants.instantaneous.misc.data
 import kotlinx.coroutines.launch
 
 class AuthViewModel @ViewModelInject constructor(
-    private val updateNameUseCase: UpdateNameUseCase,
-    private val observableUserUseCase: ObservableUserUseCase,
-    private val isFirestoreUserDataExistsUseCase: IsFirestoreUserDataExistsUseCase,
-    private val postUserIdUseCase: PostUserIdUseCase
+    val updateNameUseCase: UpdateNameUseCase,
+    val observableUserUseCase: ObservableUserUseCase
 ) : ViewModel() {
 
     var verificationId: String = ""
     var refreshToken: PhoneAuthProvider.ForceResendingToken? = null
     var credential: PhoneAuthCredential? = null
-
     private val _otpState = MutableLiveData(OtpStates.READY)
     val otpState = _otpState as LiveData<OtpStates>
-
-    val userInfo by lazy { observableUserUseCase(Unit).asLiveData() }
-
-    val isFirestoreUserDataExists by lazy {
-        Transformations.switchMap(userInfo) {
-            liveData { emit(isFirestoreUserDataExistsUseCase(it.data?.getUid())) }
-        }
-    }
+    val userInfo get() = observableUserUseCase(Unit).asLiveData()
 
     private val _updateRequest = MutableLiveData<Result<Unit>>(Result.Loading)
     val updateRequest = _updateRequest as LiveData<Result<Unit>>
-
-    private val _postUserId = MutableLiveData<Result<FirestoreUserInfo?>>(Result.Loading)
-    val postUserId = _postUserId as LiveData<Result<FirestoreUserInfo?>>
 
     fun verifyPhoneNumber(options: PhoneAuthOptions) {
         PhoneAuthProvider.verifyPhoneNumber(options)
@@ -59,13 +42,6 @@ class AuthViewModel @ViewModelInject constructor(
 
     }
 
-    @SuppressLint("NullSafeMutableLiveData")
-    fun postUserId(userId: String, uid: String) {
-        viewModelScope.launch {
-            _postUserId.value = postUserIdUseCase(userId to uid)
-        }
-    }
-
     enum class OtpStates {
         READY,
         CODE_SENT,
@@ -73,7 +49,6 @@ class AuthViewModel @ViewModelInject constructor(
         AUTO_VERIFICATION_COMPLETE,
         VERIFY_START,
         VERIFY_COMPLETE,
-        VERIFY_COMPLETE_NEW_USER,
         VERIFY_FAILED
     }
 }

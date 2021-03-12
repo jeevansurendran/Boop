@@ -27,14 +27,14 @@ class LaunchActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.isFirestoreUserDataExists.observe(this) {
+        viewModel.userInfo.observe(this) {
             it?.let {
                 when (it) {
                     is Result.Success -> {
                         var intent: Intent? = null
                         val job = lifecycleScope.launchWhenStarted {
                             delay(1000)
-                            intent = if (!it.data) {
+                            intent = if (!it.data.isSignedIn()) {
                                 AuthActivity.launchAuthentication(applicationContext)
                             } else {
                                 MainActivity.launchHome(applicationContext)
