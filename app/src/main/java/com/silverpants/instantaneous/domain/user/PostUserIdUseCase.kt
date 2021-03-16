@@ -11,9 +11,9 @@ import javax.inject.Inject
 class PostUserIdUseCase @Inject constructor(
     private val userRepository: UserRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : UseCase<Pair<String, String>, FirestoreUserInfo>(dispatcher) {
+) : UseCase<Triple<String, String, String>, FirestoreUserInfo>(dispatcher) {
     @ExperimentalCoroutinesApi
-    override suspend fun execute(parameters: Pair<String, String>): FirestoreUserInfo {
-        return userRepository.postUserId(parameters.first, parameters.second)
+    override suspend fun execute(parameters: Triple<String, String, String>): FirestoreUserInfo {
+        return userRepository.postUserIdAndNumber(parameters.first, parameters.second, parameters.third)
     }
 }

@@ -62,7 +62,8 @@ class AuthViewModel @ViewModelInject constructor(
     @SuppressLint("NullSafeMutableLiveData")
     fun postUserId(userId: String, uid: String) {
         viewModelScope.launch {
-            _postUserId.value = postUserIdUseCase(userId to uid)
+            _postUserId.value =
+                postUserIdUseCase(Triple(userId, uid, userInfo.value?.data?.getPhoneNumber()!!))
         }
     }
 

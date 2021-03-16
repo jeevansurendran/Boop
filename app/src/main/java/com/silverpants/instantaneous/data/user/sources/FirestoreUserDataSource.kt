@@ -33,14 +33,14 @@ class FirestoreUserDataSource @Inject constructor(
     }
 
     @ExperimentalCoroutinesApi
-    suspend fun postUserId(userId: String, uid: String): FirestoreUserInfo {
+    suspend fun postUserIdAndNumber(userId: String, uid: String, number: String): FirestoreUserInfo {
         val userDoc = firestore.collection(USERS_COLLECTION).document(userId)
 
         val snapshot = userDoc.get().suspendAndWait()
         if (snapshot.exists()) {
             throw DocumentExistsException()
         }
-        val data = FirestoreUserInfo(uid)
+        val data = FirestoreUserInfo(uid, number)
         userDoc.set(data).suspendAndWait()
         return data
     }

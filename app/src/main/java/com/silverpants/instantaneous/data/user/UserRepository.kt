@@ -32,8 +32,8 @@ class UserRepository @Inject constructor(
     }
 
     @ExperimentalCoroutinesApi
-    suspend fun postUserId(userId: String, uid: String): FirestoreUserInfo {
-        return firestoreUserDataSource.postUserId(userId, uid)
+    suspend fun postUserIdAndNumber(userId: String, uid: String, number:String): FirestoreUserInfo {
+        return firestoreUserDataSource.postUserIdAndNumber(userId, uid, number)
     }
 
     @ExperimentalCoroutinesApi
