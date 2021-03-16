@@ -18,7 +18,12 @@
         android:id="@+id/authOnboardingFragment"
         android:name="com.silverpants.instantaneous.ui.auth.AuthOnboardingFragment"
         android:label="AuthOnboardingFragment"
-        tools:layout="@layout/fragment_auth_onboarding" />
+        tools:layout="@layout/fragment_auth_onboarding">
+        <action
+            android:id="@+id/acceptUserId"
+            app:destination="@id/authUserIdFragment"
+            app:popUpTo="@id/authMobileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/authOtpFragment"
         android:name="com.silverpants.instantaneous.ui.auth.AuthOtpFragment"
@@ -34,11 +39,16 @@
         android:id="@+id/authLoadingFragment"
         tools:layout="@layout/fragment_auth_loading"
         android:name="com.silverpants.instantaneous.ui.auth.AuthLoadingFragment"
-        android:label="AuthLoadingFragment" >
+        android:label="AuthLoadingFragment">
         <action
             android:id="@+id/startOnboarding"
             app:destination="@id/authOnboardingFragment"
             app:popUpTo="@id/authMobileFragment"
             app:popUpToInclusive="false" />
     </fragment>
+    <fragment
+        android:id="@+id/authUserIdFragment"
+        android:name="com.silverpants.instantaneous.ui.auth.AuthUserIdFragment"
+        android:label="fragment_auth_user_id"
+        tools:layout="@layout/fragment_auth_user_id" />
 </navigation>
