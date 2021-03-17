@@ -1,30 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
-
-    <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.silverpants.instantaneous.ui.chat.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
-
-        <argument
-            android:name="userID"
-            app:argType="string" />
-        <action
-            android:id="@+id/openChat"
-            app:destination="@id/SecondFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.silverpants.instantaneous.ui.chat.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
-        <argument
-            android:name="roomID"
-            app:argType="string" />
-    </fragment>
-</navigation>
+    android:id="@+id/nav_graph" />

@@ -6,7 +6,7 @@
     android:layout_height="100dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/civ_main_recent_dp"
+        android:id="@+id/civ_recent_dp"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/size_m"
@@ -19,28 +19,29 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_main_recent_name"
+        android:id="@+id/tv_recent_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/dm_sans_medium"
+        android:layout_marginStart="@dimen/size_s"
+        android:layout_marginTop="@dimen/size_t"
         android:textColor="@color/grey_600"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@id/civ_main_recent_dp"
-        app:layout_constraintTop_toTopOf="@id/civ_main_recent_dp"
+        app:layout_constraintStart_toEndOf="@id/civ_recent_dp"
+        app:layout_constraintTop_toTopOf="@id/civ_recent_dp"
         tools:text="Jeevan Surendran" />
 
     <TextView
-        android:id="@+id/tv_main_recent_user_id"
+        android:id="@+id/tv_recent_user_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size_vt"
         android:textColor="@color/grey_400"
-        app:layout_constraintStart_toEndOf="@id/civ_main_recent_dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_main_recent_name"
+        app:layout_constraintStart_toStartOf="@id/tv_recent_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_recent_name"
         tools:text="\@ jeevan" />
 
     <TextView
-        android:id="@+id/tv_main_recent_last_seen"
+        android:id="@+id/tv_recent_last_seen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/size_m"
