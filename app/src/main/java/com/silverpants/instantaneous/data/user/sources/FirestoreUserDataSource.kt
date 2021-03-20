@@ -62,7 +62,8 @@ class FirestoreUserDataSource @Inject constructor(
                 snapshot.documents[0].id,
                 firestoreUserInfo[NUMBER_FIELD] as String,
                 firestoreUserInfo[IS_ONLINE_FIELD] as Boolean,
-                snapshot.documents[0].getTimestamp(LAST_ONLINE_FIELD)?.toDate() ?: Date()
+                snapshot.documents[0].getTimestamp(LAST_ONLINE_FIELD)?.toDate() ?: Date(),
+                firestoreUserInfo[PHOTO_URL_FIELD] as String
             )
         }
     }
@@ -74,5 +75,6 @@ class FirestoreUserDataSource @Inject constructor(
         private const val NUMBER_FIELD = "number"
         private const val IS_ONLINE_FIELD = "isOnline"
         private const val LAST_ONLINE_FIELD = "lastOnline"
+        private const val PHOTO_URL_FIELD = "photoURL"
     }
 }

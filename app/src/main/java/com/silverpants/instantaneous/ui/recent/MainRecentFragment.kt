@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.silverpants.instantaneous.R
 import com.silverpants.instantaneous.databinding.FragmentMainRecentBinding
 import com.silverpants.instantaneous.misc.Result
+import com.silverpants.instantaneous.misc.loadImageOrDefault
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -28,12 +29,34 @@ class MainRecentFragment : Fragment(R.layout.fragment_main_recent) {
                 when (it) {
                     is Result.Success -> {
                         adapter.setRecentChatList(it.data)
+                        Timber.d("[MainRecentFragment] change detected")
                     }
                     is Result.Loading -> {
                         Timber.d("[MainRecentFragment] Loading app")
                     }
                     is Result.Error -> {
-                        Timber.e("There has been an error")
+                        Timber.e("[MainRecentFragment] There has been an error")
+                        Timber.e(it.exception)
+                    }
+                }
+            }
+        }
+        recentChatViewModel.user.observe(viewLifecycleOwner) {
+            it?.let {
+                when (it) {
+                    is Result.Success -> {
+                        loadImageOrDefault(
+                            binding.imRecentProfile,
+                            it.data.photoURL,
+                            R.drawable.ic_basketball
+                        )
+                        Timber.d("[MainRecentFragment] change detected")
+                    }
+                    is Result.Loading -> {
+                        Timber.d("[MainRecentFragment] Loading app")
+                    }
+                    is Result.Error -> {
+                        Timber.e("[MainRecentFragment] There has been an error")
                         Timber.e(it.exception)
                     }
                 }

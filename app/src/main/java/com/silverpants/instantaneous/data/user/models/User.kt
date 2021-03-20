@@ -10,4 +10,5 @@ data class User(
     val number: String,
     val isOnline: Boolean,
     val lastOnline: Date,
+    val photoURL: String,
 ) : FirebaseUserInfo(firebaseUser)
