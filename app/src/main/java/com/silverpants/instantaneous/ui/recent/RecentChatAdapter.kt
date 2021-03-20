@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.silverpants.instantaneous.R
 import com.silverpants.instantaneous.data.chat.model.RecentChat
 import com.silverpants.instantaneous.databinding.ItemRecentChatBinding
+import com.silverpants.instantaneous.misc.loadImageOrDefault
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -47,6 +49,7 @@ class RecentChatAdapter :
             item.tvRecentLastSeen.text =
                 if (recentChat.isOnline) "Online" else simpleDateFormat.format(recentChat.lastOnline)
             toggleChatOnline(recentChat.isOnline)
+            loadImageOrDefault(item.civRecentDp, recentChat.photoURL, R.drawable.ic_basketball)
         }
 
         private fun toggleChatOnline(isOnline: Boolean) {

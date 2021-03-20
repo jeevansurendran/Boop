@@ -59,11 +59,12 @@ class RecentChatDataSource @Inject constructor(
                             if (user != null) {
                                 channel.offer(
                                     RecentChat(
-                                        user.get(NAME_FIELD) as String,
+                                        user[NAME_FIELD] as String,
                                         chatUserId,
                                         user.getTimestamp(LAST_ONLINE_FIELD)?.toDate() ?: Date(),
-                                        user.get(IS_ONLINE_FIELD) as Boolean,
+                                        user[IS_ONLINE_FIELD] as Boolean,
                                         chat.id,
+                                        user[PHOTO_URL_FIELD] as String,
                                     )
                                 )
                             } else {
@@ -90,5 +91,6 @@ class RecentChatDataSource @Inject constructor(
         private const val NAME_FIELD = "name"
         private const val IS_ONLINE_FIELD = "isOnline"
         private const val LAST_ONLINE_FIELD = "lastOnline"
+        private const val PHOTO_URL_FIELD = "photoURL"
     }
 }

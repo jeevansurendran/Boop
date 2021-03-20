@@ -1,8 +1,11 @@
 package com.silverpants.instantaneous.misc
 
 import android.app.Activity
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.annotation.DrawableRes
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -32,4 +35,15 @@ fun Fragment.toast(message: String, length: Int = Toast.LENGTH_LONG) {
 
 fun Activity.toast(message: String, length: Int = Toast.LENGTH_LONG) {
     Toast.makeText(this, message, length).show()
+}
+
+//loadImageOrDefault
+fun loadImageOrDefault(imageView: ImageView, url: String, @DrawableRes defaultDrawable: Int) {
+    if (url.isNotEmpty()) {
+        Glide.with(imageView.context)
+            .load(url)
+            .into(imageView)
+    } else {
+        imageView.setImageResource(defaultDrawable)
+    }
 }

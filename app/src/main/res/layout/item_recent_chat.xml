@@ -7,12 +7,12 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/civ_recent_dp"
-        android:layout_width="wrap_content"
+        android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginStart="@dimen/size_m"
         android:layout_marginTop="@dimen/size_m"
         android:layout_marginBottom="@dimen/size_m"
-        android:src="@drawable/ic_basketball"
+        tools:src="@drawable/ic_basketball"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

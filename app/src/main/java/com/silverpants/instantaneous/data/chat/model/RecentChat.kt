@@ -8,8 +8,9 @@ data class RecentChat(
     val lastOnline: Date,
     val isOnline: Boolean,
     val roomId: String,
+    val photoURL: String
 ) {
     companion object {
-        fun getDefault() = RecentChat("", "", Date(), false, "")
+        fun getDefault() = RecentChat("", "", Date(), false, "", "")
     }
 }
