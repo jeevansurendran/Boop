@@ -64,6 +64,13 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"
 
+    //round profile
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    // glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
     // default
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.4.31"

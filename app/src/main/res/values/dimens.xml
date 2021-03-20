@@ -1,3 +1,16 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <!-- size -->
+    <dimen name="size_vt">4dp</dimen>
+    <dimen name="size_t">6dp</dimen>
+    <dimen name="size_vs">8dp</dimen>
+    <dimen name="size_s">12dp</dimen>
+    <dimen name="size_n">16dp</dimen>
+    <dimen name="size_m">22dp</dimen>
+    <dimen name="size_l">26dp</dimen>
+    <dimen name="size_el">34dp</dimen>
+    <dimen name="size_h">42dp</dimen>
+    <dimen name="size_eh">52dp</dimen>
+    <dimen name="size_g">62dp</dimen>
+    <dimen name="size_i">77dp</dimen>
 </resources>
