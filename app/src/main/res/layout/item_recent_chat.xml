@@ -3,16 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp">
+    android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/civ_recent_dp"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="45dp"
         android:layout_marginStart="@dimen/size_m"
         android:layout_marginTop="@dimen/size_m"
         android:layout_marginBottom="@dimen/size_m"
-        android:adjustViewBounds="true"
         android:src="@drawable/ic_basketball"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,10 +20,10 @@
     <TextView
         android:id="@+id/tv_recent_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/dm_sans_medium"
+        android:layout_height="0dp"
         android:layout_marginStart="@dimen/size_s"
         android:layout_marginTop="@dimen/size_t"
+        android:fontFamily="@font/dm_sans_medium"
         android:textColor="@color/grey_600"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@id/civ_recent_dp"
@@ -40,14 +39,27 @@
         app:layout_constraintTop_toBottomOf="@id/tv_recent_name"
         tools:text="\@ jeevan" />
 
+    <ImageView
+        android:id="@+id/im_recent_online"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/size_t"
+        android:src="@drawable/ic_online_symbol"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_recent_last_seen"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tv_recent_last_seen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/size_m"
+        android:layout_marginEnd="24dp"
         android:textColor="@color/grey_400"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/tv_recent_name"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="4:46 pm" />
 

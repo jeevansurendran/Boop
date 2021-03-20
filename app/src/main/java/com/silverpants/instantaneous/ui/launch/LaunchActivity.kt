@@ -11,7 +11,6 @@ import com.silverpants.instantaneous.misc.Result
 import com.silverpants.instantaneous.ui.auth.AuthActivity
 import com.silverpants.instantaneous.ui.chat.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class LaunchActivity : AppCompatActivity() {
@@ -33,7 +32,6 @@ class LaunchActivity : AppCompatActivity() {
                     is Result.Success -> {
                         var intent: Intent? = null
                         val job = lifecycleScope.launchWhenStarted {
-                            delay(1000)
                             intent = if (!it.data) {
                                 AuthActivity.launchAuthentication(applicationContext)
                             } else {

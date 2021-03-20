@@ -6,15 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.silverpants.instantaneous.domain.user.IsFirestoreUserDataExistsUseCase
-import com.silverpants.instantaneous.domain.user.ObservableUserUseCase
+import com.silverpants.instantaneous.domain.user.ObservableUserInfoUseCase
 import com.silverpants.instantaneous.misc.data
 
 class LaunchViewModel @ViewModelInject constructor(
-    val observableUserUseCase: ObservableUserUseCase,
+    val observableUserInfoUseCase: ObservableUserInfoUseCase,
     val isFirestoreUserDataExistsUseCase: IsFirestoreUserDataExistsUseCase
 ) :
     ViewModel() {
-    private val userInfo by lazy { observableUserUseCase(Unit).asLiveData() }
+    private val userInfo by lazy { observableUserInfoUseCase(Unit).asLiveData() }
 
     val isFirestoreUserDataExists by lazy {
         Transformations.switchMap(userInfo) {
