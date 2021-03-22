@@ -1,0 +1,73 @@
+package com.silverpants.instantaneous.data.chat.sources
+
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.silverpants.instantaneous.data.chat.model.Chat
+import com.silverpants.instantaneous.data.chat.model.ChatRoom
+import com.silverpants.instantaneous.misc.CHAT_MAX_DISPLAY_MESSAGES
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import javax.inject.Inject
+
+class ChatDataSource @Inject constructor(
+    private val firestore: FirebaseFirestore,
+) {
+
+    fun getObservableChatRoom(chatId: String, userId: String): Flow<ChatRoom?> {
+        return channelFlow {
+            val chatDocument = firestore
+                .collection(CHATS_COLLECTION)
+                .document(chatId)
+
+            val subscription = chatDocument.addSnapshotListener { snapshot, _ ->
+                if (snapshot != null && !snapshot.exists()) {
+                    channel.offer(null)
+                    return@addSnapshotListener
+                }
+                val chatRoom = snapshot?.toObject(ChatRoom::class.java)
+                if (chatRoom != null) {
+                    chatRoom.meUserId = userId
+                }
+                channel.offer(chatRoom)
+            }
+            awaitClose {
+                subscription.remove()
+            }
+        }
+    }
+
+    fun getObservableChats(chatId: String, userId: String): Flow<List<Chat>> {
+        return channelFlow {
+            val messagesQuery = firestore
+                .collection(CHATS_COLLECTION)
+                .document(chatId)
+                .collection(MESSAGES_COLLECTION)
+                .orderBy(TIMESTAMP_FIELD, Query.Direction.DESCENDING)
+                .limit(CHAT_MAX_DISPLAY_MESSAGES)
+            val registration = messagesQuery.addSnapshotListener { snapshot, _ ->
+                if (snapshot == null) {
+                    channel.offer(emptyList())
+                    return@addSnapshotListener
+                }
+                if (snapshot.isEmpty) {
+                    channel.offer(emptyList())
+                    return@addSnapshotListener
+                }
+                val chats = snapshot.documents.map {
+                    it.toObject(Chat::class.java)!!
+                }
+                channel.offer(chats)
+            }
+            awaitClose {
+                registration.remove()
+            }
+        }
+    }
+
+    companion object {
+        private const val CHATS_COLLECTION = "chats"
+        private const val MESSAGES_COLLECTION = "messages"
+        private const val TIMESTAMP_FIELD = "messages"
+    }
+}

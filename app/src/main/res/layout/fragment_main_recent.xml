@@ -26,9 +26,10 @@
                 android:layout_height="match_parent">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/im_recent_profile"
+                    android:id="@+id/civ_recent_profile"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    tools:src="@drawable/ic_basketball"
                     android:layout_marginStart="@dimen/size_m"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

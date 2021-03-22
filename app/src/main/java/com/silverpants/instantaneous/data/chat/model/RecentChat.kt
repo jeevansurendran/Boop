@@ -7,7 +7,7 @@ data class RecentChat(
     val userId: String,
     val lastOnline: Date,
     val isOnline: Boolean,
-    val roomId: String,
+    val chatId: String,
     val photoURL: String
 ) {
     companion object {

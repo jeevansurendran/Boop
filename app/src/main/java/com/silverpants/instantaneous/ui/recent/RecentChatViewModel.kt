@@ -7,6 +7,7 @@ import com.silverpants.instantaneous.domain.chat.GetRecentChatFlowUseCase
 import com.silverpants.instantaneous.domain.user.ObservableUserUseCase
 import com.silverpants.instantaneous.misc.Result
 import com.silverpants.instantaneous.misc.data
+import timber.log.Timber
 
 class RecentChatViewModel @ViewModelInject constructor(
     private val observableUserUseCase: ObservableUserUseCase,
@@ -24,5 +25,10 @@ class RecentChatViewModel @ViewModelInject constructor(
             }
             getRecentChatFlowUseCase(it.data?.userId!!).asLiveData()
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Timber.d("[RecentChatViewModel] getting cleared up")
     }
 }
