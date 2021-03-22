@@ -13,4 +13,8 @@
     <dimen name="size_eh">52dp</dimen>
     <dimen name="size_g">62dp</dimen>
     <dimen name="size_i">77dp</dimen>
+    <!-- corner radii -->
+    <dimen name="rad_l">16dp</dimen>
+    <!-- chat -->
+    <dimen name="chat_height_min">95dp</dimen>
 </resources>
