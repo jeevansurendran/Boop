@@ -3,7 +3,7 @@ package com.silverpants.instantaneous.data.chat.sources
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.silverpants.instantaneous.data.chat.model.Chat
-import com.silverpants.instantaneous.data.chat.model.ChatRoom
+import com.silverpants.instantaneous.data.chat.model.Message
 import com.silverpants.instantaneous.misc.CHAT_MAX_DISPLAY_MESSAGES
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +14,7 @@ class ChatDataSource @Inject constructor(
     private val firestore: FirebaseFirestore,
 ) {
 
-    fun getObservableChatRoom(chatId: String, userId: String): Flow<ChatRoom?> {
+    fun getObservableChatRoom(chatId: String, userId: String): Flow<Chat?> {
         return channelFlow {
             val chatDocument = firestore
                 .collection(CHATS_COLLECTION)
@@ -25,7 +25,7 @@ class ChatDataSource @Inject constructor(
                     channel.offer(null)
                     return@addSnapshotListener
                 }
-                val chatRoom = snapshot?.toObject(ChatRoom::class.java)
+                val chatRoom = snapshot?.toObject(Chat::class.java)
                 if (chatRoom != null) {
                     chatRoom.meUserId = userId
                 }
@@ -37,7 +37,7 @@ class ChatDataSource @Inject constructor(
         }
     }
 
-    fun getObservableChats(chatId: String, userId: String): Flow<List<Chat>> {
+    fun getObservableChats(chatId: String, userId: String): Flow<List<Message>> {
         return channelFlow {
             val messagesQuery = firestore
                 .collection(CHATS_COLLECTION)
@@ -55,7 +55,7 @@ class ChatDataSource @Inject constructor(
                     return@addSnapshotListener
                 }
                 val chats = snapshot.documents.map {
-                    it.toObject(Chat::class.java)!!
+                    it.toObject(Message::class.java)!!
                 }
                 channel.offer(chats)
             }

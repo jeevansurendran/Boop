@@ -98,5 +98,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="2"
-        tools:listitem="@layout/item_recent_chat" />
+        tools:listitem="@layout/item_chat_send" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

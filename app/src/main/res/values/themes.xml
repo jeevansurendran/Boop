@@ -14,6 +14,7 @@
         <!-- Customize your theme here. -->
         <item name="android:textViewStyle">@style/TextViewStyle</item>
         <item name="android:windowBackground">@color/white</item>
+        <item name="android:fontFamily">@font/dm_sans_medium</item>
     </style>
 
     <style name="Theme.Instantaneous.NoActionBar">

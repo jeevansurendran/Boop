@@ -16,7 +16,7 @@
         android:minHeight="@dimen/chat_height_min">
 
         <TextView
-            android:id="@+id/tv_chat_not_me_text"
+            android:id="@+id/tv_chat_send_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/size_m"
