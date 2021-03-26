@@ -1,4 +1,4 @@
-package com.silverpants.instantaneous.data.user
+package com.silverpants.instantaneous.misc
 
 import com.google.firebase.firestore.FirebaseFirestoreException
 

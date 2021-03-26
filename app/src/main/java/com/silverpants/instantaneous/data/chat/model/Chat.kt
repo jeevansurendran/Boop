@@ -1,6 +1,10 @@
 package com.silverpants.instantaneous.data.chat.model
 
-data class Chat(val users: List<String>, val immediate: List<String>) {
+data class Chat(
+    var chatId: String = "",
+    val users: List<String> = emptyList(),
+    val immediate: List<String> = emptyList()
+) {
     // by default set to zero, Indicates which user is my data
     var meUserId: String = ""
     private val userIndex: Int get() = users.indexOf(meUserId)

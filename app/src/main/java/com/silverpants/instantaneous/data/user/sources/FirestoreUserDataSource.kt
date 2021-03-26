@@ -1,10 +1,10 @@
 package com.silverpants.instantaneous.data.user.sources
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.silverpants.instantaneous.data.user.DocumentExistsException
 import com.silverpants.instantaneous.data.user.models.AnotherUser
 import com.silverpants.instantaneous.data.user.models.FirestoreUserInfo
 import com.silverpants.instantaneous.data.user.models.User
+import com.silverpants.instantaneous.misc.DocumentExistsException
 import com.silverpants.instantaneous.misc.suspendAndWait
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
