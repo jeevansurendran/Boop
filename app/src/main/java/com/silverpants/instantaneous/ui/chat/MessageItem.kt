@@ -1,13 +1,18 @@
 package com.silverpants.instantaneous.ui.chat
 
 import android.view.View
+import androidx.viewbinding.ViewBinding
 import com.silverpants.instantaneous.R
 import com.silverpants.instantaneous.data.chat.model.Message
 import com.silverpants.instantaneous.databinding.ItemChatReceiveBinding
 import com.silverpants.instantaneous.databinding.ItemChatSendBinding
 import com.xwray.groupie.viewbinding.BindableItem
 
-class SendMessageItem(private val message: Message) : BindableItem<ItemChatSendBinding>() {
+abstract class MessageItem<T : ViewBinding>(val message: Message) : BindableItem<T>() {
+    fun isSameItem(message: Message): Boolean = this.message.messageId == message.messageId
+}
+
+class SendMessageItem(message: Message) : MessageItem<ItemChatSendBinding>(message) {
 
 
     override fun bind(viewBinding: ItemChatSendBinding, position: Int) {
@@ -21,7 +26,7 @@ class SendMessageItem(private val message: Message) : BindableItem<ItemChatSendB
     override fun getLayout(): Int = R.layout.item_chat_send
 }
 
-class ReceiveMessageItem(private val message: Message) : BindableItem<ItemChatReceiveBinding>() {
+class ReceiveMessageItem(message: Message) : MessageItem<ItemChatReceiveBinding>(message) {
 
     override fun initializeViewBinding(view: View): ItemChatReceiveBinding {
         return ItemChatReceiveBinding.bind(view)

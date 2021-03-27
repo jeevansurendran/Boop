@@ -2,7 +2,7 @@ package com.silverpants.instantaneous.ui.chat
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.silverpants.instantaneous.data.chat.model.Message
+import com.silverpants.instantaneous.data.chat.model.Messages
 import com.silverpants.instantaneous.data.user.models.AnotherUser
 import com.silverpants.instantaneous.domain.chat.GetChatFlowCase
 import com.silverpants.instantaneous.domain.chat.GetChatMessagesFlowCase
@@ -55,7 +55,7 @@ class ChatViewModel @ViewModelInject constructor(
         }
     }
 
-    val chatMessages: LiveData<Result<List<Message>>> by lazy {
+    val chatMessages: LiveData<Result<Messages>> by lazy {
         Transformations.switchMap(chat) {
             try {
                 return@switchMap when (it) {

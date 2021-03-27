@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/size_m"
+    android:layout_marginLeft="@dimen/size_i"
+    android:layout_marginTop="@dimen/size_vs"
+    android:layout_marginRight="@dimen/size_m"
+    android:layout_marginBottom="@dimen/size_vs"
     android:background="@color/grey_300"
     app:cardCornerRadius="@dimen/rad_l"
     app:cardElevation="0dp">
@@ -13,13 +16,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/blue"
+        android:padding="@dimen/size_m"
         android:minHeight="@dimen/chat_height_min">
 
         <TextView
             android:id="@+id/tv_chat_send_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/size_m"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"

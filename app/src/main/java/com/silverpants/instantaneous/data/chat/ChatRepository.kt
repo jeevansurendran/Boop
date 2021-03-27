@@ -1,7 +1,7 @@
 package com.silverpants.instantaneous.data.chat
 
 import com.silverpants.instantaneous.data.chat.model.Chat
-import com.silverpants.instantaneous.data.chat.model.Message
+import com.silverpants.instantaneous.data.chat.model.Messages
 import com.silverpants.instantaneous.data.chat.model.RecentChat
 import com.silverpants.instantaneous.data.chat.sources.ChatDataSource
 import com.silverpants.instantaneous.data.chat.sources.RecentChatDataSource
@@ -23,7 +23,7 @@ class ChatRepository @Inject constructor(
         return chatDataSource.getObservableChat(chatId, userId).map { Result.Success(it) }
     }
 
-    fun getObservableChatMessages(chatId: String, userId: String): Flow<Result<List<Message>>> {
+    fun getObservableChatMessages(chatId: String, userId: String): Flow<Result<Messages>> {
         return chatDataSource.getObservableChatMessages(chatId, userId).map { Result.Success(it) }
     }
 }
