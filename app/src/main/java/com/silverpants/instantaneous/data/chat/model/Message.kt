@@ -6,5 +6,5 @@ data class Message(
     val userId: String = "",
     val message: String = "",
     val timestamp: Date = Date(),
-    val isMe: Boolean = false
+    var isMe: Boolean = false
 )

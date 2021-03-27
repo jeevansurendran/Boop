@@ -16,7 +16,7 @@ class ChatViewModel @ViewModelInject constructor(
     private val getChatFlowCase: GetChatFlowCase,
     private val observableUserUseCase: ObservableUserUseCase,
     private val getChatMessagesFlowCase: GetChatMessagesFlowCase
-) {
+) : ViewModel() {
     private val _chatId = MutableLiveData<String>()
     val chatId: LiveData<String> = _chatId
 
@@ -25,7 +25,7 @@ class ChatViewModel @ViewModelInject constructor(
     private val chat by lazy {
         Transformations.switchMap(chatId) {
             try {
-                getChatFlowCase(it!! to user.value?.data?.getUid()!!).asLiveData()
+                getChatFlowCase(it!! to user.value?.data?.userId!!).asLiveData()
             } catch (e: Exception) {
                 MutableLiveData(Result.Error(e))
             }
@@ -37,7 +37,11 @@ class ChatViewModel @ViewModelInject constructor(
             it?.let {
                 return@switchMap when (it) {
                     is Result.Success -> {
-                        getAnotherUserFlowCase(it.data.getAnotherUserId()).asLiveData()
+                        try {
+                            getAnotherUserFlowCase(it.data.getAnotherUserId()).asLiveData()
+                        } catch (e: Exception) {
+                            MutableLiveData(Result.Error(e))
+                        }
                     }
                     is Result.Loading -> {
                         MutableLiveData(Result.Loading)
@@ -56,7 +60,7 @@ class ChatViewModel @ViewModelInject constructor(
             try {
                 return@switchMap when (it) {
                     is Result.Success -> {
-                        getChatMessagesFlowCase(it.data.chatId to user.value?.data?.getUid()!!).asLiveData()
+                        getChatMessagesFlowCase(it.data.chatId to user.value?.data?.userId!!).asLiveData()
                     }
                     is Result.Loading -> {
                         MutableLiveData(Result.Loading)

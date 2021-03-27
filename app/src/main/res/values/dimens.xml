@@ -16,5 +16,5 @@
     <!-- corner radii -->
     <dimen name="rad_l">16dp</dimen>
     <!-- chat -->
-    <dimen name="chat_height_min">95dp</dimen>
+    <dimen name="chat_height_min">85dp</dimen>
 </resources>

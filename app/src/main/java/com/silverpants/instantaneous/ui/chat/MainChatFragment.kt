@@ -10,9 +10,11 @@ import com.silverpants.instantaneous.databinding.FragmentMainChatBinding
 import com.silverpants.instantaneous.misc.Result
 import com.silverpants.instantaneous.misc.loadImageOrDefault
 import com.xwray.groupie.GroupieAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
 
+@AndroidEntryPoint
 class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
 
     private val chatViewModel: ChatViewModel by viewModels()
@@ -22,7 +24,12 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
         val binding = FragmentMainChatBinding.bind(view)
         val simpleDateFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
         val adapter = GroupieAdapter()
+        binding.rvChat.adapter = adapter
 
+        chatViewModel.user.observe(viewLifecycleOwner) {
+            //TODO clean this mess
+            chatViewModel.setChatId(args.chatId)
+        }
         chatViewModel.anotherUser.observe(viewLifecycleOwner) {
             it?.let {
                 when (it) {
@@ -36,6 +43,8 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
                             if (it.data.isOnline) View.VISIBLE else View.INVISIBLE
                         binding.tvChatLastSeen.text =
                             if (it.data.isOnline) "Online" else simpleDateFormat.format(it.data.lastOnline)
+                        binding.tvChatName.text = it.data.name
+                        binding.tvChatUserId.text = "@ ${it.data.userId}"
                     }
                     else -> {
                     }
@@ -43,7 +52,25 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
             }
         }
         chatViewModel.chatMessages.observe(viewLifecycleOwner) {
-        }
+            it?.let {
+                when (it) {
+                    is Result.Success -> {
+                        val messagesList = it.data
+                        val groupieItems = messagesList.map {
+                            if (it.isMe) {
+                                SendMessageItem(it)
+                            } else {
+                                ReceiveMessageItem(it)
+                            }
+                        }
+                        adapter.addAll(groupieItems)
+                        adapter.notifyDataSetChanged()
+                    }
+                    else -> {
 
+                    }
+                }
+            }
+        }
     }
 }

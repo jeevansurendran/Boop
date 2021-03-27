@@ -1,10 +1,8 @@
 package com.silverpants.instantaneous.data.chat.sources
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.silverpants.instantaneous.data.chat.model.Chat
 import com.silverpants.instantaneous.data.chat.model.Message
-import com.silverpants.instantaneous.misc.CHAT_MAX_DISPLAY_MESSAGES
 import com.silverpants.instantaneous.misc.DocumentNotFoundException
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -44,8 +42,8 @@ class ChatDataSource @Inject constructor(
                 .collection(CHATS_COLLECTION)
                 .document(chatId)
                 .collection(MESSAGES_COLLECTION)
-                .orderBy(TIMESTAMP_FIELD, Query.Direction.DESCENDING)
-                .limit(CHAT_MAX_DISPLAY_MESSAGES)
+//                .orderBy(TIMESTAMP_FIELD, Query.Direction.DESCENDING)
+//                .limit(CHAT_MAX_DISPLAY_MESSAGES)
             val registration = messagesQuery.addSnapshotListener { snapshot, _ ->
                 if (snapshot == null) {
                     channel.offer(emptyList())
@@ -56,7 +54,9 @@ class ChatDataSource @Inject constructor(
                     return@addSnapshotListener
                 }
                 val chats = snapshot.documents.map {
-                    it.toObject(Message::class.java)!!
+                    val message = it.toObject(Message::class.java)!!
+                    message.isMe = it[USER_ID_FIELD] == userId
+                    message
                 }
                 channel.offer(chats)
             }
@@ -70,5 +70,6 @@ class ChatDataSource @Inject constructor(
         private const val CHATS_COLLECTION = "chats"
         private const val MESSAGES_COLLECTION = "messages"
         private const val TIMESTAMP_FIELD = "messages"
+        private const val USER_ID_FIELD = "userId"
     }
 }

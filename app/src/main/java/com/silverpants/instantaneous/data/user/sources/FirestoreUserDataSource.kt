@@ -6,6 +6,7 @@ import com.silverpants.instantaneous.data.user.models.FirestoreUserInfo
 import com.silverpants.instantaneous.data.user.models.User
 import com.silverpants.instantaneous.misc.DocumentExistsException
 import com.silverpants.instantaneous.misc.suspendAndWait
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.map
@@ -69,23 +70,30 @@ class FirestoreUserDataSource @Inject constructor(
 
     fun getAnotherUserInfo(userId: String): Flow<AnotherUser> {
         return channelFlow {
-            val snapshot = firestore
+            val anotherUserDocument = firestore
                 .collection(USERS_COLLECTION)
                 .document(userId)
-                .get()
-                .suspendAndWait()
-            if (snapshot.data == null) {
-                throw UnsupportedOperationException()
+
+            val subscription = anotherUserDocument.addSnapshotListener { snapshot, _ ->
+                if (snapshot == null || snapshot.data == null) {
+                    return@addSnapshotListener
+                }
+
+                val firestoreUserInfo = snapshot.data!!
+                channel.offer(
+                    AnotherUser(
+                        firestoreUserInfo[NAME_FIELD] as String,
+                        snapshot.id,
+                        firestoreUserInfo[IS_ONLINE_FIELD] as Boolean,
+                        snapshot.getTimestamp(LAST_ONLINE_FIELD)?.toDate() ?: Date(),
+                        firestoreUserInfo[PHOTO_URL_FIELD] as String
+                    )
+                )
+            }
+            awaitClose {
+                subscription.remove()
             }
 
-            val firestoreUserInfo = snapshot.data!!
-            AnotherUser(
-                firestoreUserInfo[NAME_FIELD] as String,
-                snapshot.id,
-                firestoreUserInfo[IS_ONLINE_FIELD] as Boolean,
-                snapshot.getTimestamp(LAST_ONLINE_FIELD)?.toDate() ?: Date(),
-                firestoreUserInfo[PHOTO_URL_FIELD] as String
-            )
         }
     }
 
