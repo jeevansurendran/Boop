@@ -3,8 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/size_m"
+    android:layout_marginStart="@dimen/size_i"
+    android:layout_marginTop="@dimen/size_m"
+    android:layout_marginEnd="@dimen/size_m"
     android:background="@color/grey_300"
+    android:layout_marginBottom="@dimen/size_m"
     app:cardCornerRadius="@dimen/rad_l"
     app:cardElevation="0dp">
 

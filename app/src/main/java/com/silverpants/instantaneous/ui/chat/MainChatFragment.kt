@@ -25,9 +25,9 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
     private val adapter = GroupieAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val binding = FragmentMainChatBinding.bind(view)
+        val chatBinding = FragmentMainChatBinding.bind(view)
         val simpleDateFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
-        binding.rvChat.adapter = adapter
+        chatBinding.inclMainChat.rvChat.adapter = adapter
 
         chatViewModel.user.observe(viewLifecycleOwner) {
             //TODO clean this mess
@@ -38,18 +38,38 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
                 when (it) {
                     is Result.Success -> {
                         loadImageOrDefault(
-                            binding.civChatDp,
+                            chatBinding.civChatDp,
                             it.data.photoURL,
                             R.drawable.ic_basketball
                         )
-                        binding.imChatOnline.visibility =
+                        chatBinding.imChatOnline.visibility =
                             if (it.data.isOnline) View.VISIBLE else View.INVISIBLE
-                        binding.tvChatLastSeen.text =
+                        chatBinding.tvChatLastSeen.text =
                             if (it.data.isOnline) "Online" else simpleDateFormat.format(it.data.lastOnline)
-                        binding.tvChatName.text = it.data.name
-                        binding.tvChatUserId.text = "@ ${it.data.userId}"
+                        chatBinding.tvChatName.text = it.data.name
+                        chatBinding.tvChatUserId.text = "@ ${it.data.userId}"
                     }
                     else -> {
+                    }
+                }
+            }
+        }
+        chatViewModel.chat.observe(viewLifecycleOwner) {
+            it?.let {
+                when (it) {
+                    is Result.Success -> {
+                        val inclMainChatReceive = chatBinding.inclMainChat.inclMainChatReceive
+                        if (it.data.getAnotherUserImmediateMessage().isEmpty()) {
+                            inclMainChatReceive.root.visibility = View.GONE
+                            inclMainChatReceive.tvChatReceiveText.text = ""
+                            return@observe
+                        }
+                        inclMainChatReceive.root.visibility = View.VISIBLE
+                        inclMainChatReceive.tvChatReceiveText.text =
+                            it.data.getAnotherUserImmediateMessage()
+                    }
+                    else -> {
+
                     }
                 }
             }
@@ -112,14 +132,3 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
         }
     }
 }
-
-//if(documentChanges.size == documen)
-//val groupieItems = messagesList.map {
-//if (it.isMe) {
-//    SendMessageItem(it)
-//} else {
-//    ReceiveMessageItem(it)
-//}
-//}
-//adapter.addAll(groupieItems)
-//adapter.notifyDataSetChanged()
