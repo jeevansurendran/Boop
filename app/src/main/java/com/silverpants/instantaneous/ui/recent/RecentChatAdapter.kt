@@ -11,7 +11,7 @@ import com.silverpants.instantaneous.misc.loadImageOrDefault
 import java.text.SimpleDateFormat
 import java.util.*
 
-class RecentChatAdapter :
+class RecentChatAdapter(val listener: RecentChatOnClickListener) :
     RecyclerView.Adapter<RecentChatAdapter.ViewHolder>() {
 
 
@@ -50,6 +50,9 @@ class RecentChatAdapter :
                 if (recentChat.isOnline) "Online" else simpleDateFormat.format(recentChat.lastOnline)
             toggleChatOnline(recentChat.isOnline)
             loadImageOrDefault(item.civRecentDp, recentChat.photoURL, R.drawable.ic_basketball)
+            item.root.setOnClickListener {
+                listener.onClick(recentChat.chatId)
+            }
         }
 
         private fun toggleChatOnline(isOnline: Boolean) {

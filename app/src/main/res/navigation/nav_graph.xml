@@ -8,5 +8,16 @@
         android:id="@+id/mainRecentFragment"
         android:name="com.silverpants.instantaneous.ui.recent.MainRecentFragment"
         android:label="MainRecentFragment"
-        tools:layout="@layout/fragment_main_recent" />
+        tools:layout="@layout/fragment_main_recent">
+        <action
+            android:id="@+id/openChat"
+            app:destination="@id/mainChatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainChatFragment"
+        android:name="com.silverpants.instantaneous.ui.chat.MainChatFragment"
+        android:label="fragment_main_chat"
+        tools:layout="@layout/fragment_main_chat">
+        <argument android:name="chatId" />
+    </fragment>
 </navigation>

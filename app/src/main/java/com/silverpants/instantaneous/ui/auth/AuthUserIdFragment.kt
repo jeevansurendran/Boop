@@ -5,8 +5,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.silverpants.instantaneous.R
-import com.silverpants.instantaneous.data.user.DocumentExistsException
 import com.silverpants.instantaneous.databinding.FragmentAuthUserIdBinding
+import com.silverpants.instantaneous.misc.DocumentExistsException
 import com.silverpants.instantaneous.misc.Result
 import com.silverpants.instantaneous.misc.data
 import com.silverpants.instantaneous.misc.toast

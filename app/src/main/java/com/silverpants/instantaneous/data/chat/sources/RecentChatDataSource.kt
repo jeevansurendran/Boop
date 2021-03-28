@@ -3,8 +3,6 @@ package com.silverpants.instantaneous.data.chat.sources
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.silverpants.instantaneous.data.chat.model.RecentChat
-import com.silverpants.instantaneous.di.IoDispatcher
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 import java.util.*
@@ -12,7 +10,6 @@ import javax.inject.Inject
 
 class RecentChatDataSource @Inject constructor(
     private val firestore: FirebaseFirestore,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) {
 
     fun getObservableRecentChat(userId: String): Flow<List<RecentChat>> {

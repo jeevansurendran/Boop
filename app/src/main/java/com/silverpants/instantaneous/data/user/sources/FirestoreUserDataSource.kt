@@ -1,12 +1,14 @@
 package com.silverpants.instantaneous.data.user.sources
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.silverpants.instantaneous.data.user.DocumentExistsException
+import com.silverpants.instantaneous.data.user.models.AnotherUser
 import com.silverpants.instantaneous.data.user.models.FirestoreUserInfo
 import com.silverpants.instantaneous.data.user.models.User
+import com.silverpants.instantaneous.misc.DocumentExistsException
 import com.silverpants.instantaneous.misc.suspendAndWait
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.map
 import java.util.*
 import javax.inject.Inject
@@ -15,7 +17,6 @@ class FirestoreUserDataSource @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val firebaseDataSource: FirebaseUserDataSource
 ) {
-    @ExperimentalCoroutinesApi
     suspend fun isFirestoreUserDataExists(uid: String?): Boolean {
         if (uid.isNullOrEmpty()) {
             return false
@@ -31,7 +32,6 @@ class FirestoreUserDataSource @Inject constructor(
         ) as? String).isNullOrEmpty()
     }
 
-    @ExperimentalCoroutinesApi
     suspend fun postUserIdAndNumber(userId: String, uid: String, number: String): FirestoreUserInfo {
         val userDoc = firestore.collection(USERS_COLLECTION).document(userId)
 
@@ -65,6 +65,35 @@ class FirestoreUserDataSource @Inject constructor(
                 snapshot.documents[0].getTimestamp(LAST_ONLINE_FIELD)?.toDate() ?: Date(),
                 firestoreUserInfo[PHOTO_URL_FIELD] as String
             )
+        }
+    }
+
+    fun getAnotherUserInfo(userId: String): Flow<AnotherUser> {
+        return channelFlow {
+            val anotherUserDocument = firestore
+                .collection(USERS_COLLECTION)
+                .document(userId)
+
+            val subscription = anotherUserDocument.addSnapshotListener { snapshot, _ ->
+                if (snapshot == null || snapshot.data == null) {
+                    return@addSnapshotListener
+                }
+
+                val firestoreUserInfo = snapshot.data!!
+                channel.offer(
+                    AnotherUser(
+                        firestoreUserInfo[NAME_FIELD] as String,
+                        snapshot.id,
+                        firestoreUserInfo[IS_ONLINE_FIELD] as Boolean,
+                        snapshot.getTimestamp(LAST_ONLINE_FIELD)?.toDate() ?: Date(),
+                        firestoreUserInfo[PHOTO_URL_FIELD] as String
+                    )
+                )
+            }
+            awaitClose {
+                subscription.remove()
+            }
+
         }
     }
 

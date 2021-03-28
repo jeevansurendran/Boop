@@ -2,6 +2,7 @@ package com.silverpants.instantaneous.data.user
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.silverpants.instantaneous.data.user.models.AnotherUser
 import com.silverpants.instantaneous.data.user.models.FirebaseUserInfo
 import com.silverpants.instantaneous.data.user.models.FirestoreUserInfo
 import com.silverpants.instantaneous.data.user.models.User
@@ -53,5 +54,9 @@ class UserRepository @Inject constructor(
         return firestoreUserDataSource.getUserInfo().map {
             Result.Success(it)
         }
+    }
+
+    fun getObservableAnotherUserInfo(userId: String): Flow<Result<AnotherUser>> {
+        return firestoreUserDataSource.getAnotherUserInfo(userId).map { Result.Success(it) }
     }
 }
