@@ -14,7 +14,6 @@ import com.silverpants.instantaneous.misc.suspendAndWait
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
-import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -100,7 +99,6 @@ class ChatDataSource @Inject constructor(
             }
             awaitClose {
                 registration.remove()
-                Timber.d("wait i was called")
             }
         }
     }

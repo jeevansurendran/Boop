@@ -16,7 +16,6 @@ import com.silverpants.instantaneous.misc.loadImageOrDefault
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.viewbinding.BindableItem
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -129,7 +128,6 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
         }
         val etChatNew: EditText = chatBinding.inclMainChat.inclMainChatNew.etChatNew
         etChatNew.setOnEditorActionListener { editText, actionId, _ ->
-            Timber.d("BROOOOOOO $actionId")
             if (actionId == EditorInfo.IME_ACTION_SEND) {
                 chatViewModel.postImmediateMessage(editText.text.toString())
                 return@setOnEditorActionListener true
