@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/size_i"
-    android:layout_marginTop="@dimen/size_m"
+    android:layout_marginTop="@dimen/size_vs"
     android:layout_marginEnd="@dimen/size_m"
+    android:layout_marginBottom="@dimen/size_vs"
     android:background="@color/grey_300"
-    android:layout_marginBottom="@dimen/size_m"
     app:cardCornerRadius="@dimen/rad_l"
     app:cardElevation="0dp">
 
@@ -15,17 +15,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/blue"
+        android:padding="@dimen/size_m"
         android:minHeight="@dimen/chat_height_min">
 
         <EditText
             android:id="@+id/et_chat_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/size_m"
             android:background="@null"
             android:hint="Type something here...."
+            android:imeOptions="actionSend"
             android:textColor="@color/white"
             android:textSize="16sp"
+            android:inputType="text"
+            android:windowSoftInputMode="stateAlwaysVisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.6"

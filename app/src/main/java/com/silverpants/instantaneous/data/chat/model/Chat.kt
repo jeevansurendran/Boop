@@ -3,26 +3,27 @@ package com.silverpants.instantaneous.data.chat.model
 data class Chat(
     var chatId: String = "",
     val users: List<String> = emptyList(),
-    val immediate: List<String> = emptyList()
+    val immediate1: String = "",
+    val immediate2: String = ""
 ) {
     // by default set to zero, Indicates which user is my data
-    var meUserId: String = ""
-    private val userIndex: Int get() = users.indexOf(meUserId)
-    private val anotherUserIndex: Int get() = if (userIndex == 0) 1 else 0
+    var sUserId: String = ""
+    val sendersUserIndex: Int get() = users.indexOf(sUserId)
+    val receiversUserIndex: Int get() = if (sendersUserIndex == 0) 1 else 0
 
-    fun getMyUserId(): String {
-        return users[userIndex]
+    fun getSendersUserId(): String {
+        return users[sendersUserIndex]
     }
 
-    fun getMyUserImmediateMessage(): String {
-        return immediate[userIndex]
+    fun geSendersImmediateMessage(): String {
+        return if (sendersUserIndex == 0) immediate1 else immediate2
     }
 
-    fun getAnotherUserId(): String {
-        return users[anotherUserIndex]
+    fun getReceiversUserId(): String {
+        return users[receiversUserIndex]
     }
 
-    fun getAnotherUserImmediateMessage(): String {
-        return immediate[anotherUserIndex]
+    fun getReceiversImmediateMessage(): String {
+        return if (sendersUserIndex == 0) immediate2 else immediate1
     }
 }

@@ -26,4 +26,13 @@ class ChatRepository @Inject constructor(
     fun getObservableChatMessages(chatId: String, userId: String): Flow<Result<Messages>> {
         return chatDataSource.getObservableChatMessages(chatId, userId).map { Result.Success(it) }
     }
+
+    suspend fun postSendersImmediateMessage(chatId: String, message: String, index: Int) {
+        return chatDataSource.postSendersImmediateMessage(chatId, message, index)
+    }
+
+    suspend fun postSendersNewMessage(chatId: String, message: String, userId: String) {
+        return chatDataSource.postSendersNewMessage(chatId, message, userId)
+    }
+
 }

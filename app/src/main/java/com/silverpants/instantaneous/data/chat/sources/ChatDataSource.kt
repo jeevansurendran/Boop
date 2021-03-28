@@ -1,5 +1,6 @@
 package com.silverpants.instantaneous.data.chat.sources
 
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -9,10 +10,12 @@ import com.silverpants.instantaneous.data.chat.model.Messages
 import com.silverpants.instantaneous.data.chat.model.Messages.MessageChange
 import com.silverpants.instantaneous.misc.CHAT_MAX_DISPLAY_MESSAGES
 import com.silverpants.instantaneous.misc.DocumentNotFoundException
+import com.silverpants.instantaneous.misc.suspendAndWait
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 class ChatDataSource @Inject constructor(
@@ -31,7 +34,7 @@ class ChatDataSource @Inject constructor(
                 }
                 val chatRoom = snapshot?.toObject(Chat::class.java)
                 if (chatRoom != null) {
-                    chatRoom.meUserId = userId
+                    chatRoom.sUserId = userId
                     chatRoom.chatId = chatId
                     channel.offer(chatRoom)
                 }
@@ -91,7 +94,6 @@ class ChatDataSource @Inject constructor(
                                 it.newIndex
                             )
                         }
-
                     }
                 }
                 channel.offer(Messages(chats, documentChanges))
@@ -103,7 +105,28 @@ class ChatDataSource @Inject constructor(
         }
     }
 
-    fun parseMessage(snapshot: DocumentSnapshot, userId: String): Message {
+    suspend fun postSendersImmediateMessage(chatId: String, message: String, index: Int) {
+        val chatDocument = firestore.collection(CHATS_COLLECTION).document(chatId)
+        val immediateField = if (index == 0) IMMEDIATE_1_FIELD else IMMEDIATE_2_FIELD
+        chatDocument.update(immediateField, message).suspendAndWait()
+    }
+
+    suspend fun postSendersNewMessage(chatId: String, message: String, userId: String) {
+        val messagesCollection = firestore
+            .collection(CHATS_COLLECTION)
+            .document(chatId)
+            .collection(MESSAGES_COLLECTION)
+
+        messagesCollection.document().set(
+            hashMapOf(
+                MESSAGE_FIELD to message,
+                TIMESTAMP_FIELD to Timestamp(Calendar.getInstance().time),
+                USER_ID_FIELD to userId
+            )
+        ).suspendAndWait()
+    }
+
+    private fun parseMessage(snapshot: DocumentSnapshot, userId: String): Message {
         return snapshot.toObject(Message::class.java)!!.apply {
             isMe = snapshot[USER_ID_FIELD] == userId
             messageId = snapshot.id
@@ -116,5 +139,8 @@ class ChatDataSource @Inject constructor(
         private const val MESSAGES_COLLECTION = "messages"
         private const val TIMESTAMP_FIELD = "timestamp"
         private const val USER_ID_FIELD = "userId"
+        private const val IMMEDIATE_1_FIELD = "immediate1"
+        private const val IMMEDIATE_2_FIELD = "immediate2"
+        private const val MESSAGE_FIELD = "message"
     }
 }

@@ -6,6 +6,6 @@ data class Message(
     var messageId: String = "",
     val userId: String = "",
     val message: String = "",
-    val timestamp: Date = Date(),
+    val timestamp: Date = Calendar.getInstance().time,
     var isMe: Boolean = false
 )

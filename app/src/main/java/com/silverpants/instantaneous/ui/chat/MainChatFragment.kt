@@ -2,6 +2,8 @@ package com.silverpants.instantaneous.ui.chat
 
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -14,6 +16,7 @@ import com.silverpants.instantaneous.misc.loadImageOrDefault
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.viewbinding.BindableItem
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -59,14 +62,14 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
                 when (it) {
                     is Result.Success -> {
                         val inclMainChatReceive = chatBinding.inclMainChat.inclMainChatReceive
-                        if (it.data.getAnotherUserImmediateMessage().isEmpty()) {
+                        if (it.data.getReceiversImmediateMessage().isEmpty()) {
                             inclMainChatReceive.root.visibility = View.GONE
                             inclMainChatReceive.tvChatReceiveText.text = ""
                             return@observe
                         }
                         inclMainChatReceive.root.visibility = View.VISIBLE
                         inclMainChatReceive.tvChatReceiveText.text =
-                            it.data.getAnotherUserImmediateMessage()
+                            it.data.getReceiversImmediateMessage()
                     }
                     else -> {
 
@@ -95,6 +98,7 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
                                                 messageChange.newIndex,
                                                 parseChatItem(message = messageChange.message)
                                             )
+                                            chatBinding.inclMainChat.rvChat.scrollToPosition(adapter.itemCount - 1)
                                         }
                                     } catch (e: Exception) {
                                         // the item that you looked for was out of bound and hence add that item to that position
@@ -102,6 +106,7 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
                                             messageChange.newIndex,
                                             parseChatItem(message = messageChange.message)
                                         )
+                                        chatBinding.inclMainChat.rvChat.scrollToPosition(adapter.itemCount - 1)
                                     }
 
                                 }
@@ -121,6 +126,15 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
                     }
                 }
             }
+        }
+        val etChatNew: EditText = chatBinding.inclMainChat.inclMainChatNew.etChatNew
+        etChatNew.setOnEditorActionListener { editText, actionId, _ ->
+            Timber.d("BROOOOOOO $actionId")
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
+                chatViewModel.postImmediateMessage(editText.text.toString())
+                return@setOnEditorActionListener true
+            }
+            false
         }
     }
 
