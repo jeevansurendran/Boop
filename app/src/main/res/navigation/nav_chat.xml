@@ -12,6 +12,9 @@
         <action
             android:id="@+id/openChat"
             app:destination="@id/mainChatFragment" />
+        <action
+            android:id="@+id/action_mainRecentFragment_to_mainSearchFragment"
+            app:destination="@id/mainSearchFragment" />
     </fragment>
     <fragment
         android:id="@+id/mainChatFragment"
@@ -20,4 +23,9 @@
         tools:layout="@layout/fragment_main_chat">
         <argument android:name="chatId" />
     </fragment>
+    <fragment
+        android:id="@+id/mainSearchFragment"
+        android:name="com.silverpants.instantaneous.ui.search.MainSearchFragment"
+        android:label="fragment_main_search"
+        tools:layout="@layout/fragment_main_search" />
 </navigation>
