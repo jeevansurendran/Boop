@@ -124,6 +124,10 @@ class ChatDataSource @Inject constructor(
         ).suspendAndWait()
     }
 
+//    suspend fun getChatId(user1: String, user2: String): String {
+//
+//    }
+
     private fun parseMessage(snapshot: DocumentSnapshot, userId: String): Message {
         return snapshot.toObject(Message::class.java)!!.apply {
             isMe = snapshot[USER_ID_FIELD] == userId

@@ -27,5 +27,9 @@
         android:id="@+id/mainSearchFragment"
         android:name="com.silverpants.instantaneous.ui.search.MainSearchFragment"
         android:label="fragment_main_search"
-        tools:layout="@layout/fragment_main_search" />
+        tools:layout="@layout/fragment_main_search">
+        <action
+            android:id="@+id/open_chat_from_search"
+            app:destination="@id/mainChatFragment" />
+    </fragment>
 </navigation>

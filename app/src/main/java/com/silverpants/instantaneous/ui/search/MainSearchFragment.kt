@@ -22,6 +22,7 @@ class MainSearchFragment : Fragment(R.layout.fragment_main_search) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val binding = FragmentMainSearchBinding.bind(view)
         val adapter = GroupieAdapter()
+        val fallbackItem = SearchFallbackItem()
 
         binding.imSearchClose.setOnClickListener {
             findNavController().popBackStack()
@@ -45,11 +46,11 @@ class MainSearchFragment : Fragment(R.layout.fragment_main_search) {
             it?.let { result ->
                 when (result) {
                     is Result.Success -> {
-                        adapter.update(
-                            result.data.map {
-                                SearchItem(it)
-                            }
-                        )
+                        if (binding.etSearch.text.length in 0..2) {
+                            adapter.update(listOf(fallbackItem))
+                        } else {
+                            adapter.update(result.data.map { SearchItem(it) })
+                        }
                     }
                     else -> {
 
