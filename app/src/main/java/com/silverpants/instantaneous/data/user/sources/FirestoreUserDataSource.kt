@@ -110,6 +110,7 @@ class FirestoreUserDataSource @Inject constructor(
                     .get()
                     .suspendAndWait()
                     .toObject(AnotherUser::class.java)!!
+                anotherUser.userId = query
                 listOf(anotherUser)
             } catch (e: Exception) {
                 emptyList()
