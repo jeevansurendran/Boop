@@ -59,4 +59,8 @@ class UserRepository @Inject constructor(
     fun getObservableAnotherUserInfo(userId: String): Flow<Result<AnotherUser>> {
         return firestoreUserDataSource.getAnotherUserInfo(userId).map { Result.Success(it) }
     }
+
+    fun getUserSearch(query: Flow<String>): Flow<Result.Success<List<AnotherUser>>> {
+        return firestoreUserDataSource.searchUsers(query).map { Result.Success(it) }
+    }
 }
