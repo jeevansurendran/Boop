@@ -11,6 +11,8 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
+import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resumeWithException
 
 // firebase
@@ -50,6 +52,7 @@ fun loadImageOrDefault(imageView: ImageView, url: String, @DrawableRes defaultDr
     }
 }
 
+// hide keyboard
 fun Activity.hideKeyboard() {
     val imm: InputMethodManager =
         getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -60,4 +63,42 @@ fun Activity.hideKeyboard() {
         view = View(this)
     }
     imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
+
+
+// time
+fun formatTimeDistance(eventTime: Date, currentTime: Date): String {
+    val (first, value) = getTimeDifference(
+        eventTime,
+        currentTime
+    )
+    val suffix = if (value > 1) "s " else " "
+    return when (first) {
+        TimeUnit.DAYS -> String.format(Locale.getDefault(), "%d day%sago", value, suffix)
+        TimeUnit.HOURS -> String.format(Locale.getDefault(), "%d hour%sago", value, suffix)
+        TimeUnit.MINUTES -> String.format(Locale.getDefault(), "%d min%sago", value, suffix)
+        else -> "Now"
+    }
+}
+
+fun getTimeDifference(start: Date, end: Date): Pair<TimeUnit, Long> {
+    val diffTime = end.time - start.time
+    return getTimeDifference(diffTime)
+}
+
+fun getTimeDifference(diffTime: Long): Pair<TimeUnit, Long> {
+    var diffTime = diffTime
+    val secondsInMilli: Long = 1000
+    val minutesInMilli = secondsInMilli * 60
+    val hoursInMilli = minutesInMilli * 60
+    val daysInMilli = hoursInMilli * 24
+    val elapsedDays = diffTime / daysInMilli
+    diffTime %= daysInMilli
+    val elapsedHours = diffTime / hoursInMilli
+    diffTime %= hoursInMilli
+    val elapsedMinutes = diffTime / minutesInMilli
+    diffTime %= minutesInMilli
+    if (elapsedDays > 0) return TimeUnit.DAYS to elapsedDays
+    if (elapsedHours > 0) return TimeUnit.HOURS to elapsedHours
+    return if (elapsedMinutes > 0) TimeUnit.MINUTES to elapsedMinutes else TimeUnit.SECONDS to diffTime / secondsInMilli
 }

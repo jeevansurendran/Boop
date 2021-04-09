@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_recent_chat_make_a_move"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_eh"
+        android:text="Make a move already"
+        android:textColor="@color/grey_600"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_recent_chat_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_vs"
+        android:fontFamily="@font/dm_sans_regular"
+        android:text="Start adding your friends"
+        android:textColor="@color/grey_600"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_recent_chat_make_a_move" />
+
+    <ImageView
+        android:id="@+id/im_recent_chat_fallback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_eh"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_recent_chat_start"
+        app:srcCompat="@drawable/ic_recent_chat_fallback" />
+
+    <Button
+        android:id="@+id/btn_recent_chat_invite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_m"
+        android:backgroundTint="@color/blue"
+        android:fontFamily="@font/dm_sans_medium"
+        android:paddingStart="@dimen/size_el"
+        android:paddingTop="@dimen/size_s"
+        android:paddingEnd="@dimen/size_el"
+        android:paddingBottom="@dimen/size_s"
+        android:text="Invite from contacts"
+        app:cornerRadius="@dimen/rad_l"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/im_recent_chat_fallback" />
+
+    <Button
+        android:id="@+id/btn_recent_chat_search"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_m"
+        android:backgroundTint="@color/white"
+        android:fontFamily="@font/dm_sans_medium"
+        android:paddingStart="@dimen/size_el"
+        android:paddingTop="@dimen/size_s"
+        android:paddingEnd="@dimen/size_el"
+        android:paddingBottom="@dimen/size_s"
+        android:layout_marginBottom="@dimen/size_m"
+        android:text="Search People"
+        android:textColor="@color/blue"
+        app:cornerRadius="@dimen/rad_l"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btn_recent_chat_invite"
+        app:layout_constraintStart_toStartOf="@+id/btn_recent_chat_invite"
+        app:layout_constraintTop_toBottomOf="@id/btn_recent_chat_invite" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,6 +12,7 @@ import com.silverpants.instantaneous.data.chat.model.Message
 import com.silverpants.instantaneous.data.chat.model.Messages
 import com.silverpants.instantaneous.databinding.FragmentMainChatBinding
 import com.silverpants.instantaneous.misc.Result
+import com.silverpants.instantaneous.misc.formatTimeDistance
 import com.silverpants.instantaneous.misc.loadImageOrDefault
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.viewbinding.BindableItem
@@ -47,7 +48,7 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
                         chatBinding.imChatOnline.visibility =
                             if (it.data.isOnline) View.VISIBLE else View.INVISIBLE
                         chatBinding.tvChatLastSeen.text =
-                            if (it.data.isOnline) "Online" else simpleDateFormat.format(it.data.lastOnline)
+                            if (it.data.isOnline) "Online" else formatTimeDistance(it.data.lastOnline, Calendar.getInstance().time)
                         chatBinding.tvChatName.text = it.data.name
                         chatBinding.tvChatUserId.text = "@ ${it.data.userId}"
                     }
@@ -88,7 +89,6 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
                                         val item =
                                             adapter.getItem(messageChange.newIndex) as MessageItem<*>
                                         // if its the same item then you dont need to change it so continue
-                                        val bruh = item.isSameItem(messageChange.message)
                                         if (item.isSameItem(messageChange.message)) {
                                             continue
                                         } else {

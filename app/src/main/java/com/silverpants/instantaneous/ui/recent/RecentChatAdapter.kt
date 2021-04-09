@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.silverpants.instantaneous.R
 import com.silverpants.instantaneous.data.chat.model.RecentChat
 import com.silverpants.instantaneous.databinding.ItemRecentChatBinding
+import com.silverpants.instantaneous.misc.formatTimeDistance
 import com.silverpants.instantaneous.misc.loadImageOrDefault
 import java.text.SimpleDateFormat
 import java.util.*
@@ -14,9 +15,7 @@ import java.util.*
 class RecentChatAdapter(val listener: RecentChatOnClickListener) :
     RecyclerView.Adapter<RecentChatAdapter.ViewHolder>() {
 
-
     private var list = mutableListOf<RecentChat>()
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -45,9 +44,8 @@ class RecentChatAdapter(val listener: RecentChatOnClickListener) :
         fun setData(recentChat: RecentChat) {
             item.tvRecentName.text = recentChat.name
             item.tvRecentUserId.text = "@ ${recentChat.userId}"
-            val simpleDateFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
             item.tvRecentLastSeen.text =
-                if (recentChat.isOnline) "Online" else simpleDateFormat.format(recentChat.lastOnline)
+                if (recentChat.isOnline) "Online" else formatTimeDistance(recentChat.lastOnline, Calendar.getInstance().time)
             toggleChatOnline(recentChat.isOnline)
             loadImageOrDefault(item.civRecentDp, recentChat.photoURL, R.drawable.ic_basketball)
             item.root.setOnClickListener {

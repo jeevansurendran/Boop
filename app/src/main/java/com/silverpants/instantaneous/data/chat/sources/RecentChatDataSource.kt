@@ -19,34 +19,30 @@ class RecentChatDataSource @Inject constructor(
                 emit(emptyList<RecentChat>())
             }
         }
-        val chatFlow = channelFlow<List<DocumentSnapshot>> {
+        val chatsFlow = channelFlow<List<DocumentSnapshot>> {
             val chatCollection = firestore
                 .collection(CHATS_COLLECTION)
                 .whereArrayContains(USERS_FIELD, userId)
 
-
             val subscription = chatCollection.addSnapshotListener { snapshot, _ ->
                 if (snapshot == null) {
-                    return@addSnapshotListener
-                }
-                if (snapshot.isEmpty) {
-                    return@addSnapshotListener
-                }
-                val users = snapshot.map {
-                    val list: List<String> = it[USERS_FIELD] as List<String>
-                    if (list[0] == userId) list[1] else list[0]
-                }.toSet()
-
-                if (users.isEmpty()) {
                     channel.offer(emptyList())
                     return@addSnapshotListener
                 }
+                if (snapshot.isEmpty) {
+                    channel.offer(emptyList())
+                    return@addSnapshotListener
+                }
+
                 channel.offer(snapshot.documents)
             }
             awaitClose { subscription.remove() }
         }
-        return chatFlow.flatMapLatest { chatList ->
+        return chatsFlow.flatMapLatest { chatList ->
             // create a list of flow<RecentChat>
+            if(chatList.isEmpty()) {
+                return@flatMapLatest flow { emit(emptyList<RecentChat>()) }
+            }
             val flowList = chatList.map { chat ->
                 val list: List<String> = chat[USERS_FIELD] as List<String>
                 val chatUserId = if (list[0] == userId) list[1] else list[0]

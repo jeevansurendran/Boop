@@ -15,12 +15,14 @@ import com.silverpants.instantaneous.misc.toast
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import java.util.concurrent.atomic.AtomicBoolean
 
 
 @AndroidEntryPoint
 class MainSearchFragment : Fragment(R.layout.fragment_main_search), SearchClickListener {
 
     private val viewModel: SearchViewModel by viewModels()
+    private var isSearchItemSelected: AtomicBoolean = AtomicBoolean(false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val binding = FragmentMainSearchBinding.bind(view)
@@ -65,25 +67,28 @@ class MainSearchFragment : Fragment(R.layout.fragment_main_search), SearchClickL
     }
 
     override fun onClick(view: View, user2: String) {
-        val chatIdLiveData = viewModel.getChatId(user2)
-        chatIdLiveData.observe(viewLifecycleOwner) {
-            it.let {
-                when (it) {
-                    is Result.Success -> {
-                        if (it.data.isNullOrEmpty()) {
-                            return@observe
+        if (isSearchItemSelected.compareAndSet(false, true)) {
+            val chatIdLiveData = viewModel.getChatId(user2)
+            chatIdLiveData.observe(viewLifecycleOwner) {
+                it.let {
+                    when (it) {
+                        is Result.Success -> {
+                            if (it.data.isNullOrEmpty()) {
+                                return@observe
+                            }
+                            requireActivity().hideKeyboard()
+                            val action = MainSearchFragmentDirections.openChatFromSearch(it.data)
+                            findNavController().navigate(action)
                         }
-                        requireActivity().hideKeyboard()
-                        val action = MainSearchFragmentDirections.openChatFromSearch(it.data)
-                        findNavController().navigate(action)
-                    }
-                    is Result.Error -> {
-                        toast("Wait something went wrong, Try again")
-                        Timber.e(it.exception)
-                    }
-                    else -> {
+                        is Result.Error -> {
+                            toast("Wait something went wrong, Try again")
+                            Timber.e(it.exception)
+                        }
+                        else -> {
+                        }
                     }
                 }
+                isSearchItemSelected.set(false)
             }
         }
     }
