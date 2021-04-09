@@ -46,9 +46,9 @@
 
                 <ImageView
                     android:id="@+id/im_recent_search"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_marginEnd="@dimen/size_m"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="22dp"
                     android:src="@drawable/ic_search"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

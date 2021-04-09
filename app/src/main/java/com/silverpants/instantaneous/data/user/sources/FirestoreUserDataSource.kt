@@ -97,6 +97,27 @@ class FirestoreUserDataSource @Inject constructor(
         }
     }
 
+    fun searchUsers(query: Flow<String>): Flow<List<AnotherUser>> {
+        val anotherUserCollection = firestore
+            .collection(USERS_COLLECTION)
+        return query.map { query ->
+            if (query.length < 3) {
+                return@map emptyList()
+            }
+            return@map try {
+                val anotherUser = anotherUserCollection
+                    .document(query)
+                    .get()
+                    .suspendAndWait()
+                    .toObject(AnotherUser::class.java)!!
+                anotherUser.userId = query
+                listOf(anotherUser)
+            } catch (e: Exception) {
+                emptyList()
+            }
+        }
+    }
+
     companion object {
         private const val USERS_COLLECTION = "users"
         private const val UID_FIELD = "uid"

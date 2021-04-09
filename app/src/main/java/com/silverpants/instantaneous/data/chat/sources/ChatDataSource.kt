@@ -124,6 +124,36 @@ class ChatDataSource @Inject constructor(
         ).suspendAndWait()
     }
 
+    suspend fun getChatId(user1: String, user2: String): String {
+        val chatsCollection = firestore
+            .collection(CHATS_COLLECTION)
+
+        val chatSnapshot = chatsCollection
+            .whereIn(USERS_FIELD, listOf(listOf(user1, user2), listOf(user2, user1)))
+            .get()
+            .suspendAndWait()
+
+        if (chatSnapshot.isEmpty) {
+            return createChat(user1, user2)
+        }
+
+        return chatSnapshot.documents[0].id
+
+    }
+
+    private suspend fun createChat(user1: String, user2: String): String {
+        val chatDocument = firestore
+            .collection(CHATS_COLLECTION)
+            .document()
+
+        // set the data
+        chatDocument
+            .set(hashMapOf(USERS_FIELD to listOf(user1, user2)))
+            .suspendAndWait()
+
+        return chatDocument.id
+    }
+
     private fun parseMessage(snapshot: DocumentSnapshot, userId: String): Message {
         return snapshot.toObject(Message::class.java)!!.apply {
             isMe = snapshot[USER_ID_FIELD] == userId
@@ -140,5 +170,6 @@ class ChatDataSource @Inject constructor(
         private const val IMMEDIATE_1_FIELD = "immediate1"
         private const val IMMEDIATE_2_FIELD = "immediate2"
         private const val MESSAGE_FIELD = "message"
+        private const val USERS_FIELD = "users"
     }
 }

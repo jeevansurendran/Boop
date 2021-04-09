@@ -54,6 +54,10 @@ class MainRecentFragment : Fragment(R.layout.fragment_main_recent), RecentChatOn
             }
         }
 
+        binding.imRecentSearch.setOnClickListener {
+            val action = MainRecentFragmentDirections.openSearch()
+            findNavController().navigate(action)
+        }
     }
 
     // What happens when the chat is clicked

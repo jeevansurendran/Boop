@@ -10,10 +10,10 @@
         android:label="MainRecentFragment"
         tools:layout="@layout/fragment_main_recent">
         <action
-            android:id="@+id/openChat"
+            android:id="@+id/open_chat"
             app:destination="@id/mainChatFragment" />
         <action
-            android:id="@+id/action_mainRecentFragment_to_mainSearchFragment"
+            android:id="@+id/open_search"
             app:destination="@id/mainSearchFragment" />
     </fragment>
     <fragment
@@ -27,5 +27,10 @@
         android:id="@+id/mainSearchFragment"
         android:name="com.silverpants.instantaneous.ui.search.MainSearchFragment"
         android:label="fragment_main_search"
-        tools:layout="@layout/fragment_main_search" />
+        tools:layout="@layout/fragment_main_search">
+        <action
+            android:id="@+id/open_chat_from_search"
+            app:destination="@id/mainChatFragment"
+            app:popUpTo="@id/mainRecentFragment" />
+    </fragment>
 </navigation>
