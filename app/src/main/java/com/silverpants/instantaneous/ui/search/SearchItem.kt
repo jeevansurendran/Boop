@@ -7,7 +7,10 @@ import com.silverpants.instantaneous.databinding.ItemSearchUserBinding
 import com.silverpants.instantaneous.misc.loadImageOrDefault
 import com.xwray.groupie.viewbinding.BindableItem
 
-class SearchItem(private val anotherUser: AnotherUser) : BindableItem<ItemSearchUserBinding>() {
+class SearchItem(
+    private val anotherUser: AnotherUser,
+    private val searchClickListener: SearchClickListener
+) : BindableItem<ItemSearchUserBinding>() {
 
     override fun initializeViewBinding(view: View): ItemSearchUserBinding {
         return ItemSearchUserBinding.bind(view)
@@ -17,6 +20,9 @@ class SearchItem(private val anotherUser: AnotherUser) : BindableItem<ItemSearch
         viewBinding.tvSearchName.text = anotherUser.name
         viewBinding.tvSearchUserId.text = "@ ${anotherUser.userId}"
         loadImageOrDefault(viewBinding.civSearchDp, anotherUser.photoURL, R.drawable.ic_basketball)
+        viewBinding.root.setOnClickListener {
+            searchClickListener.onClick(it, anotherUser.userId)
+        }
     }
 
     override fun getLayout(): Int = R.layout.item_search_user

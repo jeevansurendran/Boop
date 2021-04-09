@@ -35,4 +35,8 @@ class ChatRepository @Inject constructor(
         return chatDataSource.postSendersNewMessage(chatId, message, userId)
     }
 
+    suspend fun getChatId(user1: String, user2: String): String {
+        return chatDataSource.getChatId(user1, user2)
+    }
+
 }

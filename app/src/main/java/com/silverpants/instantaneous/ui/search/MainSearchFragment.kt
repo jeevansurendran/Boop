@@ -10,12 +10,15 @@ import androidx.navigation.fragment.findNavController
 import com.silverpants.instantaneous.R
 import com.silverpants.instantaneous.databinding.FragmentMainSearchBinding
 import com.silverpants.instantaneous.misc.Result
+import com.silverpants.instantaneous.misc.hideKeyboard
+import com.silverpants.instantaneous.misc.toast
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 
 @AndroidEntryPoint
-class MainSearchFragment : Fragment(R.layout.fragment_main_search) {
+class MainSearchFragment : Fragment(R.layout.fragment_main_search), SearchClickListener {
 
     private val viewModel: SearchViewModel by viewModels()
 
@@ -49,11 +52,10 @@ class MainSearchFragment : Fragment(R.layout.fragment_main_search) {
                         if (binding.etSearch.text.length in 0..2) {
                             adapter.update(listOf(fallbackItem))
                         } else {
-                            adapter.update(result.data.map { SearchItem(it) })
+                            adapter.update(result.data.map { SearchItem(it, this) })
                         }
                     }
                     else -> {
-
                     }
                 }
             }
@@ -62,4 +64,32 @@ class MainSearchFragment : Fragment(R.layout.fragment_main_search) {
 
     }
 
+    override fun onClick(view: View, user2: String) {
+        val chatIdLiveData = viewModel.getChatId(user2)
+        chatIdLiveData.observe(viewLifecycleOwner) {
+            it.let {
+                when (it) {
+                    is Result.Success -> {
+                        if (it.data.isNullOrEmpty()) {
+                            return@observe
+                        }
+                        requireActivity().hideKeyboard()
+                        val action = MainSearchFragmentDirections.openChatFromSearch(it.data)
+                        findNavController().navigate(action)
+                    }
+                    is Result.Error -> {
+                        toast("Wait something went wrong, Try again")
+                        Timber.e(it.exception)
+                    }
+                    else -> {
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        requireActivity().hideKeyboard()
+    }
 }

@@ -30,6 +30,7 @@
         tools:layout="@layout/fragment_main_search">
         <action
             android:id="@+id/open_chat_from_search"
-            app:destination="@id/mainChatFragment" />
+            app:destination="@id/mainChatFragment"
+            app:popUpTo="@id/mainRecentFragment" />
     </fragment>
 </navigation>
