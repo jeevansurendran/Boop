@@ -10,11 +10,13 @@ The app displays a list of users (usually whom you added as a friend) and lets y
 
 When a user finishes typing and after a certain timeout the message is automatically sent to the user. This avoids the hassle and communication can be far faster. future integrations involve using ML models to figure out when a statement is complete, Store data in a local database to reduce fetching data all the time and provide notification channel for new messages.
 
----img---
+<div>
+  <img align="center" src="img/boop.png" alt="Schedule screenshot" height="640" width="320">
+</div>
 
 # Development Environment
 
-The app is wriiten entirely in Kotlin and uses the Gradle build system.
+The app is written entirely in Kotlin and uses the Gradle build system.
 
 To build the app, first Make the project and build a release version of the app once done in Android Studio. A canary or a stable version of Android Studio 4.0 or newer is required and may be downloaded from [here](https://developer.android.com/studio).
 
