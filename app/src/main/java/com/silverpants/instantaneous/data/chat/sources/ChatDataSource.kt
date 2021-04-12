@@ -51,7 +51,7 @@ class ChatDataSource @Inject constructor(
                 .document(chatId)
                 .collection(MESSAGES_COLLECTION)
                 .orderBy(TIMESTAMP_FIELD)
-                .limit(CHAT_MAX_DISPLAY_MESSAGES)
+                .limitToLast(CHAT_MAX_DISPLAY_MESSAGES)
             val registration = messagesQuery.addSnapshotListener { snapshot, _ ->
                 if (snapshot == null) {
                     channel.offer(Messages())
@@ -103,25 +103,21 @@ class ChatDataSource @Inject constructor(
         }
     }
 
-    suspend fun postSendersImmediateMessage(chatId: String, message: String, index: Int) {
-        val chatDocument = firestore.collection(CHATS_COLLECTION).document(chatId)
-        val immediateField = if (index == 0) IMMEDIATE_1_FIELD else IMMEDIATE_2_FIELD
-        chatDocument.update(immediateField, message).suspendAndWait()
-    }
-
-    suspend fun postSendersNewMessage(chatId: String, message: String, userId: String) {
-        val messagesCollection = firestore
+    fun postSendersNewMessage(chatId: String, message: String, userId: String): Message {
+        val messageDocument = firestore
             .collection(CHATS_COLLECTION)
             .document(chatId)
             .collection(MESSAGES_COLLECTION)
-
-        messagesCollection.document().set(
+            .document()
+        val timestamp = Calendar.getInstance().time
+        messageDocument.set(
             hashMapOf(
                 MESSAGE_FIELD to message,
-                TIMESTAMP_FIELD to Timestamp(Calendar.getInstance().time),
+                TIMESTAMP_FIELD to Timestamp(timestamp),
                 USER_ID_FIELD to userId
             )
-        ).suspendAndWait()
+        )
+        return Message(messageDocument.id, userId, message, timestamp, true)
     }
 
     suspend fun getChatId(user1: String, user2: String): String {
@@ -167,8 +163,6 @@ class ChatDataSource @Inject constructor(
         private const val MESSAGES_COLLECTION = "messages"
         private const val TIMESTAMP_FIELD = "timestamp"
         private const val USER_ID_FIELD = "userId"
-        private const val IMMEDIATE_1_FIELD = "immediate1"
-        private const val IMMEDIATE_2_FIELD = "immediate2"
         private const val MESSAGE_FIELD = "message"
         private const val USERS_FIELD = "users"
     }

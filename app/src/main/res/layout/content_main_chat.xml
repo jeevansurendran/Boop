@@ -11,33 +11,30 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/civ_main_chat_sender"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/fl_chat_new"
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="2"
         tools:listitem="@layout/item_chat_send" />
 
-    <LinearLayout
-        android:id="@+id/civ_main_chat_sender"
+    <FrameLayout
+        android:id="@+id/fl_chat_new"
         android:layout_width="0dp"
+        android:paddingTop="@dimen/size_s"
+        android:paddingBottom="@dimen/size_s"
         android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/size_m"
-        android:paddingBottom="@dimen/size_m"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <include
-            android:id="@+id/incl_main_chat_receive"
-            layout="@layout/item_chat_receive"
-            android:visibility="gone" />
-
-        <include
             android:id="@+id/incl_main_chat_new"
-            layout="@layout/item_chat_new" />
-    </LinearLayout>
+            layout="@layout/item_chat_new"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
