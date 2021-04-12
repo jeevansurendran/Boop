@@ -7,6 +7,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.silverpants.instantaneous.R
 import com.silverpants.instantaneous.data.chat.model.Message
@@ -30,6 +31,7 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val chatBinding = FragmentMainChatBinding.bind(view)
         val rvChat = chatBinding.inclMainChat.rvChat
+        val etChatNew: EditText = chatBinding.inclMainChat.inclMainChatNew.etChatNew
 
         rvChat.adapter = adapter
         rvChat.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
@@ -40,6 +42,23 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
                     )
                 }, 100)
             }
+        }
+
+        etChatNew.addTextChangedListener(ChatTextWatcher {
+            requireActivity().runOnUiThread {
+                postMessage(etChatNew, it)
+            }
+        })
+
+        chatBinding.inclMainChat.inclMainChatNew.root.setOnClickListener {
+            etChatNew.requestFocus()
+            val imm: InputMethodManager =
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(etChatNew, InputMethodManager.SHOW_IMPLICIT)
+            rvChat.scrollToPosition(if (adapter.itemCount - 1 < 0) 0 else adapter.itemCount - 1)
+        }
+        chatBinding.imChatBack.setOnClickListener {
+            findNavController().popBackStack()
         }
 
         chatViewModel.user.observe(viewLifecycleOwner) {
@@ -85,20 +104,6 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
                 }
             }
         }
-        val etChatNew: EditText = chatBinding.inclMainChat.inclMainChatNew.etChatNew
-        etChatNew.addTextChangedListener(ChatTextWatcher {
-            requireActivity().runOnUiThread {
-                postMessage(etChatNew, it)
-            }
-        })
-
-        chatBinding.inclMainChat.inclMainChatNew.root.setOnClickListener {
-            etChatNew.requestFocus()
-            val imm: InputMethodManager =
-                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(etChatNew, InputMethodManager.SHOW_IMPLICIT)
-            rvChat.scrollToPosition(if (adapter.itemCount - 1 < 0) 0 else adapter.itemCount - 1)
-        }
         chatViewModel.chatResult.observe(viewLifecycleOwner) {
             it?.let {
                 when (it) {
@@ -119,7 +124,7 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
             return
         }
         editText.text.clear()
-        chatViewModel.postImmediateMessage(message.toString().trim())
+        chatViewModel.postImmediateMessage(message.trim())
     }
 
     private fun parseChatItem(message: Message): BindableItem<*> {
