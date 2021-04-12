@@ -30,4 +30,8 @@
         <item name="android:fontFamily">@font/dm_sans_medium</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
+    <style name="RippleEffect" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:padding">0dp</item>
+    </style>
 </resources>
