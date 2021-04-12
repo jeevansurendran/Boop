@@ -11,7 +11,7 @@ The app displays a list of users (usually whom you added as a friend) and lets y
 When a user finishes typing and after a certain timeout the message is automatically sent to the user. This avoids the hassle and communication can be far faster. future integrations involve using ML models to figure out when a statement is complete, Store data in a local database to reduce fetching data all the time and provide notification channel for new messages.
 
 <div>
-  <img align="center" src="img/boop.png" alt="Schedule screenshot" height="640" width="320">
+  <img align="center" src="boop.png" alt="Boop App screenshot" height="640" width="320">
 </div>
 
 # Development Environment
@@ -40,7 +40,7 @@ We use [Hilt](https://developer.android.com/training/dependency-injection/hilt-a
 
 ## Firebase
 
-The app makes considerable use of the following Firebase components:
+The app makes considerable use of the following Firebase components
 
 -  [Cloud Firestore](https://firebase.google.com/docs/firestore/) is our source for all user data. Firestore gave us automatic sync and also seamlessly managed offline functionality for me.
 
