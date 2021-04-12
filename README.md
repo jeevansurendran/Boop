@@ -11,7 +11,7 @@ The app displays a list of users (usually whom you added as a friend) and lets y
 When a user finishes typing and after a certain timeout the message is automatically sent to the user. This avoids the hassle and communication can be far faster. future integrations involve using ML models to figure out when a statement is complete, Store data in a local database to reduce fetching data all the time and provide notification channel for new messages.
 
 <div>
-  <img align="center" src="boop.png" alt="Boop App screenshot" height="640" width="320">
+  <img align="center" src="boop.jpg" alt="Boop App screenshot" height="640" width="320">
 </div>
 
 # Development Environment
