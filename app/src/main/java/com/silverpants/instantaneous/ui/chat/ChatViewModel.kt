@@ -2,11 +2,12 @@ package com.silverpants.instantaneous.ui.chat
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import com.silverpants.instantaneous.data.chat.model.Message
 import com.silverpants.instantaneous.data.chat.model.Messages
 import com.silverpants.instantaneous.data.user.models.AnotherUser
 import com.silverpants.instantaneous.domain.chat.GetChatFlowCase
 import com.silverpants.instantaneous.domain.chat.GetChatMessagesFlowCase
-import com.silverpants.instantaneous.domain.chat.PostImmediateMessageUseCase
+import com.silverpants.instantaneous.domain.chat.PostMessageUseCase
 import com.silverpants.instantaneous.domain.user.GetAnotherUserFlowCase
 import com.silverpants.instantaneous.domain.user.ObservableUserUseCase
 import com.silverpants.instantaneous.misc.Result
@@ -18,7 +19,7 @@ class ChatViewModel @ViewModelInject constructor(
     private val getChatFlowCase: GetChatFlowCase,
     private val observableUserUseCase: ObservableUserUseCase,
     private val getChatMessagesFlowCase: GetChatMessagesFlowCase,
-    private val postImmediateMessageUseCase: PostImmediateMessageUseCase,
+    private val postMessageUseCase: PostMessageUseCase,
 ) : ViewModel() {
     private val _chatId = MutableLiveData<String>()
     val chatId: LiveData<String> = _chatId
@@ -34,6 +35,9 @@ class ChatViewModel @ViewModelInject constructor(
             }
         }
     }
+
+    private val _chatResult = MutableLiveData<Result<Message>>()
+    val chatResult: LiveData<Result<Message>> = _chatResult
 
     val anotherUser: LiveData<Result<AnotherUser>> by lazy {
         Transformations.switchMap(chat) {
@@ -73,22 +77,21 @@ class ChatViewModel @ViewModelInject constructor(
     }
 
     fun postImmediateMessage(message: String) {
-        if (chat.value !== null &&
-            chat.value !== null &&
-            chat.value!!.data !== null &&
-            user.value !== null &&
-            user.value?.data !== null
-        ) {
-            viewModelScope.launch {
-                postImmediateMessageUseCase(
+        viewModelScope.launch {
+            if (chat.value !== null &&
+                chat.value !== null &&
+                chat.value!!.data !== null &&
+                user.value !== null &&
+                user.value?.data !== null
+            ) {
+                _chatResult.value = postMessageUseCase(
                     Triple(
                         chatId.value!!,
                         message,
-                        user.value?.data?.userId!! to chat.value?.data?.sendersUserIndex!!
+                        user.value?.data?.userId!!
                     )
                 )
             }
         }
     }
-
 }

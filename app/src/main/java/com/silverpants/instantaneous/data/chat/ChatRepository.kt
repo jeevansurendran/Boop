@@ -1,6 +1,7 @@
 package com.silverpants.instantaneous.data.chat
 
 import com.silverpants.instantaneous.data.chat.model.Chat
+import com.silverpants.instantaneous.data.chat.model.Message
 import com.silverpants.instantaneous.data.chat.model.Messages
 import com.silverpants.instantaneous.data.chat.model.RecentChat
 import com.silverpants.instantaneous.data.chat.sources.ChatDataSource
@@ -27,11 +28,7 @@ class ChatRepository @Inject constructor(
         return chatDataSource.getObservableChatMessages(chatId, userId).map { Result.Success(it) }
     }
 
-    suspend fun postSendersImmediateMessage(chatId: String, message: String, index: Int) {
-        return chatDataSource.postSendersImmediateMessage(chatId, message, index)
-    }
-
-    suspend fun postSendersNewMessage(chatId: String, message: String, userId: String) {
+    fun postSendersNewMessage(chatId: String, message: String, userId: String): Message {
         return chatDataSource.postSendersNewMessage(chatId, message, userId)
     }
 
