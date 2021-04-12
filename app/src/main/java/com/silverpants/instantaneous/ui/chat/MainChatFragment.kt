@@ -3,7 +3,6 @@ package com.silverpants.instantaneous.ui.chat
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.fragment.app.Fragment
@@ -18,7 +17,6 @@ import com.silverpants.instantaneous.misc.loadImageOrDefault
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.viewbinding.BindableItem
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -31,7 +29,6 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val chatBinding = FragmentMainChatBinding.bind(view)
-        val simpleDateFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
         val rvChat = chatBinding.inclMainChat.rvChat
 
         rvChat.adapter = adapter
@@ -39,7 +36,7 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
             if (bottom < oldBottom) {
                 rvChat.postDelayed({
                     rvChat.smoothScrollToPosition(
-                        adapter.itemCount - 1
+                        if (adapter.itemCount - 1 < 0) 0 else adapter.itemCount - 1
                     )
                 }, 100)
             }
@@ -80,7 +77,7 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
                         adapter.replaceAll(it.data.messages.map {
                             parseChatItem(it)
                         })
-                        rvChat.scrollToPosition(adapter.itemCount - 1)
+                        rvChat.scrollToPosition(if (adapter.itemCount - 1 < 0) 0 else adapter.itemCount - 1)
                     }
                     else -> {
 
@@ -89,28 +86,25 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
             }
         }
         val etChatNew: EditText = chatBinding.inclMainChat.inclMainChatNew.etChatNew
-        etChatNew.setOnEditorActionListener { editText, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEND) {
-                chatViewModel.postImmediateMessage(editText.text.toString())
-                editText.text = ""
-                return@setOnEditorActionListener true
+        etChatNew.addTextChangedListener(ChatTextWatcher {
+            requireActivity().runOnUiThread {
+                postMessage(etChatNew, it)
             }
-            false
-        }
+        })
 
         chatBinding.inclMainChat.inclMainChatNew.root.setOnClickListener {
             etChatNew.requestFocus()
             val imm: InputMethodManager =
                 requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(etChatNew, InputMethodManager.SHOW_IMPLICIT)
-            rvChat.scrollToPosition(adapter.itemCount - 1)
+            rvChat.scrollToPosition(if (adapter.itemCount - 1 < 0) 0 else adapter.itemCount - 1)
         }
         chatViewModel.chatResult.observe(viewLifecycleOwner) {
             it?.let {
                 when (it) {
                     is Result.Success -> {
                         adapter.add(SendMessageItem(it.data))
-                        rvChat.scrollToPosition(adapter.itemCount - 1)
+                        rvChat.scrollToPosition(if (adapter.itemCount - 1 < 0) 0 else adapter.itemCount - 1)
                     }
                     else -> {
 
@@ -118,6 +112,14 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
                 }
             }
         }
+    }
+
+    private fun postMessage(editText: EditText, message: String) {
+        if (message.isBlank()) {
+            return
+        }
+        editText.text.clear()
+        chatViewModel.postImmediateMessage(message.toString().trim())
     }
 
     private fun parseChatItem(message: Message): BindableItem<*> {
@@ -145,7 +147,7 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
 //                                                messageChange.newIndex,
 //                                                parseChatItem(message = messageChange.message)
 //                                            )
-//                                            rvChat.scrollToPosition(adapter.itemCount - 1)
+//                                            rvChat.scrollToPosition(if (adapter.itemCount - 1 < 0) 0 else adapter.itemCount - 1)
 //                                        }
 //                                    } catch (e: Exception) {
 //                                        // the item that you looked for was out of bound and hence add that item to that position
@@ -153,7 +155,7 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
 //                                            messageChange.newIndex,
 //                                            parseChatItem(message = messageChange.message)
 //                                        )
-//                                        rvChat.scrollToPosition(adapter.itemCount - 1)
+//                                        rvChat.scrollToPosition(if (adapter.itemCount - 1 < 0) 0 else adapter.itemCount - 1)
 //                                    }
 //
 //                                }
