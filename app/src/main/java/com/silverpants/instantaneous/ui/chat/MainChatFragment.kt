@@ -35,7 +35,7 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
         val rvChat = chatBinding.inclMainChat.rvChat
 
         rvChat.adapter = adapter
-        rvChat.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+        rvChat.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
             if (bottom < oldBottom) {
                 rvChat.postDelayed({
                     rvChat.smoothScrollToPosition(
@@ -145,7 +145,7 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
 //                                                messageChange.newIndex,
 //                                                parseChatItem(message = messageChange.message)
 //                                            )
-//                                            chatBinding.inclMainChat.rvChat.scrollToPosition(adapter.itemCount - 1)
+//                                            rvChat.scrollToPosition(adapter.itemCount - 1)
 //                                        }
 //                                    } catch (e: Exception) {
 //                                        // the item that you looked for was out of bound and hence add that item to that position
@@ -153,7 +153,7 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
 //                                            messageChange.newIndex,
 //                                            parseChatItem(message = messageChange.message)
 //                                        )
-//                                        chatBinding.inclMainChat.rvChat.scrollToPosition(adapter.itemCount - 1)
+//                                        rvChat.scrollToPosition(adapter.itemCount - 1)
 //                                    }
 //
 //                                }
