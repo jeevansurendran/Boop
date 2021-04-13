@@ -10,7 +10,6 @@ import com.silverpants.instantaneous.data.user.sources.FirebaseUserDataSource
 import com.silverpants.instantaneous.data.user.sources.FirestoreUserDataSource
 import com.silverpants.instantaneous.misc.Result
 import com.silverpants.instantaneous.misc.suspendAndWait
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -23,20 +22,17 @@ class UserRepository @Inject constructor(
     val auth: FirebaseAuth
 ) {
 
-    @ExperimentalCoroutinesApi
     suspend fun updateUserDisplayName(displayName: String) {
         val changeRequest = UserProfileChangeRequest.Builder().setDisplayName(displayName).build()
         auth.currentUser?.updateProfile(changeRequest)?.suspendAndWait()
     }
 
-    @ExperimentalCoroutinesApi
     fun getBasicUserInfo(): Flow<Result<FirebaseUserInfo>> {
         return userDataSource.getObservableFirebaseUser().map { currentUser ->
             Result.Success(FirebaseUserInfo(currentUser))
         }
     }
 
-    @ExperimentalCoroutinesApi
     suspend fun postUserIdAndNumber(
         userId: String,
         uid: String,
@@ -45,9 +41,8 @@ class UserRepository @Inject constructor(
         return firestoreUserDataSource.postUserIdAndNumber(userId, uid, number)
     }
 
-    @ExperimentalCoroutinesApi
-    suspend fun isFirestoreUserDataExists(uid: String?): Boolean {
-        return firestoreUserDataSource.isFirestoreUserDataExists(uid)
+    suspend fun isUserDataExists(uid: String?): Boolean {
+        return firestoreUserDataSource.isUserDataExists(uid)
     }
 
     fun getObservableUserInfo(): Flow<Result<User>> {

@@ -17,7 +17,7 @@ class FirestoreUserDataSource @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val firebaseDataSource: FirebaseUserDataSource
 ) {
-    suspend fun isFirestoreUserDataExists(uid: String?): Boolean {
+    suspend fun isUserDataExists(uid: String?): Boolean {
         if (uid.isNullOrEmpty()) {
             return false
         }
@@ -28,7 +28,7 @@ class FirestoreUserDataSource @Inject constructor(
             .suspendAndWait()
 
         return !snapshot.isEmpty && snapshot.documents[0] != null && !(snapshot.documents[0].get(
-            "uid"
+            UID_FIELD
         ) as? String).isNullOrEmpty()
     }
 

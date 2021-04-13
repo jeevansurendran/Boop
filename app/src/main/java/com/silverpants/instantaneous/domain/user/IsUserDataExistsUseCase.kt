@@ -7,13 +7,13 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
-class IsFirestoreUserDataExistsUseCase @Inject constructor(
+class IsUserDataExistsUseCase @Inject constructor(
     private val userRepository: UserRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) :
     UseCase<String?, Boolean>(dispatcher) {
     @ExperimentalCoroutinesApi
     override suspend fun execute(parameters: String?): Boolean {
-        return userRepository.isFirestoreUserDataExists(parameters)
+        return userRepository.isUserDataExists(parameters)
     }
 }

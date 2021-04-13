@@ -7,7 +7,7 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.silverpants.instantaneous.data.user.models.FirestoreUserInfo
-import com.silverpants.instantaneous.domain.user.IsFirestoreUserDataExistsUseCase
+import com.silverpants.instantaneous.domain.user.IsUserDataExistsUseCase
 import com.silverpants.instantaneous.domain.user.ObservableUserInfoUseCase
 import com.silverpants.instantaneous.domain.user.PostUserIdUseCase
 import com.silverpants.instantaneous.domain.user.UpdateNameUseCase
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class AuthViewModel @ViewModelInject constructor(
     private val updateNameUseCase: UpdateNameUseCase,
     private val observableUserInfoUseCase: ObservableUserInfoUseCase,
-    private val isFirestoreUserDataExistsUseCase: IsFirestoreUserDataExistsUseCase,
+    private val isUserDataExistsUseCase: IsUserDataExistsUseCase,
     private val postUserIdUseCase: PostUserIdUseCase
 ) : ViewModel() {
 
@@ -33,7 +33,7 @@ class AuthViewModel @ViewModelInject constructor(
 
     val isFirestoreUserDataExists by lazy {
         Transformations.switchMap(userInfo) {
-            liveData { emit(isFirestoreUserDataExistsUseCase(it.data?.getUid())) }
+            liveData { emit(isUserDataExistsUseCase(it.data?.getUid())) }
         }
     }
 
