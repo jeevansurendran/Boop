@@ -8,7 +8,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_auth_mobile_cute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/size_i"
@@ -21,7 +21,7 @@
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="@+id/ccp_auth_mobile_country_code"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.33" />
+        app:layout_constraintVertical_bias="0.4" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_auth_mobile_country_code"
@@ -74,7 +74,7 @@
         android:layout_marginTop="@dimen/size_i"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/til_auth_mobile_country_code"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@id/tv_auth_mobile_cute">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"

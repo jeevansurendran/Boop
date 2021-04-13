@@ -2,13 +2,13 @@ package com.silverpants.instantaneous.ui.auth
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.silverpants.instantaneous.R
 import com.silverpants.instantaneous.databinding.FragmentAuthOnboardingBinding
 import com.silverpants.instantaneous.misc.Result
+import com.silverpants.instantaneous.misc.toast
 import com.silverpants.instantaneous.ui.chat.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,17 +19,17 @@ class AuthOnboardingFragment : Fragment(R.layout.fragment_auth_onboarding) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val binding = FragmentAuthOnboardingBinding.bind(view)
-        val etAuthOnboardingName = binding.etAuthOnboardingName
+        val etAuthOnboardingName = binding.tilAuthOnboardingName.editText
         val btnAuthOnboardingNext = binding.btnAuthOnboardingNext
 
         authViewModel.userInfo.observe(viewLifecycleOwner) {
             it?.let {
                 when (it) {
                     is Result.Success -> {
-                        etAuthOnboardingName.setText(it.data.getDisplayName())
+                        etAuthOnboardingName?.setText(it.data.getDisplayName())
                     }
                     else -> {
-                        etAuthOnboardingName.setText("")
+                        etAuthOnboardingName?.setText("")
                     }
                 }
             }
@@ -49,11 +49,7 @@ class AuthOnboardingFragment : Fragment(R.layout.fragment_auth_onboarding) {
                         }
                     }
                     is Result.Error -> {
-                        Toast.makeText(
-                            requireContext(),
-                            "Failed to update name",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        toast("Failed to update name")
                     }
                     else -> {
 
@@ -62,7 +58,7 @@ class AuthOnboardingFragment : Fragment(R.layout.fragment_auth_onboarding) {
             }
         }
         btnAuthOnboardingNext.setOnClickListener {
-            authViewModel.setName(etAuthOnboardingName.text.toString())
+            authViewModel.setName(etAuthOnboardingName?.text.toString())
         }
     }
 }
