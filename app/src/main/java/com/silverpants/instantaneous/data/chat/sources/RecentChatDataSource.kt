@@ -24,6 +24,7 @@ class RecentChatDataSource @Inject constructor(
                 .collection(CHATS_COLLECTION)
                 .whereArrayContains(USERS_FIELD, userId)
 
+
             val subscription = chatCollection.addSnapshotListener { snapshot, _ ->
                 if (snapshot == null) {
                     channel.offer(emptyList())
