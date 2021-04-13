@@ -6,17 +6,15 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.silverpants.instantaneous.R
-import com.silverpants.instantaneous.misc.data
-import com.silverpants.instantaneous.misc.suspendAndWait
+import com.silverpants.instantaneous.data.user.models.UserState
+import com.silverpants.instantaneous.misc.Result
+import com.silverpants.instantaneous.misc.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -47,26 +45,7 @@ class AuthLoadingFragment : Fragment(R.layout.fragment_auth_loading) {
                 when (it) {
                     AuthViewModel.OtpStates.VERIFY_START -> {
                         requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
-                        lifecycleScope.launch {
-                            try {
-                                val result = auth.signInWithCredential(credential).suspendAndWait()
-                                if (result.additionalUserInfo?.isNewUser == true || authViewModel.isFirestoreUserDataExists.value?.data == false) {
-                                    authViewModel.setOtpState(AuthViewModel.OtpStates.VERIFY_COMPLETE_NEW_USER)
-                                    return@launch
-                                }
-                                authViewModel.setOtpState(AuthViewModel.OtpStates.VERIFY_COMPLETE)
-                            } catch (e: FirebaseException) {
-                                authViewModel.setOtpState(AuthViewModel.OtpStates.VERIFY_FAILED)
-                                if (e is FirebaseAuthInvalidCredentialsException) {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Invalid code try again",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    findNavController().popBackStack()
-                                }
-                            }
-                        }
+                        authViewModel.attemptSignIn(credential)
                     }
                     AuthViewModel.OtpStates.VERIFY_COMPLETE_NEW_USER, AuthViewModel.OtpStates.VERIFY_COMPLETE -> {
                         val action = AuthLoadingFragmentDirections.startOnboarding()
@@ -82,8 +61,42 @@ class AuthLoadingFragment : Fragment(R.layout.fragment_auth_loading) {
                 }
             }
         }
-        authViewModel.isFirestoreUserDataExists.observe(viewLifecycleOwner) {
-            // empty observer so that data is fetched atleast once
+        authViewModel.signInAttemptResult.observe(viewLifecycleOwner)
+        {
+            when (authViewModel.otpState.value) {
+                AuthViewModel.OtpStates.VERIFY_START -> {
+                    it?.let {
+                        when (it) {
+                            is Result.Success -> {
+                                when (it.data) {
+                                    UserState.NO_DATA -> {
+                                        authViewModel.setOtpState(AuthViewModel.OtpStates.VERIFY_COMPLETE_NEW_USER)
+                                    }
+                                    UserState.EXISTS -> {
+                                        authViewModel.setOtpState(AuthViewModel.OtpStates.VERIFY_COMPLETE)
+                                    }
+                                    UserState.NOT_EXIST -> {
+                                    }
+                                }
+
+                            }
+                            is Result.Error -> {
+                                authViewModel.setOtpState(AuthViewModel.OtpStates.VERIFY_FAILED)
+                                if (it.exception is FirebaseAuthInvalidCredentialsException) {
+                                    toast("Invalid code try again")
+                                } else {
+                                    toast("There seems to be and error try again")
+                                }
+                                findNavController().popBackStack()
+                            }
+                            else -> {
+                            }
+                        }
+                    }
+                }
+                else -> {
+                }
+            }
         }
     }
 

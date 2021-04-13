@@ -11,14 +11,16 @@
         android:theme="@style/Theme.Instantaneous">
         <activity
             android:name=".ui.launch.LaunchActivity"
-            android:theme="@style/Theme.Instantaneous.NoActionBar">
+            android:theme="@style/Theme.Instantaneous.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.auth.AuthActivity" />
+        <activity
+            android:name=".ui.auth.AuthActivity"
+            android:theme="@style/Theme.Auth" />
         <activity
             android:name=".ui.chat.MainActivity"
             android:label="@string/app_name"

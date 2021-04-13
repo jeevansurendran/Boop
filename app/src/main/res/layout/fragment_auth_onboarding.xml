@@ -2,18 +2,49 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@drawable/bg_auth"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/et_auth_onboarding_name"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/tv_auth_onboarding_greet"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
+        android:layout_marginBottom="@dimen/size_i"
+        android:fontFamily="@font/dm_sans_bold"
+        android:text="How do I greet you ?"
+        android:textColor="@color/white"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/til_auth_onboarding_name"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@id/til_auth_onboarding_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_auth_onboarding_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_h"
+        android:layout_marginTop="@dimen/size_i"
+        android:layout_marginRight="@dimen/size_h"
         app:layout_constraintEnd_toEndOf="parent"
+        android:hint="Your full name"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tv_auth_onboarding_greet">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName">
+
+            <requestFocus />
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btn_auth_onboarding_next"
@@ -23,5 +54,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_auth_onboarding_name" />
+        app:layout_constraintTop_toBottomOf="@+id/til_auth_onboarding_name" />
 </androidx.constraintlayout.widget.ConstraintLayout>

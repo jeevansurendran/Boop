@@ -3,14 +3,15 @@ package com.silverpants.instantaneous.ui.auth
 import android.annotation.SuppressLint
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
-import com.silverpants.instantaneous.data.user.models.FirestoreUserInfo
-import com.silverpants.instantaneous.domain.user.IsFirestoreUserDataExistsUseCase
+import com.silverpants.instantaneous.data.user.models.UserState
+import com.silverpants.instantaneous.domain.user.CreateUserUseCase
 import com.silverpants.instantaneous.domain.user.ObservableUserInfoUseCase
-import com.silverpants.instantaneous.domain.user.PostUserIdUseCase
 import com.silverpants.instantaneous.domain.user.UpdateNameUseCase
+import com.silverpants.instantaneous.domain.user.VerifyUserExistsUseCase
 import com.silverpants.instantaneous.misc.Result
 import com.silverpants.instantaneous.misc.data
 import kotlinx.coroutines.launch
@@ -18,10 +19,9 @@ import kotlinx.coroutines.launch
 class AuthViewModel @ViewModelInject constructor(
     private val updateNameUseCase: UpdateNameUseCase,
     private val observableUserInfoUseCase: ObservableUserInfoUseCase,
-    private val isFirestoreUserDataExistsUseCase: IsFirestoreUserDataExistsUseCase,
-    private val postUserIdUseCase: PostUserIdUseCase
+    private val verifyUserExistsUseCase: VerifyUserExistsUseCase,
+    private val createUserUseCase: CreateUserUseCase
 ) : ViewModel() {
-
     var verificationId: String = ""
     var refreshToken: PhoneAuthProvider.ForceResendingToken? = null
     var credential: PhoneAuthCredential? = null
@@ -31,17 +31,14 @@ class AuthViewModel @ViewModelInject constructor(
 
     val userInfo by lazy { observableUserInfoUseCase(Unit).asLiveData() }
 
-    val isFirestoreUserDataExists by lazy {
-        Transformations.switchMap(userInfo) {
-            liveData { emit(isFirestoreUserDataExistsUseCase(it.data?.getUid())) }
-        }
-    }
+    private val _signInAttemptResult = MutableLiveData<Result<UserState>>()
+    val signInAttemptResult: LiveData<Result<UserState>> = _signInAttemptResult
 
     private val _updateRequest = MutableLiveData<Result<Unit>>(Result.Loading)
     val updateRequest = _updateRequest as LiveData<Result<Unit>>
 
-    private val _postUserId = MutableLiveData<Result<FirestoreUserInfo?>>(Result.Loading)
-    val postUserId = _postUserId as LiveData<Result<FirestoreUserInfo?>>
+    private val _postUserId = MutableLiveData<Result<Unit?>>(Result.Loading)
+    val postUserId = _postUserId as LiveData<Result<Unit?>>
 
     fun verifyPhoneNumber(options: PhoneAuthOptions) {
         PhoneAuthProvider.verifyPhoneNumber(options)
@@ -60,10 +57,23 @@ class AuthViewModel @ViewModelInject constructor(
     }
 
     @SuppressLint("NullSafeMutableLiveData")
-    fun postUserId(userId: String, uid: String) {
+    fun postUserId(userId: String) {
         viewModelScope.launch {
             _postUserId.value =
-                postUserIdUseCase(Triple(userId, uid, userInfo.value?.data?.getPhoneNumber()!!))
+                createUserUseCase(
+                    Triple(
+                        userId,
+                        userInfo.value?.data?.getUid()!!,
+                        userInfo.value?.data?.getPhoneNumber()!! to userInfo.value?.data?.getDisplayName()!!
+                    )
+                )
+        }
+    }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    fun attemptSignIn(credential: AuthCredential) {
+        viewModelScope.launch {
+            _signInAttemptResult.value = verifyUserExistsUseCase(credential)
         }
     }
 

@@ -11,15 +11,18 @@ import com.silverpants.instantaneous.data.chat.model.Messages.MessageChange
 import com.silverpants.instantaneous.misc.CHAT_MAX_DISPLAY_MESSAGES
 import com.silverpants.instantaneous.misc.DocumentNotFoundException
 import com.silverpants.instantaneous.misc.suspendAndWait
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import java.util.*
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class ChatDataSource @Inject constructor(
     private val firestore: FirebaseFirestore,
 ) {
+
 
     fun getObservableChat(chatId: String, userId: String): Flow<Chat> {
         return channelFlow {

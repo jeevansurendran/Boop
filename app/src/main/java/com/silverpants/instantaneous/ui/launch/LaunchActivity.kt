@@ -2,12 +2,13 @@ package com.silverpants.instantaneous.ui.launch
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.silverpants.instantaneous.data.user.models.UserState
 import com.silverpants.instantaneous.databinding.ActivityLaunchBinding
 import com.silverpants.instantaneous.misc.Result
+import com.silverpants.instantaneous.misc.toast
 import com.silverpants.instantaneous.ui.auth.AuthActivity
 import com.silverpants.instantaneous.ui.chat.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,13 +27,13 @@ class LaunchActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.isFirestoreUserDataExists.observe(this) {
+        viewModel.isUserDataExists.observe(this) {
             it?.let {
                 when (it) {
                     is Result.Success -> {
                         var intent: Intent? = null
                         val job = lifecycleScope.launchWhenStarted {
-                            intent = if (!it.data) {
+                            intent = if (it.data != UserState.EXISTS) {
                                 AuthActivity.launchAuthentication(applicationContext)
                             } else {
                                 MainActivity.launchHome(applicationContext)
@@ -44,11 +45,7 @@ class LaunchActivity : AppCompatActivity() {
                         }
                     }
                     else -> {
-                        Toast.makeText(
-                            this,
-                            "There has been an error, please restart your app.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        toast("There has been an error, please restart the app.")
                     }
                 }
             }

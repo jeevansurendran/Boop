@@ -3,11 +3,13 @@ package com.silverpants.instantaneous.data.chat.sources
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.silverpants.instantaneous.data.chat.model.RecentChat
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 import java.util.*
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class RecentChatDataSource @Inject constructor(
     private val firestore: FirebaseFirestore,
 ) {
@@ -23,6 +25,7 @@ class RecentChatDataSource @Inject constructor(
             val chatCollection = firestore
                 .collection(CHATS_COLLECTION)
                 .whereArrayContains(USERS_FIELD, userId)
+
 
             val subscription = chatCollection.addSnapshotListener { snapshot, _ ->
                 if (snapshot == null) {
