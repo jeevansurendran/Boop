@@ -21,7 +21,6 @@ class AuthViewModel @ViewModelInject constructor(
     private val isUserDataExistsUseCase: IsUserDataExistsUseCase,
     private val postUserIdUseCase: PostUserIdUseCase
 ) : ViewModel() {
-
     var verificationId: String = ""
     var refreshToken: PhoneAuthProvider.ForceResendingToken? = null
     var credential: PhoneAuthCredential? = null
@@ -31,7 +30,7 @@ class AuthViewModel @ViewModelInject constructor(
 
     val userInfo by lazy { observableUserInfoUseCase(Unit).asLiveData() }
 
-    val isFirestoreUserDataExists by lazy {
+    val isUserDataExists by lazy {
         Transformations.switchMap(userInfo) {
             liveData { emit(isUserDataExistsUseCase(it.data?.getUid())) }
         }

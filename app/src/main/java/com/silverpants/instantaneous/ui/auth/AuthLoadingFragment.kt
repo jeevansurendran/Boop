@@ -50,7 +50,7 @@ class AuthLoadingFragment : Fragment(R.layout.fragment_auth_loading) {
                         lifecycleScope.launch {
                             try {
                                 val result = auth.signInWithCredential(credential).suspendAndWait()
-                                if (result.additionalUserInfo?.isNewUser == true || authViewModel.isFirestoreUserDataExists.value?.data == false) {
+                                if (result.additionalUserInfo?.isNewUser == true || authViewModel.isUserDataExists.value?.data == false) {
                                     authViewModel.setOtpState(AuthViewModel.OtpStates.VERIFY_COMPLETE_NEW_USER)
                                     return@launch
                                 }
@@ -82,7 +82,7 @@ class AuthLoadingFragment : Fragment(R.layout.fragment_auth_loading) {
                 }
             }
         }
-        authViewModel.isFirestoreUserDataExists.observe(viewLifecycleOwner) {
+        authViewModel.isUserDataExists.observe(viewLifecycleOwner) {
             // empty observer so that data is fetched atleast once
         }
     }

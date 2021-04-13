@@ -8,58 +8,59 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/size_i"
         android:fontFamily="@font/dm_sans_bold"
         android:text="You’re cute!\nCan I have your number ?"
         android:textColor="@color/white"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/til_auth_mobile_number"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/til_auth_mobile_number"
         app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="@+id/ccp_auth_mobile_country_code" />
+        app:layout_constraintStart_toStartOf="@+id/ccp_auth_mobile_country_code"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.33" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_auth_mobile_country_code"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:focusableInTouchMode="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_h"
+        android:layout_marginEnd="@dimen/size_m"
         android:hint="Code"
-        app:layout_constraintBottom_toBottomOf="@id/ccp_auth_mobile_country_code"
-        app:layout_constraintEnd_toEndOf="@id/ccp_auth_mobile_country_code"
-        app:layout_constraintStart_toStartOf="@id/ccp_auth_mobile_country_code"
-        app:layout_constraintTop_toTopOf="@id/ccp_auth_mobile_country_code">
+        app:layout_constraintEnd_toStartOf="@id/til_auth_mobile_number"
+        app:layout_constraintStart_toStartOf="parent"
+        android:focusableInTouchMode="true"
+        app:layout_constraintTop_toTopOf="@+id/til_auth_mobile_number">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusable="false"
-            android:focusedByDefault="true"
             android:inputType="none"
             android:maxLength="20"
             android:singleLine="true"
-            android:text="   " />
+            android:text="          " />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.hbb20.CountryCodePicker
         android:id="@+id/ccp_auth_mobile_country_code"
-        app:layout_constraintBottom_toBottomOf="@id/til_auth_mobile_number"
-        app:layout_constraintEnd_toStartOf="@id/til_auth_mobile_number"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/size_h"
-        android:layout_marginEnd="@dimen/size_m"
         android:elevation="999dp"
+        app:ccp_showNameCode="false"
+        app:layout_constraintBottom_toBottomOf="@id/til_auth_mobile_country_code"
+        app:layout_constraintEnd_toEndOf="@id/til_auth_mobile_country_code"
+        app:layout_constraintStart_toStartOf="@id/til_auth_mobile_country_code"
         android:gravity="center"
         app:ccp_contentColor="@color/white"
         app:ccp_countryPreference="us,in"
         app:ccp_showFlag="false"
-        app:ccp_showNameCode="false"
-        app:layout_constraintTop_toTopOf="@+id/til_auth_mobile_number" />
+        app:layout_constraintTop_toTopOf="@id/til_auth_mobile_country_code" />
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -70,19 +71,19 @@
         android:layout_marginEnd="@dimen/size_eh"
         android:focusableInTouchMode="true"
         android:hint="Mobile Number"
-
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/size_i"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/ccp_auth_mobile_country_code"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toEndOf="@id/til_auth_mobile_country_code"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:maxLength="20"
             android:layout_height="wrap_content"
+            android:focusedByDefault="true"
+            android:imeOptions="actionNext"
             android:inputType="phone"
-            android:singleLine="true"
-            android:focusedByDefault="true">
+            android:maxLength="20"
+            android:singleLine="true">
 
             <requestFocus />
         </com.google.android.material.textfield.TextInputEditText>
@@ -96,7 +97,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_auth_mobile_number" />
+        app:layout_constraintTop_toBottomOf="@+id/til_auth_mobile_country_code" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

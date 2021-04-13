@@ -44,6 +44,7 @@
         <item name="colorAccent">@color/white</item>
         <item name="colorOnSurface">@color/white</item>
         <!-- custom theme -->
+        <item name="colorError">@color/yellow</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:fontFamily">@font/dm_sans_medium</item>
