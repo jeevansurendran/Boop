@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.silverpants.instantaneous.R
 import com.silverpants.instantaneous.databinding.FragmentAuthOnboardingBinding
 import com.silverpants.instantaneous.misc.Result
+import com.silverpants.instantaneous.misc.hideKeyboard
 import com.silverpants.instantaneous.misc.toast
 import com.silverpants.instantaneous.ui.chat.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,10 +56,17 @@ class AuthOnboardingFragment : Fragment(R.layout.fragment_auth_onboarding) {
 
                     }
                 }
+                btnAuthOnboardingNext.isEnabled = true
             }
         }
         btnAuthOnboardingNext.setOnClickListener {
             authViewModel.setName(etAuthOnboardingName?.text.toString())
+            btnAuthOnboardingNext.isEnabled = false
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        requireActivity().hideKeyboard()
     }
 }

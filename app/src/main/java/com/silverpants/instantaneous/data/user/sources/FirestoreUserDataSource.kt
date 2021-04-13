@@ -2,8 +2,8 @@ package com.silverpants.instantaneous.data.user.sources
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.silverpants.instantaneous.data.user.models.AnotherUser
-import com.silverpants.instantaneous.data.user.models.FirestoreUserInfo
 import com.silverpants.instantaneous.data.user.models.User
+import com.silverpants.instantaneous.data.user.models.UserState
 import com.silverpants.instantaneous.misc.DocumentExistsException
 import com.silverpants.instantaneous.misc.suspendAndWait
 import kotlinx.coroutines.channels.awaitClose
@@ -17,9 +17,9 @@ class FirestoreUserDataSource @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val firebaseDataSource: FirebaseUserDataSource
 ) {
-    suspend fun isUserDataExists(uid: String?): Boolean {
+    suspend fun isUserDataExists(uid: String?): UserState {
         if (uid.isNullOrEmpty()) {
-            return false
+            return UserState.NOT_EXIST
         }
         val snapshot = firestore
             .collection(USERS_COLLECTION)
@@ -27,21 +27,33 @@ class FirestoreUserDataSource @Inject constructor(
             .get()
             .suspendAndWait()
 
-        return !snapshot.isEmpty && snapshot.documents[0] != null && !(snapshot.documents[0].get(
-            UID_FIELD
-        ) as? String).isNullOrEmpty()
+        return if (!snapshot.isEmpty && snapshot.documents[0] != null && (snapshot.documents[0].get(
+                UID_FIELD
+            ) as? String == uid)
+        ) UserState.EXISTS else UserState.NO_DATA
     }
 
-    suspend fun postUserIdAndNumber(userId: String, uid: String, number: String): FirestoreUserInfo {
+    suspend fun createUser(
+        userId: String,
+        uid: String,
+        number: String,
+        name: String
+    ) {
         val userDoc = firestore.collection(USERS_COLLECTION).document(userId)
 
         val snapshot = userDoc.get().suspendAndWait()
         if (snapshot.exists()) {
             throw DocumentExistsException()
         }
-        val data = FirestoreUserInfo(uid, number)
+        val data = hashMapOf(
+            IS_ONLINE_FIELD to true,
+            LAST_ONLINE_FIELD to Calendar.getInstance().time,
+            NAME_FIELD to name,
+            PHOTO_URL_FIELD to "",
+            UID_FIELD to uid,
+            NUMBER_FIELD to number
+        )
         userDoc.set(data).suspendAndWait()
-        return data
     }
 
     fun getUserInfo(): Flow<User> {

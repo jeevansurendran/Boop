@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.silverpants.instantaneous.data.user.models.UserState
 import com.silverpants.instantaneous.databinding.ActivityLaunchBinding
 import com.silverpants.instantaneous.misc.Result
 import com.silverpants.instantaneous.misc.toast
@@ -32,7 +33,7 @@ class LaunchActivity : AppCompatActivity() {
                     is Result.Success -> {
                         var intent: Intent? = null
                         val job = lifecycleScope.launchWhenStarted {
-                            intent = if (!it.data) {
+                            intent = if (it.data != UserState.EXISTS) {
                                 AuthActivity.launchAuthentication(applicationContext)
                             } else {
                                 MainActivity.launchHome(applicationContext)

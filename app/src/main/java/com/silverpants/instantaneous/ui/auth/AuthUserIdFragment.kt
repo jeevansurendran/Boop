@@ -8,8 +8,6 @@ import com.silverpants.instantaneous.R
 import com.silverpants.instantaneous.databinding.FragmentAuthUserIdBinding
 import com.silverpants.instantaneous.misc.DocumentExistsException
 import com.silverpants.instantaneous.misc.Result
-import com.silverpants.instantaneous.misc.data
-import com.silverpants.instantaneous.misc.toast
 import com.silverpants.instantaneous.ui.chat.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,16 +39,13 @@ class AuthUserIdFragment : Fragment(R.layout.fragment_auth_user_id) {
 
                     }
                 }
+                btnAuthUserIdNext.isEnabled = true
             }
         }
 
         btnAuthUserIdNext.setOnClickListener {
-            viewModel.userInfo.value?.data?.getUid()?.let { uid ->
-                viewModel.postUserId(
-                    tilAuthUserId.editText?.text.toString(),
-                    uid
-                )
-            } ?: toast("Please restart your app")
+            btnAuthUserIdNext.isEnabled = false
+            viewModel.postUserId(tilAuthUserId.editText?.text.toString())
         }
     }
 }
