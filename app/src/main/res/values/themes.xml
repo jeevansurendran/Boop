@@ -2,9 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.Instantaneous" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryVariant">@color/grey_400</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryVariant">@color/grey_600</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color -->
         <item name="colorOnSecondary">@color/grey_400</item>
         <item name="colorSecondary">@color/grey_600</item>
@@ -13,7 +13,6 @@
         <item name="android:statusBarColor">@color/grey_400</item>
         <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
         <!-- Customize your theme here. -->
-        <item name="android:textViewStyle">@style/TextViewStyle</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:fontFamily">@font/dm_sans_medium</item>
     </style>
@@ -31,10 +30,23 @@
     <style name="Theme.Instantaneous.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Instantaneous.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="TextViewStyle" parent="android:Widget.TextView">
+    <!-- Auth Theme -->
+    <style name="Theme.Auth" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/grey_400</item>
+        <item name="colorOnPrimary">@color/blue</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <!-- Secondary brand color -->
+        <item name="colorOnSecondary">@color/grey_400</item>
+        <item name="colorSecondary">@color/grey_600</item>
+        <item name="colorSecondaryVariant">@color/blue</item>
+        <!-- Other colors -->
+        <item name="colorAccent">@color/white</item>
+        <item name="colorOnSurface">@color/white</item>
+        <!-- custom theme -->
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:fontFamily">@font/dm_sans_medium</item>
-        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="RippleEffect" parent="Widget.AppCompat.Button.Borderless">
