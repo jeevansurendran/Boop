@@ -14,6 +14,7 @@ import com.silverpants.instantaneous.data.chat.model.Message
 import com.silverpants.instantaneous.databinding.FragmentMainChatBinding
 import com.silverpants.instantaneous.misc.Result
 import com.silverpants.instantaneous.misc.formatTimeDistance
+import com.silverpants.instantaneous.misc.hideKeyboard
 import com.silverpants.instantaneous.misc.loadImageOrDefault
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.viewbinding.BindableItem
@@ -133,6 +134,11 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
         } else {
             ReceiveMessageItem(message)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        requireActivity().hideKeyboard()
     }
 }
 

@@ -6,14 +6,13 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.silverpants.instantaneous.R
 import com.silverpants.instantaneous.databinding.FragmentMainRecentBinding
 import com.silverpants.instantaneous.misc.Result
+import com.silverpants.instantaneous.misc.hideKeyboard
 import com.silverpants.instantaneous.misc.loadImageOrDefault
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainRecentFragment : Fragment(R.layout.fragment_main_recent), RecentChatOnClickListener {
@@ -45,13 +44,11 @@ class MainRecentFragment : Fragment(R.layout.fragment_main_recent), RecentChatOn
             it?.let {
                 when (it) {
                     is Result.Success -> {
-                        Timber.d("here and it feels cool")
                        adapter.replaceAll( it.data.takeIf { it.isNotEmpty() }?.map {
                            RecentChatItem(it, this)
                        } ?: listOf(fallback))
                     }
                     else -> {
-                        Timber.d("here for some reason")
                     }
                 }
             }
@@ -88,5 +85,10 @@ class MainRecentFragment : Fragment(R.layout.fragment_main_recent), RecentChatOn
     override fun onClick(chatId: String) {
         val action = MainRecentFragmentDirections.openChat(chatId)
         findNavController().navigate(action)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        requireActivity().hideKeyboard()
     }
 }
