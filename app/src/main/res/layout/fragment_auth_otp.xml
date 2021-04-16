@@ -2,30 +2,63 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@drawable/bg_auth"
     android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tv_auth_otp_counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="otp"
-        app:layout_constraintBottom_toTopOf="@id/et_auth_otp_otp"
+        android:layout_marginTop="@dimen/size_h"
+        android:textColor="@color/white"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/til_auth_otp"
+        tools:text="0:00" />
 
-    <EditText
-        android:id="@+id/et_auth_otp_otp"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_auth_otp"
         android:layout_height="wrap_content"
-        android:ems="6"
-        android:inputType="numberDecimal"
-        android:hint="Your OTP"
-        android:maxLength="6"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_marginLeft="@dimen/size_h"
+        android:layout_marginTop="@dimen/size_h"
+        android:layout_marginRight="@dimen/size_h"
+        android:hint="OTP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_auth_otp_cute">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="6"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLength="6">
+
+            <requestFocus />
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tv_auth_otp_cute"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_h"
+        android:layout_marginRight="@dimen/size_h"
+        android:layout_marginBottom="@dimen/size_i"
+        android:fontFamily="@font/dm_sans_bold"
+        android:textColor="@color/white"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4"
+        tools:text="OTP has been sent to +918073298546" />
 
     <Button
         android:id="@+id/btn_auth_otp_next"
@@ -35,14 +68,35 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_auth_otp_otp" />
+        app:layout_constraintTop_toBottomOf="@+id/til_auth_otp" />
+
+    <TextView
+        android:id="@+id/tv_auth_otp_resend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_h"
+        android:text="Didn't receive the code?"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/btn_auth_otp_resend"
+        app:layout_constraintEnd_toStartOf="@id/btn_auth_otp_resend"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_auth_otp_counter"
+        app:layout_constraintTop_toTopOf="@id/btn_auth_otp_resend" />
 
     <Button
         android:id="@+id/btn_auth_otp_resend"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Resend OTP"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_auth_otp_counter"
-        app:layout_constraintStart_toEndOf="@+id/tv_auth_otp_counter"
-        app:layout_constraintTop_toTopOf="@+id/tv_auth_otp_counter" />
+        android:layout_marginStart="@dimen/size_m"
+        android:layout_marginTop="@dimen/size_m"
+        android:layout_marginEnd="@dimen/size_h"
+        android:text="Resend OTp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/btn_auth_otp_next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_auth_otp_resend"
+        app:layout_constraintTop_toBottomOf="@+id/tv_auth_otp_counter"
+        app:layout_constraintVertical_bias="0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,13 +4,18 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.firebase.auth.*
+import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.PhoneAuthOptions
+import com.google.firebase.auth.PhoneAuthProvider
 import com.silverpants.instantaneous.R
 import com.silverpants.instantaneous.databinding.FragmentAuthOtpBinding
 import com.silverpants.instantaneous.misc.AUTH_OTP_TIMEOUT
@@ -46,12 +51,13 @@ class AuthOtpFragment : Fragment(R.layout.fragment_auth_otp) {
         val btnAuthOtpNext = binding.btnAuthOtpNext
         val btnAuthOtpResend = binding.btnAuthOtpResend
         val tvAuthOtpCounter = binding.tvAuthOtpCounter
-        val etAuthOtpOtp = binding.etAuthOtpOtp
-
+        val tilAuthOtp = binding.tilAuthOtp
+        val tvAuthOtpCute = binding.tvAuthOtpCute
+        tvAuthOtpCute.text = "OTP has been sent to $phoneNumber"
         countDownTimer = object : CountDownTimer(AUTH_OTP_TIMEOUT * 1000, 1000) {
             @SuppressLint("SetTextI18n")
             override fun onTick(millisUntilFinished: Long) {
-                tvAuthOtpCounter.text = "Time: ${millisUntilFinished / 1000}"
+                tvAuthOtpCounter.text = "00:${millisUntilFinished / 1000}"
             }
 
             override fun onFinish() {
@@ -60,35 +66,26 @@ class AuthOtpFragment : Fragment(R.layout.fragment_auth_otp) {
             }
         }
 
+        tilAuthOtp.editText?.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                startOTPVerification(tilAuthOtp.editText?.text.toString(), tilAuthOtp)
+            }
+            true
+        }
+
+        tilAuthOtp.editText?.doOnTextChanged { _, _, _, _ ->
+            resetError(tilAuthOtp)
+        }
+
         /* next button */
         btnAuthOtpNext.setOnClickListener {
-            val code = etAuthOtpOtp.text
-            if (code.length != 6) {
-                Toast.makeText(
-                    requireContext(),
-                    "Invalid OTP, OTP length must be 6 characters",
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@setOnClickListener
-            }
-            if (authViewModel.verificationId.isEmpty()
-            ) {
-                Toast.makeText(
-                    requireContext(),
-                    "OTP not yet sent, wait until you receive an OTP",
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@setOnClickListener
-            }
-            val credential =
-                PhoneAuthProvider.getCredential(authViewModel.verificationId, code.toString())
-            authViewModel.credential = credential
-            signInWithPhoneAuthCredential()
+            startOTPVerification(tilAuthOtp.editText?.text.toString(), tilAuthOtp)
         }
         /* */
         btnAuthOtpResend.setOnClickListener {
             authViewModel.setOtpState(AuthViewModel.OtpStates.READY)
         }
+
 
         authViewModel.otpState.observe(viewLifecycleOwner) {
             it?.let {
@@ -152,6 +149,30 @@ class AuthOtpFragment : Fragment(R.layout.fragment_auth_otp) {
         val action = AuthOtpFragmentDirections.signin()
         findNavController().navigate(action)
         authViewModel.setOtpState(AuthViewModel.OtpStates.VERIFY_START)
+    }
+
+    private fun startOTPVerification(code: String, tilAuthOtp: TextInputLayout) {
+        if (code.length != 6) {
+            setOtpErrors(tilAuthOtp, "Invalid OTP, OTP length must be 6 characters")
+            return
+        }
+        if (authViewModel.verificationId.isEmpty()
+        ) {
+            setOtpErrors(tilAuthOtp, "OTP not yet sent, wait until you receive an OTP")
+            return
+        }
+        val credential =
+            PhoneAuthProvider.getCredential(authViewModel.verificationId, code)
+        authViewModel.credential = credential
+        signInWithPhoneAuthCredential()
+    }
+
+    private fun setOtpErrors(tilAuthOtp: TextInputLayout, error: String) {
+        tilAuthOtp.error = error
+    }
+
+    private fun resetError(tilAuthOtp: TextInputLayout) {
+        tilAuthOtp.error = null
     }
 
     override fun onDestroyView() {

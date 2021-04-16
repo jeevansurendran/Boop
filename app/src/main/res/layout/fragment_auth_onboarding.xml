@@ -30,6 +30,7 @@
         android:layout_marginLeft="@dimen/size_h"
         android:layout_marginTop="@dimen/size_i"
         android:layout_marginRight="@dimen/size_h"
+        android:imeOptions="actionNext"
         app:layout_constraintEnd_toEndOf="parent"
         android:hint="Your full name"
         android:focusable="true"
