@@ -5,6 +5,7 @@ import com.silverpants.instantaneous.data.user.models.AnotherUser
 import com.silverpants.instantaneous.data.user.models.User
 import com.silverpants.instantaneous.data.user.models.UserState
 import com.silverpants.instantaneous.misc.DocumentExistsException
+import com.silverpants.instantaneous.misc.FALLBACK_DPS
 import com.silverpants.instantaneous.misc.suspendAndWait
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -49,7 +50,7 @@ class FirestoreUserDataSource @Inject constructor(
             IS_ONLINE_FIELD to true,
             LAST_ONLINE_FIELD to Calendar.getInstance().time,
             NAME_FIELD to name,
-            PHOTO_URL_FIELD to "",
+            PHOTO_URL_FIELD to FALLBACK_DPS.random(),
             UID_FIELD to uid,
             NUMBER_FIELD to number
         )
