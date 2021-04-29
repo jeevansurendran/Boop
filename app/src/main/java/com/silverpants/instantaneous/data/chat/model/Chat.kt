@@ -8,8 +8,8 @@ data class Chat(
 ) {
     // by default set to zero, Indicates which user is my data
     var sUserId: String = ""
-    private val sendersUserIndex: Int get() = users.indexOf(sUserId)
-    private val receiversUserIndex: Int get() = if (sendersUserIndex == 0) 1 else 0
+    val sendersUserIndex: Int get() = users.indexOf(sUserId)
+    val receiversUserIndex: Int get() = if (sendersUserIndex == 0) 1 else 0
 
     fun getSendersUserId(): String {
         return users[sendersUserIndex]

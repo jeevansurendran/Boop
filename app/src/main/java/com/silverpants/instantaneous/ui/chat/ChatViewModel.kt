@@ -88,7 +88,7 @@ class ChatViewModel @ViewModelInject constructor(
                     Triple(
                         chatId.value!!,
                         message,
-                        user.value?.data?.userId!!
+                        user.value?.data?.userId!! to chat.value?.data?.sendersUserIndex!!
                     )
                 )
             }

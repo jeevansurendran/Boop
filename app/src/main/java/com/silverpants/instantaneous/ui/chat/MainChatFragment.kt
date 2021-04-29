@@ -3,6 +3,7 @@ package com.silverpants.instantaneous.ui.chat
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.fragment.app.Fragment
@@ -44,12 +45,20 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
                 }, 100)
             }
         }
-
-        etChatNew.addTextChangedListener(ChatTextWatcher {
-            requireActivity().runOnUiThread {
-                postMessage(etChatNew, it)
+        etChatNew.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
+                postMessage(etChatNew, v.text.toString())
             }
-        })
+            true
+        }
+
+//        etChatNew.addTextChangedListener(ChatTextWatcher {
+//            requireActivity().runOnUiThread {
+//                postMessage(etChatNew, it)
+//            }
+//        })
+
+        etChatNew
 
         chatBinding.inclMainChat.inclMainChatNew.root.setOnClickListener {
             etChatNew.requestFocus()

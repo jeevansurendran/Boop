@@ -10,12 +10,17 @@ import javax.inject.Inject
 class PostMessageUseCase @Inject constructor(
     private val chatRepository: ChatRepository,
     @MainDispatcher dispatcher: CoroutineDispatcher
-) : UseCase<Triple<String, String, String>, Message>(dispatcher) {
-    override suspend fun execute(parameters: Triple<String, String, String>): Message {
+) : UseCase<Triple<String, String, Pair<String, Int>>, Message>(dispatcher) {
+    override suspend fun execute(parameters: Triple<String, String, Pair<String, Int>>): Message {
+        chatRepository.postSendersImmediateMessage(
+            parameters.first,
+            parameters.second,
+            parameters.third.second
+        )
         return chatRepository.postSendersNewMessage(
             parameters.first,
             parameters.second,
-            parameters.third,
+            parameters.third.first
         )
     }
 }
