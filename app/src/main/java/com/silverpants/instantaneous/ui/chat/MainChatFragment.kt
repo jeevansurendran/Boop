@@ -90,6 +90,19 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
                 }
             }
         }
+        chatViewModel.chat.observe(viewLifecycleOwner) {
+            it?.let {
+                when (it) {
+                    is Result.Success -> {
+                        val textView =
+                            chatBinding.inclMainChat.inclMainChatImmediate.tvChatImmediateText
+                        textView.text = it.data.getReceiversImmediateMessage()
+                    }
+                    else -> {
+                    }
+                }
+            }
+        }
         chatViewModel.chatMessages.observe(viewLifecycleOwner) {
             it?.let {
                 when (it) {
