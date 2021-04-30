@@ -10,6 +10,7 @@
         android:id="@+id/rv_chat"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:translationY="10dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,23 +19,27 @@
         tools:itemCount="2"
         tools:listitem="@layout/item_chat_send" />
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/fl_chat_new"
+        android:background="@drawable/back_chat_immediate"
         android:layout_width="0dp"
-        android:paddingTop="@dimen/size_s"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/size_l"
         android:paddingBottom="@dimen/size_s"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/rv_chat"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <include
-            android:id="@+id/incl_main_chat_new"
-            layout="@layout/item_chat_new"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:id="@+id/incl_main_chat_immediate"
+            layout="@layout/item_chat_immediate" />
 
-    </FrameLayout>
+        <include
+            android:id="@+id/incl_main_chat_new"
+            layout="@layout/item_chat_new" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

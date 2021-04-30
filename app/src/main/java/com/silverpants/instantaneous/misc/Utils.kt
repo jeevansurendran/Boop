@@ -3,16 +3,22 @@ package com.silverpants.instantaneous.misc
 import android.app.Activity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.channels.produce
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resumeWithException
 
 // firebase
@@ -101,4 +107,27 @@ fun getTimeDifference(diffTime: Long): Pair<TimeUnit, Long> {
     if (elapsedDays > 0) return TimeUnit.DAYS to elapsedDays
     if (elapsedHours > 0) return TimeUnit.HOURS to elapsedHours
     return if (elapsedMinutes > 0) TimeUnit.MINUTES to elapsedMinutes else TimeUnit.SECONDS to diffTime / secondsInMilli
+}
+
+fun EditText.onTextChanged(): ReceiveChannel<String> =
+    Channel<String>(capacity = Channel.UNLIMITED).also { channel ->
+        doOnTextChanged { text, start, before, count ->
+            text?.toString().orEmpty().let(channel::offer)
+        }
+    }
+
+
+fun <E> ReceiveChannel<E>.debounce(
+    wait: Long = 50,
+    context: CoroutineContext = Dispatchers.Default
+): ReceiveChannel<E> = GlobalScope.produce(context) {
+    var lastTimeout: Job? = null
+    consumeEach {
+        lastTimeout?.cancel()
+        lastTimeout = launch {
+            delay(wait)
+            send(it)
+        }
+    }
+    lastTimeout?.join()
 }

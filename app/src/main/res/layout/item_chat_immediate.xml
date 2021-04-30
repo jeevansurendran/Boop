@@ -3,36 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/size_i"
+    android:layout_marginStart="@dimen/size_m"
     android:layout_marginTop="@dimen/size_vs"
-    android:layout_marginEnd="@dimen/size_m"
+    android:layout_marginEnd="@dimen/size_i"
     android:layout_marginBottom="@dimen/size_vs"
-    android:background="@color/grey_300"
     app:cardCornerRadius="@dimen/rad_n"
     app:cardElevation="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blue"
-        android:padding="@dimen/size_n"
-        android:minHeight="@dimen/chat_height_min">
+        android:background="@color/grey_350"
+        android:minHeight="@dimen/chat_height_min"
+        android:padding="@dimen/size_n">
 
-        <EditText
-            android:id="@+id/et_chat_new"
+        <TextView
+            android:id="@+id/tv_chat_immediate_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:hint="Type something here...."
-            android:textColorHint="@color/blue_200"
-            android:imeOptions="actionSend"
-            android:textColor="@color/white"
+            android:hint="Waiting for a reply"
+            android:textColor="@color/grey_600"
+            android:textColorHint="@color/grey_400"
             android:textSize="16sp"
-            android:inputType="text"
-            android:windowSoftInputMode="stateAlwaysVisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintHorizontal_bias="0.2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_max="0dp" />

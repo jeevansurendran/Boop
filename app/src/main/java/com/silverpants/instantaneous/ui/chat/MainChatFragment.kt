@@ -3,22 +3,23 @@ package com.silverpants.instantaneous.ui.chat
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.silverpants.instantaneous.R
 import com.silverpants.instantaneous.data.chat.model.Message
 import com.silverpants.instantaneous.databinding.FragmentMainChatBinding
-import com.silverpants.instantaneous.misc.Result
-import com.silverpants.instantaneous.misc.formatTimeDistance
-import com.silverpants.instantaneous.misc.hideKeyboard
-import com.silverpants.instantaneous.misc.loadImageOrDefault
+import com.silverpants.instantaneous.misc.*
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.viewbinding.BindableItem
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -44,12 +45,20 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
                 }, 100)
             }
         }
-
-        etChatNew.addTextChangedListener(ChatTextWatcher {
-            requireActivity().runOnUiThread {
-                postMessage(etChatNew, it)
+        etChatNew.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
+                postMessage(etChatNew, v.text.toString())
             }
-        })
+            true
+        }
+
+        lifecycleScope.launch {
+            etChatNew.onTextChanged()
+                .debounce(50)
+                .consumeEach {
+                    chatViewModel.postImmediateMessage(it)
+                }
+        }
 
         chatBinding.inclMainChat.inclMainChatNew.root.setOnClickListener {
             etChatNew.requestFocus()
@@ -84,6 +93,19 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
                             )
                         chatBinding.tvChatName.text = it.data.name
                         chatBinding.tvChatUserId.text = "@ ${it.data.userId}"
+                    }
+                    else -> {
+                    }
+                }
+            }
+        }
+        chatViewModel.chat.observe(viewLifecycleOwner) {
+            it?.let {
+                when (it) {
+                    is Result.Success -> {
+                        val textView =
+                            chatBinding.inclMainChat.inclMainChatImmediate.tvChatImmediateText
+                        textView.text = it.data.getReceiversImmediateMessage()
                     }
                     else -> {
                     }
@@ -125,7 +147,7 @@ class MainChatFragment : Fragment(R.layout.fragment_main_chat) {
             return
         }
         editText.text.clear()
-        chatViewModel.postImmediateMessage(message.trim())
+        chatViewModel.postMessage(message.trim())
     }
 
     private fun parseChatItem(message: Message): BindableItem<*> {

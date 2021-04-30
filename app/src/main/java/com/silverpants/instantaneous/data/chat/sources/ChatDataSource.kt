@@ -24,6 +24,12 @@ class ChatDataSource @Inject constructor(
 ) {
 
 
+    suspend fun postSendersImmediateMessage(chatId: String, message: String, index: Int) {
+        val chatDocument = firestore.collection(CHATS_COLLECTION).document(chatId)
+        val immediateField = if (index == 0) IMMEDIATE_0_FIELD else IMMEDIATE_1_FIELD
+        chatDocument.update(immediateField, message).suspendAndWait()
+    }
+
     fun getObservableChat(chatId: String, userId: String): Flow<Chat> {
         return channelFlow {
             val chatDocument = firestore
@@ -168,5 +174,7 @@ class ChatDataSource @Inject constructor(
         private const val USER_ID_FIELD = "userId"
         private const val MESSAGE_FIELD = "message"
         private const val USERS_FIELD = "users"
+        private const val IMMEDIATE_0_FIELD = "immediate0"
+        private const val IMMEDIATE_1_FIELD = "immediate1"
     }
 }

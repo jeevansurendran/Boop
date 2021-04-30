@@ -61,4 +61,8 @@ class UserRepository @Inject constructor(
     fun getUserSearch(query: Flow<String>): Flow<Result.Success<List<AnotherUser>>> {
         return firestoreUserDataSource.searchUsers(query).map { Result.Success(it) }
     }
+
+    fun setOnline(userId: String, isOnline: Boolean) {
+        return firestoreUserDataSource.setOnline(userId, isOnline)
+    }
 }
