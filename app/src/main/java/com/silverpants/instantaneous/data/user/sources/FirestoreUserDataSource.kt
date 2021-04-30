@@ -1,5 +1,6 @@
 package com.silverpants.instantaneous.data.user.sources
 
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.silverpants.instantaneous.data.user.models.AnotherUser
 import com.silverpants.instantaneous.data.user.models.User
@@ -129,6 +130,16 @@ class FirestoreUserDataSource @Inject constructor(
                 emptyList()
             }
         }
+    }
+
+    fun setOnline(userId: String, isOnline: Boolean) {
+        val userDoc = firestore.collection(USERS_COLLECTION).document(userId)
+        userDoc.update(
+            hashMapOf<String, Any>(
+                IS_ONLINE_FIELD to isOnline,
+                LAST_ONLINE_FIELD to Timestamp(Calendar.getInstance().time),
+            )
+        )
     }
 
     companion object {

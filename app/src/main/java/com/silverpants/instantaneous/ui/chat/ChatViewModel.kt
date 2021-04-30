@@ -11,6 +11,7 @@ import com.silverpants.instantaneous.domain.chat.GetChatMessagesFlowCase
 import com.silverpants.instantaneous.domain.chat.PostImmediateMessageUseCase
 import com.silverpants.instantaneous.domain.chat.PostMessageUseCase
 import com.silverpants.instantaneous.domain.user.GetAnotherUserFlowCase
+import com.silverpants.instantaneous.domain.user.LastOnlineUseCase
 import com.silverpants.instantaneous.domain.user.ObservableUserUseCase
 import com.silverpants.instantaneous.misc.Result
 import com.silverpants.instantaneous.misc.data
@@ -25,10 +26,12 @@ class ChatViewModel @ViewModelInject constructor(
     private val observableUserUseCase: ObservableUserUseCase,
     private val getChatMessagesFlowCase: GetChatMessagesFlowCase,
     private val postMessageUseCase: PostMessageUseCase,
-    private val postImmediateMessageUseCase: PostImmediateMessageUseCase
+    private val postImmediateMessageUseCase: PostImmediateMessageUseCase,
+    private val lastOnlineUseCase: LastOnlineUseCase,
 ) : ViewModel() {
     private val _chatId = MutableLiveData<String>()
     val chatId: LiveData<String> = _chatId
+
 
     val user by lazy { observableUserUseCase(Unit).asLiveData() }
 
@@ -65,6 +68,18 @@ class ChatViewModel @ViewModelInject constructor(
                     }
                 )
             }
+        }
+    }
+
+    fun setUserOnline(userId: String) {
+        viewModelScope.launch {
+            lastOnlineUseCase(userId to true)
+        }
+    }
+
+    fun setUserOffline(userId: String) {
+        viewModelScope.launch {
+            lastOnlineUseCase(userId to false)
         }
     }
 
