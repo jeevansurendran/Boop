@@ -1,6 +1,7 @@
 package com.silverpants.instantaneous.data.user.sources
 
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.silverpants.instantaneous.data.user.models.AnotherUser
 import com.silverpants.instantaneous.data.user.models.User
@@ -144,7 +145,7 @@ class FirestoreUserDataSource @Inject constructor(
 
     suspend fun setNotificationToken(userId: String, token: String) {
         val userDoc = firestore.collection(USERS_COLLECTION).document(userId)
-        userDoc.update(NOTIFICATION_TOKEN, token).suspendAndWait()
+        userDoc.update(NOTIFICATION_TOKENS_FIELD, FieldValue.arrayUnion(token)).suspendAndWait()
     }
 
     companion object {
@@ -155,6 +156,6 @@ class FirestoreUserDataSource @Inject constructor(
         private const val IS_ONLINE_FIELD = "isOnline"
         private const val LAST_ONLINE_FIELD = "lastOnline"
         private const val PHOTO_URL_FIELD = "photoURL"
-        private const val NOTIFICATION_TOKEN = "notificationToken"
+        private const val NOTIFICATION_TOKENS_FIELD = "notificationTokens"
     }
 }

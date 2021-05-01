@@ -1,4 +1,10 @@
 package com.silverpants.instantaneous.data.notification.models
 
-class NewMessage {
-}
+import java.util.*
+
+data class NewMessage(
+    val time: Date = Calendar.getInstance().time,
+    val chatId: String = "",
+    val name: String = "",
+    val message: String = ""
+)
