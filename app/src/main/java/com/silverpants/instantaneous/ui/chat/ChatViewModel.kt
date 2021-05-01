@@ -114,7 +114,7 @@ class ChatViewModel @ViewModelInject constructor(
                         Triple(
                             user.value?.data?.userId!!,
                             chat.value?.data?.getReceiversUserId()!!,
-                            anotherUser.value?.data?.isOnline!!
+                            anotherUser.value?.data?.isOnline!! to user.value?.data?.name!!,
                         )
                     )
                 )

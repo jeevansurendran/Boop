@@ -6,6 +6,7 @@ export default
     async function (data: any, context: functions.https.CallableContext) {
     const userId = data["userId"];
     const text = data["message"];
+    const name = data["name"];
     const chatId = data["chatId"]
     console.log(`New notification for ${userId} and message ${text}`)
 
@@ -14,14 +15,14 @@ export default
             toFirestore: (data: {
                 notificationTokens: [string],
                 photoURL: string,
-                isOnline: boolean, name: string
+                isOnline: boolean
             }) => data,
             fromFirestore: (
                 snap: FirebaseFirestore.QueryDocumentSnapshot) =>
                 snap.data() as {
                     notificationTokens: [string],
                     photoURL: string,
-                    isOnline: boolean, name: string
+                    isOnline: boolean
                 },
         }).get();
 
@@ -41,18 +42,10 @@ export default
     }
     const payload = {
         notification: {
-            title: `${anotherUser.name}`,
+            title: name,
             body: text,
-            clickAction: "MainChatFragment",
-        },
-        android: {
-            notification: {
-                icon: anotherUser.photoURL,
-            }
-        },
+            link: `boop://silverpants.com/chats/${chatId}`,
 
-        data: {
-            chatId,
         },
     };
     console.log(`message payload for FCM is${JSON.stringify(payload)} and FCM token are ${anotherUser.notificationTokens}`);

@@ -12,11 +12,14 @@ class PostMessageUseCase @Inject constructor(
     private val chatRepository: ChatRepository,
     private val functions: FirebaseFunctions,
     @MainDispatcher dispatcher: CoroutineDispatcher
-) : UseCase<Triple<String, String, Triple<String, String, Boolean>>, Message>(dispatcher) {
-    override suspend fun execute(parameters: Triple<String, String, Triple<String, String, Boolean>>): Message {
-        if (!parameters.third.third) {
+) : UseCase<Triple<String, String, Triple<String, String, Pair<Boolean, String>>>, Message>(
+    dispatcher
+) {
+    override suspend fun execute(parameters: Triple<String, String, Triple<String, String, Pair<Boolean, String>>>): Message {
+        if (!parameters.third.third.first) {
             functions.getHttpsCallable("notifyNewMessage").call(
                 hashMapOf(
+                    "name" to parameters.third.third.second,
                     "userId" to parameters.third.second,
                     "message" to parameters.second,
                     "chatId" to parameters.first
