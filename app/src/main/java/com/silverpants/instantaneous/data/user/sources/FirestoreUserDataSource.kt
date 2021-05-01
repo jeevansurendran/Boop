@@ -142,6 +142,11 @@ class FirestoreUserDataSource @Inject constructor(
         )
     }
 
+    suspend fun setNotificationToken(userId: String, token: String) {
+        val userDoc = firestore.collection(USERS_COLLECTION).document(userId)
+        userDoc.update(NOTIFICATION_TOKEN, token).suspendAndWait()
+    }
+
     companion object {
         private const val USERS_COLLECTION = "users"
         private const val UID_FIELD = "uid"
@@ -150,5 +155,6 @@ class FirestoreUserDataSource @Inject constructor(
         private const val IS_ONLINE_FIELD = "isOnline"
         private const val LAST_ONLINE_FIELD = "lastOnline"
         private const val PHOTO_URL_FIELD = "photoURL"
+        private const val NOTIFICATION_TOKEN = "notificationToken"
     }
 }

@@ -7,20 +7,23 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.messaging.FirebaseMessaging
 import com.silverpants.instantaneous.data.user.models.UserState
-import com.silverpants.instantaneous.domain.user.CreateUserUseCase
-import com.silverpants.instantaneous.domain.user.ObservableUserInfoUseCase
-import com.silverpants.instantaneous.domain.user.UpdateNameUseCase
-import com.silverpants.instantaneous.domain.user.VerifyUserExistsUseCase
+import com.silverpants.instantaneous.domain.user.*
 import com.silverpants.instantaneous.misc.Result
 import com.silverpants.instantaneous.misc.data
+import com.silverpants.instantaneous.misc.suspendAndWait
 import kotlinx.coroutines.launch
 
 class AuthViewModel @ViewModelInject constructor(
     private val updateNameUseCase: UpdateNameUseCase,
     private val observableUserInfoUseCase: ObservableUserInfoUseCase,
     private val verifyUserExistsUseCase: VerifyUserExistsUseCase,
-    private val createUserUseCase: CreateUserUseCase
+    private val createUserUseCase: CreateUserUseCase,
+    private val firebaseMessaging: FirebaseMessaging,
+    private val notificationUseCase: NotificationUseCase,
+    private val firebaseCrashlytics: FirebaseCrashlytics,
 ) : ViewModel() {
     var verificationId: String = ""
     var refreshToken: PhoneAuthProvider.ForceResendingToken? = null
@@ -74,6 +77,17 @@ class AuthViewModel @ViewModelInject constructor(
     fun attemptSignIn(credential: AuthCredential) {
         viewModelScope.launch {
             _signInAttemptResult.value = verifyUserExistsUseCase(credential)
+        }
+    }
+
+    fun setNotificationToken() {
+        viewModelScope.launch {
+            try {
+                val token = firebaseMessaging.token.suspendAndWait()
+                notificationUseCase(token)
+            } catch (e: Error) {
+                firebaseCrashlytics.recordException(e)
+            }
         }
     }
 
