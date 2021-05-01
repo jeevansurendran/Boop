@@ -13,12 +13,14 @@ export default
         .doc(`/users/${userId}`).withConverter({
             toFirestore: (data: {
                 notificationTokens: [string],
+                photoURL: string,
                 isOnline: boolean, name: string
             }) => data,
             fromFirestore: (
                 snap: FirebaseFirestore.QueryDocumentSnapshot) =>
                 snap.data() as {
                     notificationTokens: [string],
+                    photoURL: string,
                     isOnline: boolean, name: string
                 },
         }).get();
@@ -43,6 +45,12 @@ export default
             body: text,
             clickAction: "MainChatFragment",
         },
+        android: {
+            notification: {
+                icon: anotherUser.photoURL,
+            }
+        },
+
         data: {
             chatId,
         },
