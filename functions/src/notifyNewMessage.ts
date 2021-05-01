@@ -39,7 +39,7 @@ export default
     }
     const payload = {
         notification: {
-            title: `${anotherUser.name} messaged you`,
+            title: `${anotherUser.name}`,
             body: text,
             clickAction: "MainChatFragment",
         },

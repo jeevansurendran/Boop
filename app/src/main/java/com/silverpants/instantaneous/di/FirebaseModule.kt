@@ -7,6 +7,8 @@ import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
+import com.google.firebase.functions.FirebaseFunctions
+import com.google.firebase.functions.ktx.functions
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.ktx.messaging
@@ -46,5 +48,9 @@ class FirebaseModule {
         return Firebase.crashlytics
     }
 
-
+    @Singleton
+    @Provides
+    fun provideFunctions(): FirebaseFunctions {
+        return Firebase.functions
+    }
 }
