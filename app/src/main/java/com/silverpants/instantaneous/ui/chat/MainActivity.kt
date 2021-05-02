@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
                                 viewModel.setUserOnline(userId)
                             }
 
-                            @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+                            @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
                             fun setUserOffline() {
                                 viewModel.setUserOffline(userId)
                             }

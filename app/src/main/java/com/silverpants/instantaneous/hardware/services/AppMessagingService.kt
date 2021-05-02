@@ -34,9 +34,10 @@ class AppMessagingService : FirebaseMessagingService() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (!updateNotificationTokenJob.isCompleted) {
-            updateNotificationTokenJob.cancel()
-        }
+        if (this::updateNotificationTokenJob.isInitialized)
+            if (!updateNotificationTokenJob.isCompleted) {
+                updateNotificationTokenJob.cancel()
+            }
     }
 
 }
