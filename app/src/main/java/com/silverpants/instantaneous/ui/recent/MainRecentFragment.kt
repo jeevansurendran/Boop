@@ -8,16 +8,19 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.silverpants.instantaneous.R
 import com.silverpants.instantaneous.databinding.FragmentMainRecentBinding
+import com.silverpants.instantaneous.misc.EASTER_EGG_CLICK_COUNT
 import com.silverpants.instantaneous.misc.Result
 import com.silverpants.instantaneous.misc.hideKeyboard
 import com.silverpants.instantaneous.misc.loadImageOrDefault
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.atomic.AtomicInteger
 
 @AndroidEntryPoint
 class MainRecentFragment : Fragment(R.layout.fragment_main_recent), RecentChatOnClickListener {
 
     private val recentChatViewModel: RecentChatViewModel by viewModels()
+    private var buttonClick: AtomicInteger = AtomicInteger(1)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val binding = FragmentMainRecentBinding.bind(view)
@@ -74,10 +77,21 @@ class MainRecentFragment : Fragment(R.layout.fragment_main_recent), RecentChatOn
         binding.imRecentSearch.setOnClickListener {
             openSearch()
         }
+        binding.civRecentProfile.setOnClickListener {
+            if (buttonClick.getAndIncrement() == EASTER_EGG_CLICK_COUNT) {
+                openEaster()
+            }
+        }
     }
 
-    fun openSearch() {
+    private fun openSearch() {
         val action = MainRecentFragmentDirections.openSearch()
+        findNavController().navigate(action)
+    }
+
+    private fun openEaster() {
+        buttonClick.set(1)
+        val action = MainRecentFragmentDirections.openEaster()
         findNavController().navigate(action)
     }
 

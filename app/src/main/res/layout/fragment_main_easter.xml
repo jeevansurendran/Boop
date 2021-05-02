@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+
+    android:layout_height="wrap_content"
+    tools:context=".ui.easter.MainEasterEggFragment">
+
+    <ImageView
+        android:id="@+id/im_easter_sus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/size_i"
+        android:layout_marginTop="@dimen/size_m"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_easter_sus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_easter_sus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_l"
+        android:fontFamily="@font/dm_sans_bold"
+        android:text="That's kinda sus"
+        android:textColor="@color/grey_600"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/im_easter_sus" />
+
+    <TextView
+        android:id="@+id/tv_easter_idea"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/size_i"
+        android:layout_marginTop="@dimen/size_m"
+        android:text="Boop was a fun weekend project idea by Jeevan, Andrews, Dvija and Harshitha. Hope you are having fun with it."
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_easter_sus" />
+
+    <Button
+        android:id="@+id/btn_easter_invite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/size_m"
+        android:layout_marginTop="@dimen/size_m"
+        android:layout_marginBottom="@dimen/size_i"
+        android:backgroundTint="@color/blue"
+        android:fontFamily="@font/dm_sans_medium"
+        android:paddingStart="@dimen/size_el"
+        android:paddingTop="@dimen/size_s"
+        android:paddingEnd="@dimen/size_el"
+        android:paddingBottom="@dimen/size_s"
+        android:text="Let Us know on playstore"
+        app:cornerRadius="@dimen/rad_l"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_easter_idea" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

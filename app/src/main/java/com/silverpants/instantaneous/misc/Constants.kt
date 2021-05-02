@@ -44,4 +44,7 @@ val FALLBACK_DPS = arrayOf(
     "https://storage.googleapis.com/instantaneous-e673e.appspot.com/fallbacks/yellow/05.png",
     "https://storage.googleapis.com/instantaneous-e673e.appspot.com/fallbacks/yellow/06.png",
     "https://storage.googleapis.com/instantaneous-e673e.appspot.com/fallbacks/yellow/07.png",
-    "https://storage.googleapis.com/instantaneous-e673e.appspot.com/fallbacks/yellow/08.png")
+    "https://storage.googleapis.com/instantaneous-e673e.appspot.com/fallbacks/yellow/08.png"
+)
+
+const val EASTER_EGG_CLICK_COUNT = 5
