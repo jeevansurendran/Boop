@@ -48,6 +48,7 @@ class AuthLoadingFragment : Fragment(R.layout.fragment_auth_loading) {
                         authViewModel.attemptSignIn(credential)
                     }
                     AuthViewModel.OtpStates.VERIFY_COMPLETE_NEW_USER, AuthViewModel.OtpStates.VERIFY_COMPLETE -> {
+                        authViewModel.setNotificationToken()
                         val action = AuthLoadingFragmentDirections.startOnboarding()
                         findNavController().navigate(action)
                         backPressedCallback.remove()

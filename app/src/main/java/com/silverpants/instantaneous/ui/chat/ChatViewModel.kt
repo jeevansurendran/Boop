@@ -1,5 +1,6 @@
 package com.silverpants.instantaneous.ui.chat
 
+import android.annotation.SuppressLint
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.silverpants.instantaneous.data.chat.model.Chat
@@ -97,6 +98,7 @@ class ChatViewModel @ViewModelInject constructor(
         _chatId.value = chatId
     }
 
+    @SuppressLint("NullSafeMutableLiveData")
     fun postMessage(message: String) {
         viewModelScope.launch {
             if (chat.value !== null &&
@@ -109,7 +111,11 @@ class ChatViewModel @ViewModelInject constructor(
                     Triple(
                         chatId.value!!,
                         message,
-                        user.value?.data?.userId!! to chat.value?.data?.sendersUserIndex!!
+                        Triple(
+                            user.value?.data?.userId!!,
+                            chat.value?.data?.getReceiversUserId()!!,
+                            anotherUser.value?.data?.isOnline!! to user.value?.data?.name!!,
+                        )
                     )
                 )
             }

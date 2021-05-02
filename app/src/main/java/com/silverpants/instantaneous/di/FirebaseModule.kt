@@ -2,10 +2,16 @@ package com.silverpants.instantaneous.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
+import com.google.firebase.functions.FirebaseFunctions
+import com.google.firebase.functions.ktx.functions
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.ktx.messaging
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,6 +36,21 @@ class FirebaseModule {
         return Firebase.auth
     }
 
-    
+    @Singleton
+    @Provides
+    fun provideFirebaseMessaging(): FirebaseMessaging {
+        return Firebase.messaging
+    }
 
+    @Singleton
+    @Provides
+    fun provideCrashlytics(): FirebaseCrashlytics {
+        return Firebase.crashlytics
+    }
+
+    @Singleton
+    @Provides
+    fun provideFunctions(): FirebaseFunctions {
+        return Firebase.functions
+    }
 }

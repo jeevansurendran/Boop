@@ -1,38 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/size_i"
-    android:layout_marginTop="@dimen/size_vs"
-    android:layout_marginEnd="@dimen/size_m"
-    android:layout_marginBottom="@dimen/size_vs"
-    android:background="@color/grey_300"
-    app:cardCornerRadius="@dimen/rad_l"
-    app:cardElevation="0dp">
+    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/blue"
-        android:padding="@dimen/size_m"
-        android:minHeight="@dimen/chat_height_min">
+        android:layout_gravity="end"
+        android:layout_marginVertical="@dimen/size_vt"
+        android:layout_marginStart="@dimen/size_i"
+        android:layout_marginEnd="@dimen/size_m"
+        android:background="@color/grey_300"
+        app:cardCornerRadius="@dimen/rad_n"
+        app:cardElevation="0dp">
 
-        <TextView
-            android:id="@+id/tv_chat_send_text"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.6"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_max="0dp"
-            tools:text="Nothing much, Chillin" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:background="@color/blue"
+            android:padding="@dimen/size_s">
+
+            <TextView
+                android:id="@+id/tv_chat_send_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:textColor="@color/blue_200"
+                android:textSize="10.5sp"
+                tools:text="12:33 am" />
+
+            <TextView
+                android:id="@+id/tv_chat_send_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:minWidth="@dimen/size_s"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                tools:text=",Nothing muc" />
+        </LinearLayout>
 
 
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+
+
+</FrameLayout>

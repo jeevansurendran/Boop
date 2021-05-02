@@ -65,4 +65,8 @@ class UserRepository @Inject constructor(
     fun setOnline(userId: String, isOnline: Boolean) {
         return firestoreUserDataSource.setOnline(userId, isOnline)
     }
+
+    suspend fun setNotificationToken(userId: String, token: String) {
+        return firestoreUserDataSource.setNotificationToken(userId, token)
+    }
 }
