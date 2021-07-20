@@ -10,6 +10,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+        storeFile file(var)
+            storePassword 'jeevan@silverpants'
+            keyAlias 'key0'
+            keyPassword 'jeevan@silverpants'
+        }
+    }
     compileSdkVersion 30
 
     defaultConfig {
