@@ -1,14 +1,16 @@
 package com.silverpants.instantaneous.ui.launch
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.silverpants.instantaneous.domain.user.IsUserDataExistsUseCase
 import com.silverpants.instantaneous.domain.user.ObservableUserInfoUseCase
 import com.silverpants.instantaneous.misc.data
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
+import javax.inject.Inject
 
-class LaunchViewModel @ViewModelInject constructor(
+@HiltViewModel
+class LaunchViewModel @Inject constructor(
     val observableUserInfoUseCase: ObservableUserInfoUseCase,
     val isUserDataExistsUseCase: IsUserDataExistsUseCase
 ) :

@@ -47,11 +47,12 @@ class AuthLoadingFragment : Fragment(R.layout.fragment_auth_loading) {
                         requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
                         authViewModel.attemptSignIn(credential)
                     }
-                    AuthViewModel.OtpStates.VERIFY_COMPLETE_NEW_USER, AuthViewModel.OtpStates.VERIFY_COMPLETE -> {
+                    AuthViewModel.OtpStates.VERIFY_COMPLETE_NEW_USER -> {
+                        proceedToOnBoarding()
+                    }
+                    AuthViewModel.OtpStates.VERIFY_COMPLETE -> {
                         authViewModel.setNotificationToken()
-                        val action = AuthLoadingFragmentDirections.startOnboarding()
-                        findNavController().navigate(action)
-                        backPressedCallback.remove()
+                        proceedToOnBoarding()
                     }
                     AuthViewModel.OtpStates.VERIFY_FAILED -> {
                         backPressedCallback.remove()
@@ -99,6 +100,12 @@ class AuthLoadingFragment : Fragment(R.layout.fragment_auth_loading) {
                 }
             }
         }
+    }
+
+    private fun proceedToOnBoarding() {
+        val action = AuthLoadingFragmentDirections.startOnboarding()
+        findNavController().navigate(action)
+        backPressedCallback.remove()
     }
 
     override fun onDestroyView() {

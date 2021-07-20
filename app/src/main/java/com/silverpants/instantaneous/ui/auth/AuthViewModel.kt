@@ -1,7 +1,6 @@
 package com.silverpants.instantaneous.ui.auth
 
 import android.annotation.SuppressLint
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.PhoneAuthCredential
@@ -14,9 +13,12 @@ import com.silverpants.instantaneous.domain.user.*
 import com.silverpants.instantaneous.misc.Result
 import com.silverpants.instantaneous.misc.data
 import com.silverpants.instantaneous.misc.suspendAndWait
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AuthViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AuthViewModel @Inject constructor(
     private val updateNameUseCase: UpdateNameUseCase,
     private val observableUserInfoUseCase: ObservableUserInfoUseCase,
     private val verifyUserExistsUseCase: VerifyUserExistsUseCase,

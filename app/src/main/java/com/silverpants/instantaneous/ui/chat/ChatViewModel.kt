@@ -1,7 +1,6 @@
 package com.silverpants.instantaneous.ui.chat
 
 import android.annotation.SuppressLint
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.silverpants.instantaneous.data.chat.model.Chat
 import com.silverpants.instantaneous.data.chat.model.Message
@@ -16,12 +15,15 @@ import com.silverpants.instantaneous.domain.user.LastOnlineUseCase
 import com.silverpants.instantaneous.domain.user.ObservableUserUseCase
 import com.silverpants.instantaneous.misc.Result
 import com.silverpants.instantaneous.misc.data
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ChatViewModel @ViewModelInject constructor(
+@HiltViewModel
+class ChatViewModel @Inject constructor(
     private val getAnotherUserFlowCase: GetAnotherUserFlowCase,
     private val getChatFlowCase: GetChatFlowCase,
     private val observableUserUseCase: ObservableUserUseCase,

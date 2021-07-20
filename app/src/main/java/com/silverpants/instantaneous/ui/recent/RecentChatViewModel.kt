@@ -1,14 +1,16 @@
 package com.silverpants.instantaneous.ui.recent
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.silverpants.instantaneous.data.chat.model.RecentChat
 import com.silverpants.instantaneous.domain.chat.GetRecentChatFlowUseCase
 import com.silverpants.instantaneous.domain.user.ObservableUserUseCase
 import com.silverpants.instantaneous.misc.Result
 import com.silverpants.instantaneous.misc.data
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class RecentChatViewModel @ViewModelInject constructor(
+@HiltViewModel
+class RecentChatViewModel @Inject constructor(
     private val observableUserUseCase: ObservableUserUseCase,
     private val getRecentChatFlowUseCase: GetRecentChatFlowUseCase,
 ) : ViewModel() {

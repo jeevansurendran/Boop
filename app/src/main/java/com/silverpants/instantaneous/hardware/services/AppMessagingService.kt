@@ -1,5 +1,6 @@
 package com.silverpants.instantaneous.hardware.services
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.silverpants.instantaneous.domain.user.NotificationUseCase
@@ -15,6 +16,9 @@ class AppMessagingService : FirebaseMessagingService() {
 
     @Inject
     lateinit var notificationUseCase: NotificationUseCase
+
+    @Inject
+    lateinit var firebaseCrashlytics: FirebaseCrashlytics
 
     lateinit var updateNotificationTokenJob: Job
 
@@ -36,7 +40,11 @@ class AppMessagingService : FirebaseMessagingService() {
         super.onDestroy()
         if (this::updateNotificationTokenJob.isInitialized)
             if (!updateNotificationTokenJob.isCompleted) {
-                updateNotificationTokenJob.cancel()
+                try {
+                    updateNotificationTokenJob.cancel()
+                } catch (e: Exception) {
+                    firebaseCrashlytics.recordException(e)
+                }
             }
     }
 
