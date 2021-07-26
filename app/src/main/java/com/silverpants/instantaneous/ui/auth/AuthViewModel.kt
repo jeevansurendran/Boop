@@ -31,7 +31,7 @@ class AuthViewModel @Inject constructor(
     var refreshToken: PhoneAuthProvider.ForceResendingToken? = null
     var credential: PhoneAuthCredential? = null
 
-    private val _otpState = MutableLiveData(OtpStates.READY)
+    private val _otpState = MutableLiveData(OtpStates.START)
     val otpState = _otpState as LiveData<OtpStates>
 
     val userInfo by lazy { observableUserInfoUseCase(Unit).asLiveData() }
@@ -94,6 +94,7 @@ class AuthViewModel @Inject constructor(
     }
 
     enum class OtpStates {
+        START,
         READY,
         CODE_SENT,
         REFRESH_ALLOWED,

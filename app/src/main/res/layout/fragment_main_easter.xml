@@ -58,6 +58,7 @@
         android:paddingTop="@dimen/size_s"
         android:paddingEnd="@dimen/size_el"
         android:paddingBottom="@dimen/size_s"
+        android:textColor="@color/white"
         android:text="Let Us know on playstore"
         app:cornerRadius="@dimen/rad_l"
         app:layout_constraintBottom_toBottomOf="parent"

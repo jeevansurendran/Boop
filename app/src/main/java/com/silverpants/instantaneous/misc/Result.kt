@@ -1,10 +1,16 @@
 package com.silverpants.instantaneous.misc
 
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 
-sealed class Result<out R>  {
+sealed class Result<out R> {
     data class Success<out T>(val data: T) : Result<T>()
-    data class Error(val exception: Exception) : Result<Nothing>()
+    data class Error(val exception: Exception) : Result<Nothing>() {
+        init {
+            FirebaseCrashlytics.getInstance().recordException(exception)
+        }
+    }
+
     object Loading : Result<Nothing>()
 
     override fun toString(): String {

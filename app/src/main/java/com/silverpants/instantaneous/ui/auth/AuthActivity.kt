@@ -8,14 +8,21 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.silverpants.instantaneous.databinding.ActivityAuthBinding
+import com.silverpants.instantaneous.misc.toast
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AuthActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAuthBinding
     private val authViewModel: AuthViewModel by viewModels()
+
+    @Inject
+    internal lateinit var firebaseCrashlytics: FirebaseCrashlytics
 
     val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
@@ -24,6 +31,10 @@ class AuthActivity : AppCompatActivity() {
         }
 
         override fun onVerificationFailed(exception: FirebaseException) {
+            Timber.e(exception)
+            toast("There seems to be an error, Try again later! ${exception.message}")
+            firebaseCrashlytics.recordException(exception)
+            authViewModel.setOtpState(AuthViewModel.OtpStates.START)
         }
 
 

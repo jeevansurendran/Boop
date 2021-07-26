@@ -91,6 +91,9 @@ class AuthOtpFragment : Fragment(R.layout.fragment_auth_otp) {
             it?.let {
                 when (it) {
                     /* This state makes the request */
+                    AuthViewModel.OtpStates.START -> {
+                        findNavController().popBackStack()
+                    }
                     AuthViewModel.OtpStates.READY -> {
                         requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
                         // trigger this whenever in ready state

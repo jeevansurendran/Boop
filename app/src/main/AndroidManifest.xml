@@ -11,6 +11,7 @@
         android:theme="@style/Theme.Instantaneous">
         <activity
             android:name=".ui.launch.LaunchActivity"
+            android:label="@string/app_name"
             android:theme="@style/Theme.Instantaneous.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +24,6 @@
             android:theme="@style/Theme.Auth" />
         <activity
             android:name=".ui.chat.MainActivity"
-            android:label="@string/app_name"
             android:theme="@style/Theme.Instantaneous.NoActionBar">
             <nav-graph android:value="@navigation/nav_chat" />
         </activity>
