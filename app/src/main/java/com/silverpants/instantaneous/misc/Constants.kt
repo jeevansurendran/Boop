@@ -2,7 +2,7 @@ package com.silverpants.instantaneous.misc
 
 const val AUTH_OTP_TIMEOUT = 60L
 
-const val CHAT_MAX_DISPLAY_MESSAGES = 50L
+const val CHAT_MAX_DISPLAY_MESSAGES = 200L
 
 val FALLBACK_DPS = arrayOf(
     "https://storage.googleapis.com/instantaneous-e673e.appspot.com/fallbacks/dark/01.png",
@@ -49,8 +49,13 @@ val FALLBACK_DPS = arrayOf(
 
 const val EASTER_EGG_CLICK_COUNT = 5
 
-const val DYNAMIC_LINK_URI_PREFIX = "https://boop.page.link"
+const val DYNAMIC_LINK_URI_PREFIX = "https://silverpants.page.link"
 
-const val SHARE_TITLE = "Try Boop Today to add a unique twist in your chat experience"
+const val SHARE_TITLE = "Try Boop today!!"
 
 const val SHARE_DESC = "Made for conversation to say in the moment and disappear like magic ✨"
+
+const val SHARE_OG_IMAGE =
+    "https://storage.googleapis.com/instantaneous-e673e.appspot.com/app-logo.png"
+
+const val DEFAULT_SHARE_URL = "https://silverpants.page.link/download-app"

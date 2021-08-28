@@ -8,10 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.silverpants.instantaneous.R
 import com.silverpants.instantaneous.databinding.FragmentMainRecentBinding
-import com.silverpants.instantaneous.misc.EASTER_EGG_CLICK_COUNT
-import com.silverpants.instantaneous.misc.Result
-import com.silverpants.instantaneous.misc.hideKeyboard
-import com.silverpants.instantaneous.misc.loadImageOrDefault
+import com.silverpants.instantaneous.misc.*
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.atomic.AtomicInteger
@@ -28,12 +25,7 @@ class MainRecentFragment : Fragment(R.layout.fragment_main_recent), RecentChatOn
         val adapter = GroupieAdapter()
         val fallback = RecentChatFallbackItem(object : RecentChatFallbackListener {
             override fun onInviteFromContact() {
-                val intent = Intent().apply {
-                    type = "text/plain"
-                    putExtra(Intent.EXTRA_SUBJECT, "Download now")
-                    putExtra(Intent.EXTRA_TEXT, "Try the app @ https://www.google.com")
-                }
-                startActivity(Intent.createChooser(intent, "Share App"))
+                recentChatViewModel.shareApp()
             }
 
             override fun onSearchPeople() {
@@ -80,6 +72,28 @@ class MainRecentFragment : Fragment(R.layout.fragment_main_recent), RecentChatOn
         binding.civRecentProfile.setOnClickListener {
             if (buttonClick.getAndIncrement() == EASTER_EGG_CLICK_COUNT) {
                 openEaster()
+            }
+        }
+        recentChatViewModel.shareUserLiveData.observe(viewLifecycleOwner) {
+            it?.let {
+                when (it) {
+                    is Result.Success -> {
+                        val intent = Intent().apply {
+                            type = "text/plain"
+                            action = Intent.ACTION_SEND
+                            putExtra(Intent.EXTRA_SUBJECT, SHARE_TITLE)
+                            putExtra(Intent.EXTRA_TEXT, it.data)
+                        }
+                        startActivity(Intent.createChooser(intent, "Share App"))
+                    }
+                    else -> {
+                        val intent = Intent().apply {
+                            type = "text/plain"
+                            putExtra(Intent.EXTRA_TEXT, it.data)
+                        }
+                        startActivity(Intent.createChooser(intent, "Share App"))
+                    }
+                }
             }
         }
     }
