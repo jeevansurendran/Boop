@@ -48,3 +48,9 @@ val FALLBACK_DPS = arrayOf(
 )
 
 const val EASTER_EGG_CLICK_COUNT = 5
+
+const val DYNAMIC_LINK_URI_PREFIX = "https://boop.page.link"
+
+const val SHARE_TITLE = "Try Boop Today to add a unique twist in your chat experience"
+
+const val SHARE_DESC = "Made for conversation to say in the moment and disappear like magic ✨"

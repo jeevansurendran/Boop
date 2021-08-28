@@ -4,6 +4,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
@@ -52,5 +54,11 @@ class FirebaseModule {
     @Provides
     fun provideFunctions(): FirebaseFunctions {
         return Firebase.functions
+    }
+
+    @Singleton
+    @Provides
+    fun provideDynamicLinks(): FirebaseDynamicLinks {
+        return Firebase.dynamicLinks
     }
 }
