@@ -5,19 +5,29 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.silverpants.instantaneous.data.user.models.UserState
 import com.silverpants.instantaneous.databinding.ActivityLaunchBinding
 import com.silverpants.instantaneous.misc.Result
+import com.silverpants.instantaneous.misc.suspendAndWait
 import com.silverpants.instantaneous.misc.toast
 import com.silverpants.instantaneous.ui.auth.AuthActivity
 import com.silverpants.instantaneous.ui.chat.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LaunchActivity : AppCompatActivity() {
 
     private val viewModel: LaunchViewModel by viewModels()
     private lateinit var binding: ActivityLaunchBinding
+
+    @Inject
+    lateinit var dynamicLinks: FirebaseDynamicLinks
+
+    @Inject
+    lateinit var crashlytics: FirebaseCrashlytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityLaunchBinding.inflate(layoutInflater)
@@ -34,7 +44,23 @@ class LaunchActivity : AppCompatActivity() {
                         var intent: Intent? = null
                         val job = lifecycleScope.launchWhenStarted {
                             intent = if (it.data != UserState.EXISTS) {
-                                AuthActivity.launchAuthentication(applicationContext)
+                                try {
+                                    val pendingDynamicLinkData =
+                                        dynamicLinks.getDynamicLink(this@LaunchActivity.intent)
+                                            .suspendAndWait()
+                                    pendingDynamicLinkData?.link?.let {
+                                        val deepLinkUrl = it.toString()
+                                        val userId =
+                                            deepLinkUrl.substring(deepLinkUrl.lastIndexOf("/") + 1)
+                                        AuthActivity.launchAuthentication(
+                                            applicationContext,
+                                            userId
+                                        )
+                                    } ?: AuthActivity.launchAuthentication(applicationContext)
+                                } catch (e: Exception) {
+                                    crashlytics.recordException(e)
+                                    AuthActivity.launchAuthentication(applicationContext)
+                                }
                             } else {
                                 MainActivity.launchHome(applicationContext)
                             }

@@ -52,11 +52,18 @@ class AuthActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthBinding.inflate(layoutInflater)
+        authViewModel.sharersUserId = intent.getStringExtra(USER_ID_KEY)
         setContentView(binding.root)
     }
 
     companion object {
+        private const val USER_ID_KEY = "user.id.key"
         fun launchAuthentication(context: Context) = Intent(context, AuthActivity::class.java)
+
+        fun launchAuthentication(context: Context, userId: String) =
+            Intent(context, AuthActivity::class.java).apply {
+                putExtra(USER_ID_KEY, userId)
+            }
     }
 
 }

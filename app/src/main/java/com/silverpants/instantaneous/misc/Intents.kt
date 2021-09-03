@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 
 object Intents {
-
     fun openPlayStoreIntent() =
         Intent(
             Intent.ACTION_VIEW,

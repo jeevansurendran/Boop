@@ -31,6 +31,11 @@ class AuthViewModel @Inject constructor(
     var refreshToken: PhoneAuthProvider.ForceResendingToken? = null
     var credential: PhoneAuthCredential? = null
 
+    /**
+     * The person who shared this app to the user, their userid
+     */
+    var sharersUserId: String? = null
+
     private val _otpState = MutableLiveData(OtpStates.START)
     val otpState = _otpState as LiveData<OtpStates>
 

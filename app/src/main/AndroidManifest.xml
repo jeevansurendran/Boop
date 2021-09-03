@@ -15,8 +15,18 @@
             android:theme="@style/Theme.Instantaneous.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="silverpants.com"
+                    android:pathPrefix="/shares/"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
         <activity
@@ -24,6 +34,7 @@
             android:theme="@style/Theme.Auth" />
         <activity
             android:name=".ui.chat.MainActivity"
+            android:launchMode="singleTop"
             android:theme="@style/Theme.Instantaneous.NoActionBar">
             <nav-graph android:value="@navigation/nav_chat" />
         </activity>
