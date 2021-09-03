@@ -4,6 +4,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.silverpants.instantaneous.data.user.models.AnotherUser
+import com.silverpants.instantaneous.data.user.models.CreateUser
 import com.silverpants.instantaneous.data.user.models.User
 import com.silverpants.instantaneous.data.user.models.UserState
 import com.silverpants.instantaneous.misc.DocumentExistsException
@@ -37,12 +38,9 @@ class FirestoreUserDataSource @Inject constructor(
     }
 
     suspend fun createUser(
-        userId: String,
-        uid: String,
-        number: String,
-        name: String
+        createUser: CreateUser
     ) {
-        val userDoc = firestore.collection(USERS_COLLECTION).document(userId)
+        val userDoc = firestore.collection(USERS_COLLECTION).document(createUser.userId)
 
         val snapshot = userDoc.get().suspendAndWait()
         if (snapshot.exists()) {
@@ -51,10 +49,10 @@ class FirestoreUserDataSource @Inject constructor(
         val data = hashMapOf(
             IS_ONLINE_FIELD to true,
             LAST_ONLINE_FIELD to Calendar.getInstance().time,
-            NAME_FIELD to name,
+            NAME_FIELD to createUser.name,
             PHOTO_URL_FIELD to FALLBACK_DPS.random(),
-            UID_FIELD to uid,
-            NUMBER_FIELD to number
+            UID_FIELD to createUser.uid,
+            NUMBER_FIELD to createUser.number
         )
         userDoc.set(data).suspendAndWait()
     }

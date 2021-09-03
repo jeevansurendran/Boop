@@ -6,10 +6,7 @@ import com.silverpants.instantaneous.data.chat.model.Chat
 import com.silverpants.instantaneous.data.chat.model.Message
 import com.silverpants.instantaneous.data.chat.model.Messages
 import com.silverpants.instantaneous.data.user.models.AnotherUser
-import com.silverpants.instantaneous.domain.chat.GetChatFlowCase
-import com.silverpants.instantaneous.domain.chat.GetChatMessagesFlowCase
-import com.silverpants.instantaneous.domain.chat.PostImmediateMessageUseCase
-import com.silverpants.instantaneous.domain.chat.PostMessageUseCase
+import com.silverpants.instantaneous.domain.chat.*
 import com.silverpants.instantaneous.domain.user.GetAnotherUserFlowCase
 import com.silverpants.instantaneous.domain.user.LastOnlineUseCase
 import com.silverpants.instantaneous.domain.user.ObservableUserUseCase
@@ -31,6 +28,7 @@ class ChatViewModel @Inject constructor(
     private val postMessageUseCase: PostMessageUseCase,
     private val postImmediateMessageUseCase: PostImmediateMessageUseCase,
     private val lastOnlineUseCase: LastOnlineUseCase,
+    private val getChatId: GetChatIdUseCase
 ) : ViewModel() {
     private val _chatId = MutableLiveData<String>()
     val chatId: LiveData<String> = _chatId
@@ -140,6 +138,12 @@ class ChatViewModel @Inject constructor(
                     )
                 )
             }
+        }
+    }
+
+    fun setSharerUserId(sharerUserId: String) {
+        viewModelScope.launch {
+            getChatId(user.value?.data?.userId!! to sharerUserId)
         }
     }
 }

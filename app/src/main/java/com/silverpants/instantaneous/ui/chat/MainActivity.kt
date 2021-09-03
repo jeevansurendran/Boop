@@ -38,6 +38,9 @@ class MainActivity : AppCompatActivity() {
                                 viewModel.setUserOffline(userId)
                             }
                         })
+                        intent.getStringExtra(USER_ID_KEY)?.let {
+                            viewModel.setSharerUserId(it)
+                        }
                     }
                     else -> {
 
@@ -48,8 +51,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun launchHome(context: Context) =
-            Intent(context, MainActivity::class.java)
+        private const val USER_ID_KEY = "user.id.key"
+
+        fun launchHome(context: Context, userId: String?) =
+            Intent(context, MainActivity::class.java).apply {
+                putExtra(USER_ID_KEY, userId)
+            }
     }
 
 }

@@ -18,14 +18,14 @@ class ShareAppUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : UseCase<Unit, String>(dispatcher) {
     override suspend fun execute(parameters: Unit): String {
-        val user = userRepository.getBasicUserInfo().first()
+        val user = userRepository.getObservableUserInfo().first()
         val uri = when (user) {
             is Result.Success -> {
                 val url = Uri.Builder().apply {
                     scheme("https")
                     authority("silverpants.com")
                     appendPath("shares")
-                    appendPath(user.data.getUid())
+                    appendPath(user.data.userId)
                 }.build()
                 dynamicLinkSource.createShareableLink(url)
             }

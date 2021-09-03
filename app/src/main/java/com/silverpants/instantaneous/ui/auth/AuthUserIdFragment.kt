@@ -30,7 +30,8 @@ class AuthUserIdFragment : Fragment(R.layout.fragment_auth_user_id) {
             it?.let {
                 when (it) {
                     is Result.Success -> {
-                        val intent = MainActivity.launchHome(requireContext())
+                        val intent =
+                            MainActivity.launchHome(requireContext(), viewModel.sharersUserId)
                         viewModel.setNotificationToken()
                         startActivity(intent)
                         requireActivity().finish()

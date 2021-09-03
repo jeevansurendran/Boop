@@ -9,6 +9,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/fragment_auth_onboarding.xml" value="0.19722222222222222" />
+        <entry key="app/src/main/res/layout/fragment_auth_user_id.xml" value="0.18981481481481483" />
       </map>
     </option>
   </component>

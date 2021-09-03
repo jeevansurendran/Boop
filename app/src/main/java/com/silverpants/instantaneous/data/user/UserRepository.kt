@@ -2,10 +2,7 @@ package com.silverpants.instantaneous.data.user
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.silverpants.instantaneous.data.user.models.AnotherUser
-import com.silverpants.instantaneous.data.user.models.FirebaseUserInfo
-import com.silverpants.instantaneous.data.user.models.User
-import com.silverpants.instantaneous.data.user.models.UserState
+import com.silverpants.instantaneous.data.user.models.*
 import com.silverpants.instantaneous.data.user.sources.FirebaseUserDataSource
 import com.silverpants.instantaneous.data.user.sources.FirestoreUserDataSource
 import com.silverpants.instantaneous.misc.Result
@@ -35,13 +32,8 @@ class UserRepository @Inject constructor(
         }
     }
 
-    suspend fun createUser(
-        userId: String,
-        uid: String,
-        number: String,
-        name: String
-    ) {
-        firestoreUserDataSource.createUser(userId, uid, number, name)
+    suspend fun createUser(createUser: CreateUser) {
+        firestoreUserDataSource.createUser(createUser)
     }
 
     suspend fun isUserDataExists(uid: String?): UserState {

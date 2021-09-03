@@ -21,8 +21,8 @@ class RecentChatViewModel @Inject constructor(
     val user by lazy {
         observableUserUseCase(Unit).asLiveData()
     }
-    private val _shareUserLiveData = MutableLiveData<Result<String>>()
-    val shareUserLiveData = _shareUserLiveData as LiveData<Result<String>>
+    private val _shareUserLiveData = MutableLiveData<Result<String>?>()
+    val shareUserLiveData = _shareUserLiveData as LiveData<Result<String>?>
 
     val recentChat: LiveData<Result<List<RecentChat>>> by lazy {
         user.switchMap {
@@ -31,6 +31,10 @@ class RecentChatViewModel @Inject constructor(
             }
             getRecentChatFlowUseCase(it.data?.userId!!).asLiveData()
         }
+    }
+
+    fun setShareUrlToNull() {
+        _shareUserLiveData.value = null
     }
 
     fun shareApp() {

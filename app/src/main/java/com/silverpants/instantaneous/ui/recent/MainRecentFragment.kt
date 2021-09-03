@@ -94,6 +94,7 @@ class MainRecentFragment : Fragment(R.layout.fragment_main_recent), RecentChatOn
                         startActivity(Intent.createChooser(intent, "Share App"))
                     }
                 }
+                recentChatViewModel.setShareUrlToNull()
             }
         }
     }

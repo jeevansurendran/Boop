@@ -52,8 +52,9 @@ class AuthActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthBinding.inflate(layoutInflater)
-        authViewModel.sharersUserId = intent.getStringExtra(USER_ID_KEY)
         setContentView(binding.root)
+
+        authViewModel.sharersUserId = intent.getStringExtra(USER_ID_KEY)
     }
 
     companion object {

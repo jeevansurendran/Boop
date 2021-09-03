@@ -8,6 +8,7 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
+import com.silverpants.instantaneous.data.user.models.CreateUser
 import com.silverpants.instantaneous.data.user.models.UserState
 import com.silverpants.instantaneous.domain.user.*
 import com.silverpants.instantaneous.misc.Result
@@ -71,10 +72,12 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             _postUserId.value =
                 createUserUseCase(
-                    Triple(
+                    CreateUser(
                         userId,
                         userInfo.value?.data?.getUid()!!,
-                        userInfo.value?.data?.getPhoneNumber()!! to userInfo.value?.data?.getDisplayName()!!
+                        userInfo.value?.data?.getPhoneNumber()!!,
+                        userInfo.value?.data?.getDisplayName()!!,
+                        sharersUserId
                     )
                 )
         }

@@ -43,27 +43,31 @@ class LaunchActivity : AppCompatActivity() {
                     is Result.Success -> {
                         var intent: Intent? = null
                         val job = lifecycleScope.launchWhenStarted {
-                            intent = if (it.data != UserState.EXISTS) {
-                                try {
-                                    val pendingDynamicLinkData =
-                                        dynamicLinks.getDynamicLink(this@LaunchActivity.intent)
-                                            .suspendAndWait()
-                                    pendingDynamicLinkData?.link?.let {
-                                        val deepLinkUrl = it.toString()
-                                        val userId =
-                                            deepLinkUrl.substring(deepLinkUrl.lastIndexOf("/") + 1)
+                            try {
+                                val pendingDynamicLinkData =
+                                    dynamicLinks.getDynamicLink(this@LaunchActivity.intent)
+                                        .suspendAndWait()
+                                val userId = pendingDynamicLinkData?.link?.let {
+                                    val deepLinkUrl = it.toString()
+                                    deepLinkUrl.substring(deepLinkUrl.lastIndexOf("/") + 1)
+                                }
+                                intent = if (it.data != UserState.EXISTS) {
+                                    if (userId != null) {
                                         AuthActivity.launchAuthentication(
                                             applicationContext,
                                             userId
                                         )
-                                    } ?: AuthActivity.launchAuthentication(applicationContext)
-                                } catch (e: Exception) {
-                                    crashlytics.recordException(e)
-                                    AuthActivity.launchAuthentication(applicationContext)
+                                    } else {
+                                        AuthActivity.launchAuthentication(applicationContext)
+                                    }
+                                } else {
+                                    MainActivity.launchHome(applicationContext, userId)
                                 }
-                            } else {
-                                MainActivity.launchHome(applicationContext)
+                            } catch (e: Exception) {
+                                crashlytics.recordException(e)
+                                AuthActivity.launchAuthentication(applicationContext)
                             }
+
                         }
                         job.invokeOnCompletion {
                             startActivity(intent)

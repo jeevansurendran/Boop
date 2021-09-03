@@ -44,7 +44,10 @@ class AuthOnboardingFragment : Fragment(R.layout.fragment_auth_onboarding) {
                             val action = AuthOnboardingFragmentDirections.acceptUserId()
                             findNavController().navigate(action)
                         } else {
-                            val intent = MainActivity.launchHome(requireContext())
+                            val intent = MainActivity.launchHome(
+                                requireContext(),
+                                authViewModel.sharersUserId
+                            )
                             startActivity(intent)
                             requireActivity().finish()
                         }
